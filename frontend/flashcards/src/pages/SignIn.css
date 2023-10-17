@@ -1,0 +1,70 @@
+.input{
+  display: block; 
+  padding: 0.625rem; 
+  margin-top: 0.5rem; 
+  border-width: 2px; 
+  width: 100%; 
+  font-size: 0.875rem;
+  line-height: 1.25rem; 
+  color: #111827; 
+  border-color: rgba(0, 0, 0, 0.09);
+  background-color: #F9FAFB;
+  border-radius: 1rem;
+
+
+
+
+
+ 
+  
+  }
+
+  .button-green{
+    padding: 0.25rem; 
+    margin-top: 1.25rem; 
+    justify-self: center; 
+    place-self: center; 
+    border-radius: 0.5rem; 
+    width: 5rem; 
+    background-color: #329e56; 
+    color:white
+  }
+  .button-green:hover {
+    background-color: #48d386; 
+  }
+
+  .heading {
+    margin-top: 2.5rem; 
+    font-size: 1.875rem;
+    line-height: 2.25rem; 
+    font-weight: 700; 
+    text-align: center; 
+  }
+  .input-container{
+    padding-top: 1rem;
+    padding-bottom: 1rem; 
+    max-width: 240px;
+    display: flex; 
+    flex-direction: column; 
+    justify-items: center; 
+    place-content: center; 
+    margin: auto;
+  }
+  .pass {
+    margin-top: 1.25rem;
+  }
+  .register {
+    text-align: center; 
+    color:blue
+  }
+  .register:hover{
+
+    text-decoration: underline;
+  }
+  .link{
+    margin-top: 1.25rem;
+    text-align: center; 
+  }
+  .Google{
+    margin-top: 2.5rem;
+  }

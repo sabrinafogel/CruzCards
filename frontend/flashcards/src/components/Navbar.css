@@ -1,0 +1,39 @@
+.Cruz {
+  width: 100%; 
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
+  font-size: 2.25rem;
+  line-height: 2.5rem; 
+  font-weight: 700; 
+  text-transform: uppercase; 
+  color: #ffffff;   
+  text-decoration: none;
+}
+
+.NavContainer{
+  display: flex; 
+  padding: 1rem; 
+  justify-content: space-between; 
+  width: 100%; 
+  background-color: #2563EB; 
+
+}
+
+.sign-in {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem; 
+  font-size: 1.25rem;
+  line-height: 1.5rem; 
+  font-weight: 700; 
+  text-transform: uppercase; 
+  color: rgb(226 232 240)
+
+}
+.sign-out{
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem; 
+  font-size: 1.25rem;
+  line-height: 1.5rem; 
+  font-weight: 700; 
+  text-transform: uppercase; 
+  color: rgb(226 232 240);
+}
