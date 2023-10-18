@@ -5,6 +5,8 @@ import SignIn from './pages/SignIn';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Navbar from './components/Navbar';
+import NewCourse from './pages/NewCourse';
+import NewSet from './pages/NewSet';
 
 function App() {
 
@@ -12,13 +14,15 @@ function App() {
     <div className="App">
       <AuthContextProvider>
         <Navbar/>
+        <Routes>
+          <Route path='/signin' element= {<SignIn />}/>
+          <Route path='/' element= {<Home />}/>
+          <Route path='/register-account' element= {<Register />}/>
+        </Routes>
+        
 
-          <Routes>
-            <Route path='/signin' element= {<SignIn />}/>
-            <Route path='/' element= {<Home />}/>
-            <Route path='/register-account' element= {<Register />}/>
-          </Routes>
-          </AuthContextProvider>
+
+      </AuthContextProvider>
           
     </div>
   );
