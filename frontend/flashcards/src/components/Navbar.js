@@ -24,8 +24,8 @@ const Navbar = () => {
                   <FaTimes/>
                 </button>
               </li>
-                <li><Link to="/">Home</Link></li>
-                <li>Other</li>
+                <li><Link to="/" onClick={() => toggleMenu(toggleMenu)}>Home</Link></li>
+                <li><Link to="/profile" onClick={() => toggleMenu(toggleMenu)}>Profile</Link></li>
             </ul>
         </div>
     );
@@ -48,7 +48,7 @@ const Navbar = () => {
           <Sidebar open={menuStat} toggleMenu={toggleMenu} />
           )}
 
-        <Link to="/">
+        <Link to="/" onClick={() => toggleMenu(toggleMenu)}>
           <h1 className="Cruz">
             CruzCards
           </h1>

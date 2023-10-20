@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Navbar from './components/Navbar';
 import NewCourse from './pages/NewCourse';
 import NewSet from './pages/NewSet';
+import Profile from './pages/Profile';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
           <Route path='/signin' element= {<SignIn />}/>
           <Route path='/' element= {<Home />}/>
           <Route path='/register-account' element= {<Register />}/>
+          <Route path='/profile' element= {<Profile />}/>
         </Routes>
         
 
