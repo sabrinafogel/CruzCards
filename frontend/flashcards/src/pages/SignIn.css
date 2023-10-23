@@ -1,70 +1,81 @@
-.input{
-  display: block; 
-  padding: 0.625rem; 
-  margin-top: 0.5rem; 
-  border-width: 2px; 
-  width: 100%; 
+.page-wrapper {
+  background: #003c6c;
+  min-height: 100vh;
+
+}
+
+.Sign-in-container {
+  background-color: #d9d9d9;
+  width: fit-content;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2.5rem;
+  border-radius: 2rem;
+}
+
+.signin-input {
+  display: block;
+  padding: 0.625rem;
+  margin-top: 0.5rem;
+  border-width: 2px;
+  width: 100%;
   font-size: 0.875rem;
-  line-height: 1.25rem; 
-  color: #111827; 
+  line-height: 1.25rem;
+  color: #111827;
   border-color: rgba(0, 0, 0, 0.09);
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
   border-radius: 1rem;
+}
 
+.button-green {
+  padding: 0.25rem;
+  margin-top: 1.25rem;
+  justify-self: center;
+  place-self: center;
+  border-radius: 0.5rem;
+  width: 5rem;
+  background-color: #329e56;
+  color: white;
+}
 
+.button-green:hover {
+  background-color: #48d386;
+}
 
+.signin-heading {
+  margin-top: 2.5rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  text-align: center;
+}
 
+.input-container {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  place-content: center;
+  margin: auto;
+}
+.pass {
+  margin-top: 1.25rem;
+}
 
- 
-  
-  }
+.link {
+  color: blue;
+  margin-top: 1.25rem;
+  text-align: center;
+}
 
-  .button-green{
-    padding: 0.25rem; 
-    margin-top: 1.25rem; 
-    justify-self: center; 
-    place-self: center; 
-    border-radius: 0.5rem; 
-    width: 5rem; 
-    background-color: #329e56; 
-    color:white
-  }
-  .button-green:hover {
-    background-color: #48d386; 
-  }
+.link:hover {
+  text-decoration: underline;
+}
 
-  .heading {
-    margin-top: 2.5rem; 
-    font-size: 1.875rem;
-    line-height: 2.25rem; 
-    font-weight: 700; 
-    text-align: center; 
-  }
-  .input-container{
-    padding-top: 1rem;
-    padding-bottom: 1rem; 
-    max-width: 240px;
-    display: flex; 
-    flex-direction: column; 
-    justify-items: center; 
-    place-content: center; 
-    margin: auto;
-  }
-  .pass {
-    margin-top: 1.25rem;
-  }
-  .register {
-    text-align: center; 
-    color:blue
-  }
-  .register:hover{
-
-    text-decoration: underline;
-  }
-  .link{
-    margin-top: 1.25rem;
-    text-align: center; 
-  }
-  .Google{
-    margin-top: 2.5rem;
-  }
+.Google {
+  margin-top: 2.5rem;
+}

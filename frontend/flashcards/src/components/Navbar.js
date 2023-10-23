@@ -1,69 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { UserAuth } from "./AuthContext";
-import {FaBars, FaTimes} from "react-icons/fa";
-import './Navbar.css'
+import { FaBars, FaTimes } from "react-icons/fa";
+import { BiSolidUserCircle } from "react-icons/bi";
+import AccountDropDown from "./AccountDropDown";
+import "./Navbar.css";
 
 const Navbar = () => {
-  const { user, logOut } = UserAuth();
-
-  const handleSignOut = async () =>{
-    try{
-      await logOut()
-    } catch(error) {
-      console.log(error)
-    }
-  }
-
-  const Sidebar = ({open, toggleMenu}) => {
+  const userIconRef = useRef(null);
+  
+  const Sidebar = ({ open, toggleMenu }) => {
     return (
-        <div className={open ? "SidebarOpened" : "SidebarHidden"}>
-            <ul>
-              <li>
-                <button onClick={toggleMenu} style={{ color: 'red'}}>
-                  <FaTimes/>
-                </button>
-              </li>
-                <li><Link to="/" onClick={() => toggleMenu(toggleMenu)}>Home</Link></li>
-                <li><Link to="/profile" onClick={() => toggleMenu(toggleMenu)}>Profile</Link></li>
-            </ul>
-        </div>
+      <div className={open ? "SidebarOpened" : "SidebarHidden"}>
+        <ul>
+          <li>
+            <button
+              className="Close-button"
+              onClick={toggleMenu}
+              style={{ color: "red" }}
+            >
+              <FaTimes />
+            </button>
+          </li>
+          <li><Link to="/" onClick={() => toggleMenu(toggleMenu)}>Home</Link></li>
+          <li><Link to="/profile" onClick={() => toggleMenu(toggleMenu)}>Profile</Link></li>
+        </ul>
+      </div>
     );
-  } 
+  };
 
   const [menuStat, setMenuStat] = useState(false);
+  const [dropDownVisible, setdropDownVisible] = useState(false);
 
   const toggleMenu = () => {
-      setMenuStat(!menuStat);
-      console.log(!menuStat);
-  }
+    setMenuStat(!menuStat);
+    //console.log(!menuStat);
+  };
+
+  const handleDropdown = () => {
+    setdropDownVisible(!dropDownVisible);
+  };
 
   return (
-    <div className="NavContainer">
-      <div className="MenuAndLogo">
+    <div>
+      <div className="Sidebarcontainer">
 
-        {!menuStat ? (
-          <button className="Menu" onClick={toggleMenu}><FaBars/></button>
-          ) : (
           <Sidebar open={menuStat} toggleMenu={toggleMenu} />
-          )}
-
-        <Link to="/" onClick={() => toggleMenu(toggleMenu)}>
-          <h1 className="Cruz">
-            CruzCards
-          </h1>
-        </Link>
       </div>
-      {console.log(user?.email)}
-      {user?.email ? (
-        <button className='sign-out' onClick={handleSignOut}>Sign Out</button>
-      ) : (
-        <Link to="/signin">
-          <h1 className="sign-in">
-            Sign In
-          </h1>
-        </Link>
-      )}
+
+      <div className="NavContainer">
+        <div className="MenuAndLogo">
+          <button className="Menu" onClick={toggleMenu}>
+            <FaBars />
+          </button>
+
+          <Link to="/">
+            <h1 className="Cruz">CruzCards</h1>
+          </Link>
+        </div>
+        {/* {console.log(user?.email)} */}
+
+
+        <div>
+          <BiSolidUserCircle
+            className="UserIcon"
+            onClick={handleDropdown}
+            ref={userIconRef}
+          />
+
+          {dropDownVisible && (
+            <div className="dropDownWrapper">
+              <AccountDropDown />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

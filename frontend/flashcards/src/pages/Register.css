@@ -1,51 +1,69 @@
-.input{
-  display: block; 
-  padding: 0.625rem; 
-  margin-top: 0.5rem; 
-  border-width: 2px; 
-  width: 100%; 
+.page-wrapper {
+  background: #003c6c;
+  min-height: 100vh;
+}
+
+.Register-in-container {
+  background-color: #d9d9d9;
+  width: fit-content;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding-left: 4.5rem;
+  padding-right: 4.5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-radius: 2rem;
+}
+
+.input {
+  display: block;
+  padding: 0.625rem;
+  margin-top: 0.5rem;
+  border-width: 2px;
+  width: 100%;
   font-size: 0.875rem;
-  line-height: 1.25rem; 
-  color: #111827; 
-  background-color: #F9FAFB;
+  line-height: 1.25rem;
+  color: #111827;
+  background-color: #f9fafb;
   border-radius: 1rem;
-  }
+}
 
-  .button-green{
-    padding: 0.25rem; 
-    margin-top: 1.25rem; 
-    justify-self: center; 
-    place-self: center; 
-    border-radius: 0.5rem; 
-    width: 5rem; 
-    background-color: #329e56; 
-    color:white
+.button-green {
+  padding: 0.25rem;
+  margin-top: 1.25rem;
+  justify-self: center;
+  place-self: center;
+  border-radius: 0.5rem;
+  width: 5rem;
+  background-color: #329e56;
+  color: white;
+}
+.button-green:hover {
+  background-color: #48d386;
+}
 
-  }
-  .button-green:hover {
-    background-color: #48d386; 
-  }
-
-  .heading {
-    margin-top: 2.5rem; 
-    font-size: 1.875rem;
-    line-height: 2.25rem; 
-    font-weight: 700; 
-    text-align: center; 
-  }
-  .input-container{
-    padding-top: 1rem;
-    padding-bottom: 1rem; 
-    max-width: 240px;
-    display: flex; 
-    flex-direction: column; 
-    justify-items: center; 
-    place-content: center; 
-    margin: auto;
-  }
-  .pass {
-    margin-top: 1.25rem;
-  }
-  .email {
-    margin-top: 1.25rem;
-  }
+.heading {
+  margin-top: 2.5rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  text-align: center;
+}
+.input-container {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  place-content: center;
+  margin: auto;
+}
+.pass {
+  margin-top: 1.25rem;
+}
+.email {
+  margin-top: 1.25rem;
+}

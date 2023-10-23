@@ -1,64 +1,136 @@
 .Cruz {
-  width: 100%; 
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
+  width: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 2.25rem;
-  line-height: 2.5rem; 
-  font-weight: 700; 
-  text-transform: uppercase; 
-  color: #ffffff;   
+  line-height: 2.5rem;
+  font-weight: 700;
+  /* text-transform: uppercase; */
+  color: #ffffff;
   text-decoration: none;
   padding-left: 10%;
 }
 
-.NavContainer{
-  display: flex; 
-  padding: 1rem; 
-  justify-content: space-between; 
-  width: 100%; 
-  background-color: #1A3B68; 
-
+.NavContainer {
+  display: flex;
+  padding: 1rem;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #1a3b68;
 }
 
 .sign-in {
   padding-top: 0.5rem;
-  padding-bottom: 0.5rem; 
+  padding-bottom: 0.5rem;
   font-size: 1.25rem;
-  line-height: 1.5rem; 
-  font-weight: 700; 
-  text-transform: uppercase; 
-  color: rgb(226 232 240)
-
+  line-height: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgb(226 232 240);
+  transform: translateX(-50%);
 }
-.sign-out{
+.sign-out {
   padding-top: 0.5rem;
-  padding-bottom: 0.5rem; 
+  padding-bottom: 0.5rem;
   font-size: 1.25rem;
-  line-height: 1.5rem; 
-  font-weight: 700; 
-  text-transform: uppercase; 
+  line-height: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
   color: rgb(226 232 240);
 }
 
-.MenuAndLogo{
+.MenuAndLogo {
   display: flex;
 }
 
-.Menu{
+.Menu {
   font-size: 1.75rem;
-  color: #D2BA50;
+  color: #d2ba50;
 }
 
-.SidebarOpened{
+.SidebarOpened {
   justify-content: space-between;
-  color: #D2BA50;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
+  color: #d2ba50;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1.25rem;
-  line-height: 1.5rem; 
-  font-weight: 700; 
-  background-color: #1A3B68; 
+  line-height: 1.5rem;
+  font-weight: 700;
+  background-color: #1a3b68;
+  position: fixed;
+  left: 0;
+  width: 10%;
+  height: 100%;
+  padding: 20px;
+  border-right: 2px solid #000;
+  transition: 0.5s;
+  box-shadow: 1px 1px 35px#000;
 }
 
-.SidebarHidden{
+.SidebarHidden {
+  position: fixed;
+  width: 0%;
+  transition: 0.3s;
   visibility: hidden;
 }
 
+.Close-button {
+  display: flex-end;
+  width: 100%;
+  place-self: end;
+  transform: translate(85%);
+}
+
+.UserWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.UserIcon {
+  scale: 350%;
+  align-self: center;
+  color: white;
+  transform: translateX(-15%) translateY(22%);
+}
+
+.dropDownWrapper {
+  position: fixed;
+  top: 70px;
+  right: 2px;
+  display: flex;
+  width: fit-content;
+  min-width: 8%;
+  background: #fdfdfd;
+  place-content: center;
+  flex-direction: row;
+  text-align: center;
+  padding-top: 5px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-bottom: 2px;
+  border-radius: 0.45rem;
+  /* border: 2px solid rgb(0, 0, 0); */
+  box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.5);
+}
+
+.dropDownWrapper::before {
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: -12px;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  /* border-bottom: 12px solid rgb(0, 0, 0); */
+}
+
+.dropDownWrapper::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 20.5px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #fdfdfd;
+}

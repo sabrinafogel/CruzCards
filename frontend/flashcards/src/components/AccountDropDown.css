@@ -1,0 +1,9 @@
+.List {
+    width: 100%;
+}
+.List.Item:hover {
+    background-color: rgb(128, 128, 128, 0.25);
+    width: 100%;
+}
+
+  
