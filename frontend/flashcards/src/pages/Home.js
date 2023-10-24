@@ -13,21 +13,27 @@ function Home() {
     <div>
       <Navbar />
       <div className="Home">
-        {/* {user === null ? } */}
-        <div className="heading-wrapper">
-          <h1 className="course-heading">My courses</h1>
-          <div className="input-wrapper">
-            <input className="search-input" placeholder="Search"></input>
-            <Link to="/new-course">
-              <button className="create-course">
-                <FaPlus />
-              </button>
-            </Link>
+        {user === null ? (
+          <div className="heading">Welcome</div>
+        ) : (
+          <div>
+            <div className="heading-wrapper">
+              <h1 className="course-heading">My courses</h1>
+              <div className="input-wrapper">
+                <input className="search-input" placeholder="Search"></input>
+                <Link to="/new-course">
+                  <button className="create-course">
+                    <FaPlus />
+                  </button>
+                </Link>
+              </div>
+            </div>
+            <div>
+              <MyCourses />
+            </div>
           </div>
-        </div>
-        <div>
-          <MyCourses />
-        </div>
+          
+        )}
       </div>
     </div>
   );

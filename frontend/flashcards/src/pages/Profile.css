@@ -91,21 +91,12 @@
 }
 
 .back-button{
-<<<<<<< HEAD
   font-size: 25px;
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
   border-color: #d2ba50;
   border-radius: 2.5rem;
-=======
-  margin-left: 1000px;
-  margin-top: 510px;
-  width: 50px;
-  scale: 150%;
-  border-color: #d2ba50;
-  border-radius: 50%;
->>>>>>> 48f21d08f22061eec8867eb9e4aa9de5e4752a87
   color: white;
   background-color: #d2ba50;
   border: 1px solid #d2ba50;
