@@ -89,3 +89,15 @@
   font-size: 1.25rem;
   color: #616161;
 }
+
+.back-button{
+  margin-left: 1000px;
+  margin-top: 510px;
+  width: 50px;
+  scale: 150%;
+  border-color: #d2ba50;
+  border-radius: 50%;
+  color: white;
+  background-color: #d2ba50;
+  border: 1px solid #d2ba50;
+}
