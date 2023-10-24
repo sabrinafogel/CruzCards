@@ -1,11 +1,94 @@
-.NewCourse{
-    width: 100%; 
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
-    font-size: 5rem;
-    line-height: 2.5rem; 
-    font-weight: 700; 
-    text-transform: uppercase; 
-    color: #000000;  
-    text-align: center;
-    margin-top: 1.5rem;
-  }
+.NewCourse {
+  margin-top: 3rem;
+  margin-left: 4.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.new-course-header {
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: fit-content;
+  color: #000000;
+  text-align: start;
+}
+
+.course-name-input {
+  padding: 1rem;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  border-width: 1px;
+  max-height: 3rem;
+  width: 60vw;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  margin-right: 5px;
+}
+
+.course-description {
+  padding: 1rem;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  border-width: 1px;
+  min-height: 25vw;
+  width: 60vw;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  margin-right: 5px;
+  resize: none;
+}
+
+.char-count {
+  position: relative;
+  text-align: end;
+  width: 59vw;
+}
+
+.button-wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.course-save {
+  padding: 0.25rem;
+  justify-self: center;
+  place-self: center;
+  border-radius: 0.5rem;
+  width: 5rem;
+  background-color: #329e56;
+  color: white;
+}
+
+.course-save:hover {
+  background-color: #48d386;
+}
+
+.course-cancel {
+  padding: 0.25rem;
+  justify-self: center;
+  place-self: center;
+  border-radius: 0.5rem;
+  width: 5rem;
+  background-color: #b93c3c;
+  color: white;
+}
+
+.course-cancel:hover {
+  background-color: #cf5a5a;
+}
+
+.noName-error {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  color: red;
+  margin-left: 5px;
+}
+
+.noName-text {
+  position: relative;
+  bottom: 5px;
+}
