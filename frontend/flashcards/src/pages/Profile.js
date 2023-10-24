@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BsFillPencilFill, BsFillCheckCircleFill } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa";
 import { UserAuth } from "../components/AuthContext";
+import { Link } from "react-router-dom";
 import "./Profile.css";
 
 function Profile() {
@@ -37,6 +38,9 @@ function Profile() {
   return (
     <div className="page-wrapper">
       <div className="profile">
+        <Link to="/">
+          <button className="back-button"> Back </button>
+        </Link>
         <h1 className="profile-heading">Profile </h1>
         <h1 className="username">Username:</h1>
         <div className="input-wrapper">
@@ -76,6 +80,7 @@ function Profile() {
           {user.email === undefined ? "....." : `${user.email}`}
         </h1>
       </div>
+      <button className="back-button"><Link to="/"> Back </Link></button>
     </div>
   );
 }
