@@ -80,7 +80,6 @@ function Profile() {
           {user.email === undefined ? "....." : `${user.email}`}
         </h1>
       </div>
-      <button className="back-button"><Link to="/"> Back </Link></button>
     </div>
   );
 }
