@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { UserAuth } from "./AuthContext";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { BiSolidUserCircle } from "react-icons/bi";
 import AccountDropDown from "./AccountDropDown";
@@ -8,7 +7,7 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const userIconRef = useRef(null);
-  
+
   const Sidebar = ({ open, toggleMenu }) => {
     return (
       <div className={open ? "SidebarOpened" : "SidebarHidden"}>
@@ -22,8 +21,16 @@ const Navbar = () => {
               <FaTimes />
             </button>
           </li>
-          <li><Link to="/" onClick={() => toggleMenu(toggleMenu)}>Home</Link></li>
-          <li><Link to="/profile" onClick={() => toggleMenu(toggleMenu)}>Profile</Link></li>
+          <li>
+            <Link to="/" onClick={() => toggleMenu(toggleMenu)}>
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link to="/profile" onClick={() => toggleMenu(toggleMenu)}>
+              Profile
+            </Link>
+          </li>
         </ul>
       </div>
     );
@@ -44,8 +51,7 @@ const Navbar = () => {
   return (
     <div>
       <div className="Sidebarcontainer">
-
-          <Sidebar open={menuStat} toggleMenu={toggleMenu} />
+        <Sidebar open={menuStat} toggleMenu={toggleMenu} />
       </div>
 
       <div className="NavContainer">
@@ -59,7 +65,6 @@ const Navbar = () => {
           </Link>
         </div>
         {/* {console.log(user?.email)} */}
-
 
         <div>
           <BiSolidUserCircle

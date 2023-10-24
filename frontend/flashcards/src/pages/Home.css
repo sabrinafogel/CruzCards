@@ -1,19 +1,51 @@
-.Home{
-  width: 100%; 
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
-  font-size: 5rem;
-  line-height: 2.5rem; 
-  font-weight: 700; 
-  text-transform: uppercase; 
-  color: #000000;  
-  text-align: center;
-  margin-top: 1.5rem;
+.Home {
+  display: flex;
+  margin-top: 3rem;
+  margin-left: 4.5rem;
+  flex-direction: column;
 }
 
-.Home.sidebar-is-open{
-  margin-left: 35%;
+.course-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: fit-content;
+  color: #000000;
+  text-align: start;
 }
 
+.heading-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
+.create-course {
+  padding: 1rem;
+  margin-bottom: 10px;
+  border-radius: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #1e3a8a;
+  transition-duration: 300ms;
+  margin-right: 20px;
+}
 
+.create-course:hover {
+  color: #ffffff;
+  background-color: #1d4ed8;
+  scale: 110%;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
 
+.search-input {
+  padding: 1rem;
+  margin-bottom: 10px;
+  border-width: 1px;
+  max-height: 3rem;
+  width: 15vw;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  margin-right: 5px;
+}

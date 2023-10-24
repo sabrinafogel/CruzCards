@@ -20,10 +20,10 @@ function Profile() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputvalue === "") {
-      return
-    }
-    else {
+      return;
+    } else {
       updateUserprofile(inputvalue);
+      setIsDisabled(!isDisabled);
     }
   };
 
@@ -53,8 +53,10 @@ function Profile() {
             <input
               className="profile-input"
               type="text"
-              disabled= {isDisabled}
-              placeholder={user.displayName === undefined ? "....." : `${user.displayName}`}
+              disabled={isDisabled}
+              placeholder={
+                user.displayName === undefined ? "....." : `${user.displayName}`
+              }
             ></input>
           )}
           <button
@@ -70,7 +72,9 @@ function Profile() {
           )}
         </div>
         <h1 className="username">Email:</h1>
-        <h1 className="email">{user.email === undefined ? "....." : `${user.email}`}</h1>
+        <h1 className="email">
+          {user.email === undefined ? "....." : `${user.email}`}
+        </h1>
       </div>
     </div>
   );
