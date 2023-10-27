@@ -2,12 +2,14 @@ import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { BiSolidUserCircle } from "react-icons/bi";
+import { AiFillCaretDown } from "react-icons/ai";
+import { UserAuth } from "./AuthContext";
 import AccountDropDown from "./AccountDropDown";
 import "./Navbar.css";
 
 const Navbar = () => {
   const userIconRef = useRef(null);
-
+  const { user } = UserAuth();
   const Sidebar = ({ open, toggleMenu }) => {
     return (
       <div className={open ? "SidebarOpened" : "SidebarHidden"}>
@@ -66,13 +68,13 @@ const Navbar = () => {
         </div>
         {/* {console.log(user?.email)} */}
 
-        <div>
-          <BiSolidUserCircle
-            className="UserIcon"
-            onClick={handleDropdown}
-            ref={userIconRef}
-          />
+        <div className="userAndname-wrap" onClick={handleDropdown}>
+          {user === undefined || user === null ? null : (
+            <p className="navbar-username">{user.displayName}</p>
+          )}
 
+          <BiSolidUserCircle className="UserIcon" />
+          <AiFillCaretDown className="expand-icon" />
           {dropDownVisible && (
             <div className="dropDownWrapper">
               <AccountDropDown />

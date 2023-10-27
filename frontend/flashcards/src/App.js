@@ -8,6 +8,7 @@ import NewCourse from "./pages/NewCourse";
 import NewSet from "./pages/NewSet";
 import Profile from "./pages/Profile";
 import "./App.css";
+import CoursePage from "./pages/CoursePage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/register-account" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/new-course" element={<NewCourse />} />
+          <Route path="/courses/:courseid" element={<CoursePage />} />
         </Routes>
       </AuthContextProvider>
     </div>

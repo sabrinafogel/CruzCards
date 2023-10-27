@@ -1,0 +1,65 @@
+.scrollable-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.item {
+  margin: 5px;
+  padding: 15px;
+  border-radius: 1rem;
+  height: 10rem;
+  max-width: 250px;
+  min-width: 150px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+
+.item.break-all {
+  word-break: break-all;
+}
+
+.item:nth-child(4n + 1) {
+  background-color: #006aac;
+}
+
+.item:nth-child(4n + 2) {
+  background-color: #14a5db;
+}
+
+.item:nth-child(4n + 3) {
+  background-color: #007988;
+}
+
+.item:nth-child(4n) {
+  background-color: #f29813;
+  color: black;
+}
+
+.Course-name {
+  min-width: fit-content;
+  position: relative;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* word-break: break-all; */
+}
+
+.Course-description {
+  visibility: hidden;
+  position: relative;
+  /* If we want to show it */
+  /* top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  --max-lines: 4;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--max-lines);
+}

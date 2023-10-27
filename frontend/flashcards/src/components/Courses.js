@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react";
 // import { collection, getDocs, onSnapshot } from "firebase/firestore";
 // import { db } from "./firebase_config";
-import "./MyCourses.css";
-import { UserAuth } from "./AuthContext";
-import { Link } from "react-router-dom";
+import "./Courses.css";
 
-function MyCourses() {
+function Courses() {
   const [courses, setCourses] = useState([]);
-  const { user } = UserAuth();
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/mycourses?email=${encodeURIComponent(
-            user.email
-          )}`
-        );
+        const response = await fetch("http://localhost:5000/courses");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -28,7 +21,7 @@ function MyCourses() {
     };
 
     fetchCourses();
-  }, [user.email]);
+  }, []);
 
   const breakAll = (str) => {
     const words = str.split(" ");
@@ -62,4 +55,4 @@ function MyCourses() {
   );
 }
 
-export default MyCourses;
+export default Courses;

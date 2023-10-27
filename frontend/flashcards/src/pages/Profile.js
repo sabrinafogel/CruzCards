@@ -10,7 +10,7 @@ function Profile() {
   const [isDisabled, setIsDisabled] = useState(true);
   const inputRef = useRef();
 
-  const [inputvalue, setinputvalue] = useState("");
+  const [inputvalue, setinputvalue] = useState(user.displayName);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -31,9 +31,12 @@ function Profile() {
   useEffect(() => {
     if (!isDisabled) {
       inputRef.current.focus();
-      setinputvalue("");
     }
   }, [isDisabled]);
+
+  useEffect(() => {
+    setinputvalue(user.displayName);
+  }, [user]);
 
   return (
     <div className="page-wrapper">
@@ -45,24 +48,15 @@ function Profile() {
         <h1 className="username">Username:</h1>
         <div className="input-wrapper">
           {console.log(user)}
-          {!isDisabled ? (
-            <input
-              className="profile-input"
-              type="text"
-              ref={inputRef}
-              onChange={handleInputChange}
-              onSubmit={handleSubmit}
-            ></input>
-          ) : (
-            <input
-              className="profile-input"
-              type="text"
-              disabled={isDisabled}
-              placeholder={
-                user.displayName === undefined ? "....." : `${user.displayName}`
-              }
-            ></input>
-          )}
+          <input
+            className="profile-input"
+            type="text"
+            ref={inputRef}
+            value={inputvalue}
+            disabled={isDisabled}
+            onChange={handleInputChange}
+            onSubmit={handleSubmit}
+          ></input>
           <button
             className="edit-button"
             onClick={() => setIsDisabled(!isDisabled)}

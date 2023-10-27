@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import Navbar from "../components/Navbar";
 import "./NewCourse.css";
+import { UserAuth } from "../components/AuthContext";
 
 function NewCourse() {
   const [name, setName] = useState("");
@@ -12,6 +13,7 @@ function NewCourse() {
   const [textAreaDisabled, setTextAreaDisabled] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [noName, setNoName] = useState(false);
+  const { user } = UserAuth();
   const navigate = useNavigate();
 
   const handleInputChange = (event) => {
@@ -34,33 +36,34 @@ function NewCourse() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (name.length <= 0) {
       return setNoName(true);
     }
-  
+
     try {
-      const response = await fetch('http://localhost:5000/newcourse', {
-        method: 'POST',
+      console.log(user.email);
+      const response = await fetch("http://localhost:5000/newcourse", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: name,
           description: description,
+          email: user.email,
         }),
       });
-  
+
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
-  
+
       navigate("/");
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
-  
 
   return (
     <div className="course-page-wrapper">

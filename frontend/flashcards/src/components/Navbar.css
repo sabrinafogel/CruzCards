@@ -6,7 +6,6 @@
   font-size: 2.25rem;
   line-height: 2.5rem;
   font-weight: 700;
-  /* text-transform: uppercase; */
   color: #ffffff;
   text-decoration: none;
   padding-left: 10%;
@@ -59,7 +58,6 @@
   line-height: 1.5rem;
   font-weight: 700;
   background-color: #1a3b68;
-  position: fixed;
   left: 0;
   width: 10%;
   height: 100%;
@@ -67,6 +65,8 @@
   border-right: 2px solid #000;
   transition: 0.5s;
   box-shadow: 1px 1px 35px#000;
+  position: fixed;
+  z-index: 9999;
 }
 
 .SidebarHidden {
@@ -82,17 +82,11 @@
   place-self: end;
   transform: translate(85%);
 }
-
-.UserWrapper {
-  display: flex;
-  align-items: center;
-}
-
 .UserIcon {
   scale: 350%;
   align-self: center;
   color: white;
-  transform: translateX(-15%) translateY(22%);
+  /* transform: translateX(-15%) translateY(22%); */
 }
 
 .dropDownWrapper {
@@ -111,26 +105,45 @@
   padding-right: 2px;
   padding-bottom: 2px;
   border-radius: 0.45rem;
-  /* border: 2px solid rgb(0, 0, 0); */
   box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.5);
 }
 
 .dropDownWrapper::before {
   content: "";
   position: absolute;
-  right: 18px;
   top: -12px;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  /* border-bottom: 12px solid rgb(0, 0, 0); */
 }
 
 .dropDownWrapper::after {
   content: "";
   position: absolute;
   top: -10px;
-  right: 20.5px;
+  right: 16px;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-bottom: 10px solid #fdfdfd;
+}
+
+.userAndname-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  place-items: center;
+  gap: 22px;
+  margin-right: 5px;
+}
+
+.navbar-username {
+  color: white;
+  font-weight: bold;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none;
+}
+
+.expand-icon {
+  color: white;
 }
