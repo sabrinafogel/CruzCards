@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import { collection, getDocs, onSnapshot } from "firebase/firestore";
 // import { db } from "./firebase_config";
+import { Link } from "react-router-dom";
 import "./Courses.css";
 
 function Courses() {
@@ -14,6 +15,8 @@ function Courses() {
           throw new Error("Network response was not ok");
         }
         const courses = await response.json();
+
+        console.log(courses);
         setCourses(courses);
       } catch (error) {
         console.error("Error:", error);

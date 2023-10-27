@@ -20,8 +20,13 @@ app.post("/newcourse", async (req, res) => {
     return res.status(400).send({ error: "Please enter a name." });
   }
 
+  const chapters = [{
+    name: "Default Chapter",
+    cards: []
+  }]
+
   try {
-    await db.collection("courses").add({ name, description, email });
+    await db.collection("courses").add({ name, description, email, chapters });
     return res.status(200).send({ message: "Course added successfully." });
   } catch (error) {
     console.error("Error adding document: ", error);
@@ -50,7 +55,10 @@ app.get("/mycourses", async (req, res) => {
 app.get("/courses", async (req, res) => {
   try {
     const snapshot = await db.collection("courses").get();
-    const courses = snapshot.docs.map((doc) => doc.data());
+    const courses = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
     return res.status(200).send(courses);
   } catch (error) {
     console.error("Error fetching documents: ", error);

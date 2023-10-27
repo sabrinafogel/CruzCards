@@ -21,6 +21,7 @@ function MyCourses() {
           throw new Error("Network response was not ok");
         }
         const courses = await response.json();
+
         setCourses(courses);
       } catch (error) {
         console.error("Error:", error);
