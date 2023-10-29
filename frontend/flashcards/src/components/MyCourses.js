@@ -51,7 +51,9 @@ function MyCourses() {
           <Link to={`/courses/${item.id}`}>
             <li
               key={index}
-              className={`item ${breakAll(item.name) ? "break-all" : ""}`}
+              className={`item ${
+                breakAll(item.name) ? "break-all" : ""
+              } color-${index % 4}`}
             >
               <h1 className="Course-name">{item.name}</h1>
               <p className="Course-description">{item.description}</p>

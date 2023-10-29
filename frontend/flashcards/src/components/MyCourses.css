@@ -23,19 +23,19 @@
   word-break: break-all;
 }
 
-.item:nth-child(4n + 1) {
+.item.color-0 {
   background-color: #006aac;
 }
 
-.item:nth-child(4n + 2) {
+.item.color-1 {
   background-color: #14a5db;
 }
 
-.item:nth-child(4n + 3) {
+.item.color-2 {
   background-color: #007988;
 }
 
-.item:nth-child(4n) {
+.item.color-3 {
   background-color: #f29813;
   color: black;
 }
