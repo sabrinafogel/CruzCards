@@ -20,6 +20,7 @@ function App() {
           <Route path="/register-account" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/new-course" element={<NewCourse />} />
+          <Route path="/new-set" element={<NewSet />} />
           <Route path="/courses/:courseid" element={<CoursePage />} />
         </Routes>
       </AuthContextProvider>

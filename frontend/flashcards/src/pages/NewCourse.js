@@ -43,7 +43,7 @@ function NewCourse() {
 
     try {
       console.log(user.email);
-      const response = await fetch("http://localhost:5000/newcourse", {
+      const response = await fetch("http://localhost:8080/newcourse", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

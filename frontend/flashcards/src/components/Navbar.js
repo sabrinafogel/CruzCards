@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { BiSolidUserCircle } from "react-icons/bi";
@@ -8,7 +8,6 @@ import AccountDropDown from "./AccountDropDown";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const userIconRef = useRef(null);
   const { user } = UserAuth();
   const Sidebar = ({ open, toggleMenu }) => {
     return (

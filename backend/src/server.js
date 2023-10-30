@@ -66,5 +66,17 @@ app.get("/courses", async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 5000;
+app.get("/courseinfo", async (req, res) => {
+  try{
+    const ref = db.collection('courses').doc(req.query.courseid);
+    const doc = await ref.get();
+    //console.log(doc.data().chapters[1].name);
+    return res.status(200).send({name: doc.data().name, chapters: doc.data().chapters});
+  } catch (error) {
+    console.error("Error fetching documents: ", error);
+    return res.status(500).send({ error: "Failed to fetch course info." });
+  }
+});
+
+const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server is running on port ${port}`));

@@ -10,7 +10,7 @@ function Courses() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch("http://localhost:5000/courses");
+        const response = await fetch("http://localhost:8080/courses");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

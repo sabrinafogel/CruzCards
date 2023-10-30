@@ -13,7 +13,7 @@ function MyCourses() {
     const fetchCourses = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/mycourses?email=${encodeURIComponent(
+          `http://localhost:8080/mycourses?email=${encodeURIComponent(
             user.email
           )}`
         );
