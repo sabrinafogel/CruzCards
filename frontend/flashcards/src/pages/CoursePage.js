@@ -39,7 +39,7 @@ function CoursePage() {
           <input className="search-input" placeholder="Search"></input>
         </div>
       </div>
-      <Link to="/new-set">
+      <Link to={`/new-chapter/${courseid}`}>
         <button className="create-set">
           <div className="new-chapter-text">
             New Chapter
@@ -53,7 +53,7 @@ function CoursePage() {
         <ul>
         {chapters?.map((chapters, index) =>
           <button className="chapters" key={index}>
-            <h1>{chapters.name}</h1>
+            <h1>Chapter {index+1}: {chapters.name}</h1>
           </button>
         )}
         </ul>

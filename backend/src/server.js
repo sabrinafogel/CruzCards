@@ -78,5 +78,30 @@ app.get("/courseinfo", async (req, res) => {
   }
 });
 
+app.post("/newchapter", async (req, res) => {
+  const {courseid, name} = req.body;
+
+  if (!name) {
+    return res.status(400).send({ error: "Please enter a name." });
+  }
+
+  const new_chapter = {
+    name: name,
+    cards: []
+  };
+
+  try {
+    const ref = db.collection('courses').doc(courseid);
+    const doc = await ref.get();
+    const chapter_field = doc.data().chapters;
+    chapter_field.push(new_chapter);
+    await db.collection("courses").doc(courseid).update({chapters: chapter_field});
+    return res.status(200).send({ message: "Chapter added successfully." });
+  } catch (error) {
+    console.error("Error adding field: ", error);
+    return res.status(500).send({ error: "Failed to add chapter." });
+  }
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server is running on port ${port}`));

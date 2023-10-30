@@ -9,6 +9,7 @@ import NewSet from "./pages/NewSet";
 import Profile from "./pages/Profile";
 import "./App.css";
 import CoursePage from "./pages/CoursePage";
+import NewChapter from "./pages/NewChapter";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/new-course" element={<NewCourse />} />
           <Route path="/new-set" element={<NewSet />} />
           <Route path="/courses/:courseid" element={<CoursePage />} />
+          <Route path="/new-chapter/:courseid" element={<NewChapter />} />
         </Routes>
       </AuthContextProvider>
     </div>
