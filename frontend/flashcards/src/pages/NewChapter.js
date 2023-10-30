@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
-import { UserAuth } from "../components/AuthContext";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import './NewChapter.css'
 
@@ -15,7 +14,6 @@ function NewChapter() {
   const [textAreaDisabled, setTextAreaDisabled] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [noName, setNoName] = useState(false);
-  const { user } = UserAuth();
   const navigate = useNavigate();
 
   const handleInputChange = (event) => {
@@ -81,12 +79,6 @@ function NewChapter() {
             onChange={handleInputChange}
             required
           />
-          {noName ? (
-            <div className="noName-error">
-              <BsFillExclamationSquareFill />
-              <p className="noName-text">Please enter a name...</p>
-            </div>
-          ) : null}
 
           <input
             className="course-tag-name-input"
@@ -99,6 +91,13 @@ function NewChapter() {
             required
           />
         </div>
+        
+        {noName ? (
+            <div className="noName-error">
+              <BsFillExclamationSquareFill />
+              <p className="noName-text">Please enter a name...</p>
+            </div>
+          ) : null}
 
         <textarea
           className="chapter-description"

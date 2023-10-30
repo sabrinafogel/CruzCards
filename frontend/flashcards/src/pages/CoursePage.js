@@ -39,16 +39,18 @@ function CoursePage() {
           <input className="search-input" placeholder="Search"></input>
         </div>
       </div>
-      <Link to={`/new-chapter/${courseid}`}>
-        <button className="create-set">
-          <div className="new-chapter-text">
-            New Chapter
-          </div>
-          <div className="new-chapter-icon">
+      
+      <button className="create-set">
+        <div className="new-chapter-text">
+          New Chapter
+        </div>
+        <div className="new-chapter-icon">
+          <Link to={`/new-chapter/${courseid}`}>
             <FaPlus/>
-          </div>
-        </button>
-      </Link>
+          </Link>
+        </div>
+      </button>
+      
       <div>
         <ul>
         {chapters?.map((chapters, index) =>
