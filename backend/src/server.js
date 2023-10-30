@@ -91,7 +91,7 @@ app.post("/newchapter", async (req, res) => {
 
   const new_chapter = {
     name: name,
-    sets: [],
+    cards: [],
   };
 
   try {
