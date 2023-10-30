@@ -48,7 +48,7 @@ function MyCourses() {
     <div className="Course-wrapper">
       <ul className="scrollable-container">
         {courses.map((item, index) => (
-          <Link to={`/courses/${item.id}`}>
+          <Link key={item.id} to={`/courses/${item.id}`}>
             <li
               key={index}
               className={`item ${

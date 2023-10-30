@@ -31,7 +31,7 @@
   margin-right: 5px;
 }
 
-.create-set{
+.create-set {
   padding: 1rem;
   margin-bottom: 10px;
   border-radius: 1rem;
@@ -49,11 +49,11 @@
   justify-content: space-between;
 }
 
-.new-chapter-text{
+.new-chapter-text {
   margin-right: 0;
 }
 
-.new-chapter-icon{
+.new-chapter-icon {
   margin-left: 0;
   margin-top: 5px;
 }
@@ -66,21 +66,86 @@
   overflow-x: auto;
 }
 
-.chapters{
+.chapters {
   padding: 1rem;
   margin-bottom: 10px;
   border-radius: 1rem;
   font-weight: 700;
   color: white;
-  background-color: #006aac;;
+  background-color: #006aac;
   border-width: 1px;
-  border-color: #006aac;;
+  border-color: #006aac;
   transition-duration: 300ms;
   margin-right: 20px;
   margin-top: 20px;
   width: 40vw;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
+  place-items: center;
   gap: 1rem;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.newSet-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 35%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  background-color: white;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+  margin: 5%;
+}
+
+.newSet-input {
+  padding: 1rem;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  border-width: 1px;
+  margin-left: 5%;
+  max-height: 3rem;
+  width: 80%;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+}
+
+.newSet-close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  width: 2rem;
+  background-color: #b93c3c;
+  color: white;
+}
+
+.newSet-close:hover {
+  background-color: #cf5a5a;
+}
+
+.addSet {
+  display: flex;
+  flex-direction: row;
+  place-items: center;
+  margin-right: 2%;
 }
