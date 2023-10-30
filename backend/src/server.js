@@ -20,10 +20,12 @@ app.post("/newcourse", async (req, res) => {
     return res.status(400).send({ error: "Please enter a name." });
   }
 
-  const chapters = [{
-    name: "Default Chapter",
-    cards: []
-  }]
+  const chapters = [
+    {
+      name: "Default Chapter",
+      cards: [],
+    },
+  ];
 
   try {
     await db.collection("courses").add({ name, description, email, chapters });
@@ -57,7 +59,7 @@ app.get("/courses", async (req, res) => {
     const snapshot = await db.collection("courses").get();
     const courses = snapshot.docs.map((doc) => ({
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
     }));
     return res.status(200).send(courses);
   } catch (error) {
@@ -67,11 +69,13 @@ app.get("/courses", async (req, res) => {
 });
 
 app.get("/courseinfo", async (req, res) => {
-  try{
-    const ref = db.collection('courses').doc(req.query.courseid);
+  try {
+    const ref = db.collection("courses").doc(req.query.courseid);
     const doc = await ref.get();
     //console.log(doc.data().chapters[1].name);
-    return res.status(200).send({name: doc.data().name, chapters: doc.data().chapters});
+    return res
+      .status(200)
+      .send({ name: doc.data().name, chapters: doc.data().chapters });
   } catch (error) {
     console.error("Error fetching documents: ", error);
     return res.status(500).send({ error: "Failed to fetch course info." });
@@ -79,7 +83,7 @@ app.get("/courseinfo", async (req, res) => {
 });
 
 app.post("/newchapter", async (req, res) => {
-  const {courseid, name} = req.body;
+  const { courseid, name } = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
@@ -87,19 +91,39 @@ app.post("/newchapter", async (req, res) => {
 
   const new_chapter = {
     name: name,
-    cards: []
+    sets: [],
   };
 
   try {
-    const ref = db.collection('courses').doc(courseid);
+    const ref = db.collection("courses").doc(courseid);
     const doc = await ref.get();
     const chapter_field = doc.data().chapters;
     chapter_field.push(new_chapter);
-    await db.collection("courses").doc(courseid).update({chapters: chapter_field});
+    await db
+      .collection("courses")
+      .doc(courseid)
+      .update({ chapters: chapter_field });
     return res.status(200).send({ message: "Chapter added successfully." });
   } catch (error) {
     console.error("Error adding field: ", error);
     return res.status(500).send({ error: "Failed to add chapter." });
+  }
+});
+
+app.post("/updatecourse", async (req, res) => {
+  const { id, course } = req.body;
+
+  if (!id) {
+    return res.status(400).send({ error: "Please provide a document ID." });
+  }
+
+  try {
+    const courseRef = db.collection("courses").doc(id);
+    await courseRef.set(course, { merge: true });
+    return res.status(200).send({ message: "Course updated successfully." });
+  } catch (error) {
+    console.error("Error updating document: ", error);
+    return res.status(500).send({ error: "Failed to update course." });
   }
 });
 

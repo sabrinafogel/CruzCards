@@ -29,7 +29,7 @@ function CoursePage() {
     };
 
     fetchCourses();
-  }, [courseid]);
+  }, []);
 
   const chapters = course_info.chapters;
 
