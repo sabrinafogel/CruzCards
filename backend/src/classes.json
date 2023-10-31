@@ -1,6 +1,7 @@
 [
   {
     "name": "Computer Science 101",
+    "id": 1,
     "description": "Introduction to computer science concepts",
     "tag": ["Computer Science", "Technology"],
     "owner": "ownerCS101@email.com",
@@ -34,6 +35,7 @@
   },
   {
     "name": "Psychology 101",
+    "id": 2,
     "description": "Overview of basic psychological theories",
     "tag": ["Psychology", "Social Sciences"],
     "owner": "ownerPsychology101@email.com",
@@ -58,6 +60,7 @@
   },
   {
     "name": "Art History 101",
+    "id": 3,
     "description": "Exploring the history of art and artists",
     "tag": ["Art", "History"],
     "owner": "ownerArtHistory101@email.com",
@@ -91,6 +94,7 @@
   },
   {
     "name": "Chemistry 101",
+    "id": 4,
     "description": "Fundamental concepts in chemistry",
     "tag": ["Science", "Chemistry"],
     "owner": "ownerChemistry101@email.com",
@@ -115,6 +119,7 @@
   },
   {
     "name": "Literature 101",
+    "id": 5,
     "description": "Introduction to classic literary works",
     "tag": ["Literature", "Education"],
     "owner": "ownerLiterature101@email.com",
@@ -139,6 +144,7 @@
   },
   {
     "name": "Geography 101",
+    "id": 6,
     "description": "Exploring geographical concepts",
     "tag": ["Geography", "Education"],
     "owner": "ownerGeography101@email.com",
@@ -163,6 +169,7 @@
   },
   {
     "name": "Music Theory 101",
+    "id": 7,
     "description": "Fundamentals of music theory",
     "tag": ["Music", "Education"],
     "owner": "ownerMusicTheory101@email.com",
@@ -187,6 +194,7 @@
   },
   {
     "name": "Economics 101",
+    "id": 8,
     "description": "Basic concepts in economics",
     "tag": ["Economics", "Social Sciences"],
     "owner": "ownerEconomics101@email.com",
@@ -211,6 +219,7 @@
   },
   {
     "name": "Physical Education 101",
+    "id": 9,
     "description": "Basic physical education principles",
     "tag": ["Physical Education", "Health"],
     "owner": "ownerPE101@email.com",
@@ -235,6 +244,7 @@
   },
   {
     "name": "Foreign Languages 101",
+    "id": 10,
     "description": "Introduction to various foreign languages",
     "tag": ["Languages", "Education"],
     "owner": "ownerLanguages101@email.com",
