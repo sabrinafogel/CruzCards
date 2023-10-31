@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CoursePage.css";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
@@ -9,27 +9,43 @@ function CoursePage() {
   const { courseid } = useParams();
   const [course_info, setCourseInfo] = useState([]);
 
-  const fetchCourseInfo = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
-          courseid
-        )}`
-      );
+  useEffect(() => {
+    const fetchCourseInfo = async () => {
+      console.log(fetch);
+      try {
+        const response = await fetch(
+          `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
+            courseid
+          )}`
+        );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const course_info = await response.json();
+        setCourseInfo(course_info);
+      } catch (error) {
+        console.error("Error:", error);
       }
-
-      const course_info = await response.json();
-      setCourseInfo(course_info);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-  fetchCourseInfo();
+    };
+    fetchCourseInfo();
+  }, [courseid]);
 
   const chapters = course_info.chapters;
+
+  const breakAll = (str) => {
+    const words = str.split(" ");
+
+    // Check each word
+    for (let i = 0; i < words.length; i++) {
+      if (words[i].length > 12) {
+        return true;
+      }
+    }
+
+    return false;
+  };
 
   return (
     <div>
@@ -53,12 +69,34 @@ function CoursePage() {
 
         <div>
           <ul>
-            {chapters?.map((chapters, index) => (
-              <button className="chapters" key={index}>
-                <h1>
-                  Chapter {index + 1}: {chapters.name}
-                </h1>
-              </button>
+            {chapters?.map((chapter, index) => (
+              <div>
+                <div className="chapters" key={index}>
+                  <h1>
+                    Chapter {index + 1}: {chapter.name}
+                  </h1>
+                  <Link to={`/courses/${courseid}/${index}/new-set`}>
+                    <button className="addSet">
+                      <FaPlus />
+                      Add Set
+                    </button>
+                  </Link>
+                </div>
+                {console.log(chapter.sets)}
+                <ul className="sets-scrollable-container">
+                  {chapter.sets?.map((set, index) => (
+                    <li
+                      key={index}
+                      className={`item ${
+                        breakAll(set.name) ? "break-all" : ""
+                      } color-${index % 4}`}
+                    >
+                      <h1 className="Course-name">{set.name}</h1>
+                      <p className="Course-description">{set.description}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </ul>
         </div>

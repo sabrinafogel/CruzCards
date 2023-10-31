@@ -23,7 +23,7 @@ app.post("/newcourse", async (req, res) => {
   const chapters = [
     {
       name: "Default Chapter",
-      cards: [],
+      sets: [],
     },
   ];
 
@@ -38,6 +38,7 @@ app.post("/newcourse", async (req, res) => {
 
 app.get("/mycourses", async (req, res) => {
   try {
+    console.log("fetch");
     const email = req.query.email;
     const snapshot = await db
       .collection("courses")
@@ -56,6 +57,7 @@ app.get("/mycourses", async (req, res) => {
 
 app.get("/courses", async (req, res) => {
   try {
+    console.log("fetch");
     const snapshot = await db.collection("courses").get();
     const courses = snapshot.docs.map((doc) => ({
       id: doc.id,
@@ -72,6 +74,7 @@ app.get("/courseinfo", async (req, res) => {
   try {
     const ref = db.collection("courses").doc(req.query.courseid);
     const doc = await ref.get();
+    console.log("fetch");
     //console.log(doc.data().chapters[1].name);
     return res
       .status(200)
@@ -91,7 +94,7 @@ app.post("/newchapter", async (req, res) => {
 
   const new_chapter = {
     name: name,
-    cards: [],
+    sets: [],
   };
 
   try {
@@ -110,8 +113,9 @@ app.post("/newchapter", async (req, res) => {
   }
 });
 
-app.post("/updatecourse", async (req, res) => {
-  const { id, course } = req.body;
+app.post("/newSet", async (req, res) => {
+  const { id, index, name, description, cards } = req.body;
+  const newSet = { name: name, description: description, cards: cards };
 
   if (!id) {
     return res.status(400).send({ error: "Please provide a document ID." });
@@ -119,7 +123,10 @@ app.post("/updatecourse", async (req, res) => {
 
   try {
     const courseRef = db.collection("courses").doc(id);
-    await courseRef.set(course, { merge: true });
+    const doc = await courseRef.get();
+    const courseData = doc.data();
+    courseData.chapters[index].sets.push(newSet);
+    await courseRef.update(courseData);
     return res.status(200).send({ message: "Course updated successfully." });
   } catch (error) {
     console.error("Error updating document: ", error);

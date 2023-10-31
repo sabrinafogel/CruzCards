@@ -46,9 +46,8 @@ function Home() {
                   </Link>
                 </div>
               </div>
-              <div>
-                <Courses />
-              </div>
+              {/* TO NOT OVERLOAD DB WITH READS WHILE TESTING */}
+              <div>{/* <Courses /> */}</div>
             </div>
           </div>
         )}

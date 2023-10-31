@@ -76,7 +76,7 @@ app.post("/newcourse", async (req, res) => {
 app.get("/mycourses", async (req, res) => {
   try {
     courses = dummydata;
-
+    console.log("fetch");
     return res.status(200).send(courses);
   } catch (error) {
     console.error("Error fetching documents: ", error);
@@ -87,7 +87,7 @@ app.get("/mycourses", async (req, res) => {
 app.get("/courses", async (req, res) => {
   try {
     const courses = dummydata;
-
+    console.log("fetch");
     return res.status(200).send(courses);
   } catch (error) {
     console.error("Error fetching documents: ", error);
@@ -101,7 +101,7 @@ app.get("/courseinfo", async (req, res) => {
     const doc = courses.find(
       (course) => course.id === parseInt(req.query.courseid)
     );
-
+    console.log("fetch");
     return res.status(200).send(doc);
   } catch (error) {
     console.error("Error fetching documents: ", error);
@@ -115,25 +115,53 @@ app.post("/newchapter", async (req, res) => {
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
   }
+  const courses = dummydata;
+  const doc = courses.find((course) => course.id === parseInt(courseid));
 
   const new_chapter = {
     name: name,
-    cards: [],
+    sets: [],
   };
+  doc.chapters.push(new_chapter);
+  let json = JSON.stringify(courses);
+
+  // Write the modified JSON back to the file
+  fs.writeFile("classes.json", json, "utf8", function (err) {
+    if (err) {
+      console.log("Error writing file:", err);
+    } else {
+      console.log("File written successfully");
+      try {
+        let data = fs.readFileSync("classes.json", "utf8");
+        dummydata = JSON.parse(data); // Reset the data in the server
+        return res
+          .status(200)
+          .send({ message: "chapter created successfully." });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  });
+
+  console.log(doc);
+});
+
+app.post("/newSet", async (req, res) => {
+  const { id, index, name, description, cards } = req.body;
+  let courseindex = dummydata.findIndex((course) => course.id === Number(id));
+  console.log(dummydata[courseindex]);
+  const newSet = { name: name, description: description, cards: cards };
+  dummydata[courseindex].chapters[index].sets.push(newSet);
+  let json = JSON.stringify(dummydata);
 
   try {
-    const ref = db.collection("courses").doc(courseid);
-    const doc = await ref.get();
-    const chapter_field = doc.data().chapters;
-    chapter_field.push(new_chapter);
-    await db
-      .collection("courses")
-      .doc(courseid)
-      .update({ chapters: chapter_field });
-    return res.status(200).send({ message: "Chapter added successfully." });
-  } catch (error) {
-    console.error("Error adding field: ", error);
-    return res.status(500).send({ error: "Failed to add chapter." });
+    fs.writeFileSync("classes.json", json, "utf8");
+    console.log("File written successfully");
+    let data = fs.readFileSync("classes.json", "utf8");
+    dummydata = JSON.parse(data); // Reset the data in the server
+    return res.status(200).send({ message: "set created successfully." });
+  } catch (err) {
+    console.log("Error writing or reading file:", err);
   }
 });
 

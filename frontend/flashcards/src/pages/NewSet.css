@@ -1,11 +1,226 @@
-.NewSet{
-    width: 100%; 
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
-    font-size: 5rem;
-    line-height: 2.5rem; 
-    font-weight: 700; 
-    text-transform: uppercase; 
-    color: #000000;  
-    text-align: center;
-    margin-top: 1.5rem;
+.NewCourse {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-set-header {
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: fit-content;
+  color: #000000;
+  text-align: start;
+}
+
+.course-name-input {
+  padding: 1rem;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  border-width: 1px;
+  max-height: 3rem;
+  width: 60vw;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  margin-right: 5px;
+  transition: 150ms;
+}
+
+.course-description {
+  padding: 1rem;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  border-width: 1px;
+  min-height: 10vw;
+  width: 60vw;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  margin-right: 5px;
+  resize: none;
+  transition: 150ms;
+}
+
+.char-count {
+  position: relative;
+  text-align: end;
+  width: 59vw;
+  transition: 150ms;
+}
+
+.button-wrap {
+  display: flex;
+  position: absolute;
+  right: 1vw;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.course-save {
+  padding: 0.25rem;
+  margin-top: 10px;
+  justify-self: center;
+  place-self: center;
+  border-radius: 0.5rem;
+  width: 5vw;
+  min-width: 2.5rem;
+  background-color: #329e56;
+  color: white;
+}
+
+.course-save:hover {
+  background-color: #48d386;
+}
+
+.course-cancel {
+  padding: 0.25rem;
+  margin-top: 10px;
+  justify-self: center;
+  place-self: center;
+  border-radius: 0.5rem;
+  width: 5vw;
+  min-width: 3.5rem;
+  background-color: #b93c3c;
+  color: white;
+}
+
+.course-cancel:hover {
+  background-color: #cf5a5a;
+}
+
+.noName-error {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  color: red;
+  margin-left: 5px;
+}
+
+.noName-text {
+  position: relative;
+  bottom: 5px;
+}
+
+.new-card-button-container {
+  display: flex;
+  padding-top: 10px;
+  justify-self: start;
+  background-color: #f3f3f3;
+  border-radius: 2rem;
+  height: 17vw;
+  width: 100%;
+  transition: 150ms;
+  place-items: center;
+  justify-content: center;
+  color: blue;
+}
+
+.plus-button {
+  font-size: 5vw;
+}
+
+.card-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 2vw;
+}
+
+.card {
+  display: flex;
+  margin-top: 10px;
+  justify-self: start;
+  background-color: #f3f3f3;
+  border-radius: 2rem;
+  height: 25vw;
+  width: 50vw;
+  transition: 150ms;
+  place-items: center;
+  justify-content: center;
+  color: blue;
+  font-size: 2vw;
+}
+
+.modal-blur {
+  background-color: rgb(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  justify-content: flex-start;
+  position: fixed;
+  width: 80%;
+  height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 2rem;
+  z-index: 10000;
+  animation-name: modal;
+  animation-duration: 0.5s;
+}
+
+.modal {
+  display: flex;
+  flex-direction: row;
+  gap: 4vw;
+}
+
+.card-description {
+  padding: 1rem;
+  margin-bottom: 10px;
+  margin-top: 50px;
+  border-width: 1px;
+  height: 60vh;
+  width: 30vw;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  margin-right: 5px;
+  resize: none;
+}
+
+.modal-button-wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5vw;
+}
+
+.delete-button {
+  position: absolute;
+  top: 10%;
+  left: 10px;
+  font-size: 2vw;
+  color: #cf5a5a;
+}
+
+@keyframes modal {
+  0% {
+    transform: scale(0) translate(-50%, -50%);
   }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+}
+
+@keyframes card {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.card-container {
+  animation-name: card;
+  animation-duration: 0.5s;
+}

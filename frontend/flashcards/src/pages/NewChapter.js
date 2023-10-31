@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
-import './NewChapter.css'
+import "./NewChapter.css";
 
 function NewChapter() {
-
   const { courseid } = useParams();
 
   const [name, setName] = useState("");
@@ -67,9 +66,7 @@ function NewChapter() {
     <div>
       <Navbar />
       <div className="NewChapter">
-        <div className="new-chapter-header">
-          Create a New Chapter
-        </div>
+        <div className="new-chapter-header">Create a New Chapter</div>
 
         <div className="name-and-tags">
           <input
@@ -91,13 +88,13 @@ function NewChapter() {
             required
           />
         </div>
-        
+
         {noName ? (
-            <div className="noName-error">
-              <BsFillExclamationSquareFill />
-              <p className="noName-text">Please enter a name...</p>
-            </div>
-          ) : null}
+          <div className="noName-error">
+            <BsFillExclamationSquareFill />
+            <p className="noName-text">Please enter a name...</p>
+          </div>
+        ) : null}
 
         <textarea
           className="chapter-description"
@@ -111,14 +108,11 @@ function NewChapter() {
             Save
           </button>
           <Link to={`/courses/${courseid}`}>
-            <button className="course-cancel">
-                Cancel
-            </button>
+            <button className="course-cancel">Cancel</button>
           </Link>
         </div>
-
-    </div>
       </div>
+    </div>
   );
 }
 

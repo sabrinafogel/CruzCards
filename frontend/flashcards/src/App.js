@@ -24,6 +24,10 @@ function App() {
           <Route path="/new-set" element={<NewSet />} />
           <Route path="/courses/:courseid" element={<CoursePage />} />
           <Route path="/new-chapter/:courseid" element={<NewChapter />} />
+          <Route
+            path="/courses/:courseid/:index/new-set"
+            element={<NewSet />}
+          />
         </Routes>
       </AuthContextProvider>
     </div>
