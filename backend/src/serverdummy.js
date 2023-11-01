@@ -165,5 +165,24 @@ app.post("/newSet", async (req, res) => {
   }
 });
 
+app.post("/editSet", async (req, res) => {
+  const { id, index, setindex, name, description, cards } = req.body;
+  let courseindex = dummydata.findIndex((course) => course.id === Number(id));
+  console.log(dummydata[courseindex]);
+  const newSet = { name: name, description: description, cards: cards };
+  dummydata[courseindex].chapters[index].sets[setindex] = newSet;
+  let json = JSON.stringify(dummydata);
+
+  try {
+    fs.writeFileSync("classes.json", json, "utf8");
+    console.log("File written successfully");
+    let data = fs.readFileSync("classes.json", "utf8");
+    dummydata = JSON.parse(data); // Reset the data in the server
+    return res.status(200).send({ message: "set created successfully." });
+  } catch (err) {
+    console.log("Error writing or reading file:", err);
+  }
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server is running on port ${port}`));

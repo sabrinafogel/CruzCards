@@ -11,7 +11,6 @@ function CoursePage() {
 
   useEffect(() => {
     const fetchCourseInfo = async () => {
-      console.log(fetch);
       try {
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
@@ -82,7 +81,6 @@ function CoursePage() {
                     </button>
                   </Link>
                 </div>
-                {console.log(chapter.sets)}
                 <ul className="sets-scrollable-container">
                   {chapter.sets?.map((set, setindex) => (
                     <Link

@@ -1,15 +1,26 @@
 .edit-set-heading {
-  font-size: 2rem;
+  font-size: 1rem;
+  color: #000000;
+  text-align: start;
+  margin-top: 3rem;
+}
+
+.edit-set-header {
+  font-size: 1.5rem;
   font-weight: 700;
   min-width: fit-content;
   color: #000000;
   text-align: start;
-  margin-top: 3rem;
-  margin-left: 4.5rem;
+}
+
+.set-input-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
 .set-name-input {
-  border-radius: 2rem;
+  border-radius: 1.5rem;
   padding: 15px;
   width: 50vw;
 }
@@ -17,6 +28,11 @@
 .description-container {
   display: flex;
   flex-direction: row;
+  gap: 15px;
+}
+
+.set-edit-button {
+  color: rgb(0, 0, 0, 0.5);
 }
 
 .set-edit-button:hover {
@@ -34,17 +50,45 @@
   padding: 15px;
 }
 
+.new-card-wrapper {
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
 .set-new-card-button-container {
   display: flex;
+  flex-direction: row;
   padding-top: 10px;
   justify-self: start;
   background-color: #f3f3f3;
   border-radius: 2rem;
-  height: 17vw;
-  width: 100%;
+  height: 15vw;
+  width: 40vw;
   transition: 150ms;
   place-items: center;
   justify-content: center;
-  color: blue;
+  color: rgb(0, 106, 172, 0.5);
   margin-top: 2rem;
+}
+
+.set-edit-new-card-button {
+  color: rgb(0, 106, 172, 0.8);
+}
+
+.button-wrapper {
+  display: flex;
+  position: absolute;
+  top: 7.5rem;
+  right: 1vw;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.card-wrapper {
+  display: flex;
+  justify-content: center;
+  place-items: center;
+  text-align: center;
 }

@@ -1,101 +1,58 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "./EditSet.css";
-import { BsFillCheckCircleFill, BsFillPencilFill } from "react-icons/bs";
-import { FaTimes } from "react-icons/fa";
+import { BsFillExclamationSquareFill } from "react-icons/bs";
 import { AiFillPlusCircle, AiFillDelete } from "react-icons/ai";
 
 function EditSet() {
   // For general use in fetching the course
   const { courseid, index, setindex } = useParams();
-  const [course_info, setCourseInfo] = useState([]);
   const [set, setSet] = useState();
   const [cards, setCards] = useState([]);
   // For setting the name input to disabled or not
-  const [isDisabled, setIsDisabled] = useState(true);
-  const inputRef = useRef();
+  const [inputDisabled, setInputDisabled] = useState(false);
   // Initial value for the name box
-  const [inputvalue, setinputvalue] = useState(set?.name);
-  // Saves the original name to revert back to if they cancel the edit
-  const [originalName, setOriginalName] = useState(set?.name);
+  const [inputvalue, setinputvalue] = useState("");
   // The popup for adding the card
   const [showModal, setShowModal] = useState(false);
   const [cardFront, setCardFront] = useState("");
   const [cardBack, setCardBack] = useState("");
   // Initial value for the description
-  const [description, setDescription] = useState(set?.description);
-  // For reverting the original description if they cancel.
-  const [originalDescription, setOriginalDescription] = useState(
-    set?.description
-  );
-  // Bool if the description is editable or not
-  const [isDescriptionDisabled, setIsDescriptionDisabled] = useState(true);
-  const descriptionRef = useRef();
+  const [description, setDescription] = useState("");
+  // Bool if the user tries to save with no name
+  const [noName, setNoName] = useState(false);
+  // This allows the use of the navigate function to move the user back to the sets page after saving
+  const navigate = useNavigate();
 
   // Will set the description when the set first starts up
   useEffect(() => {
-    setDescription(set?.description);
-    setOriginalDescription(set?.description);
+    if (set) {
+      setDescription(set?.description);
+    }
   }, [set]);
-
   // Will handle the value the input shows for the description
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
-  // Handls the description submit which will set the new original desc
-  const submitDescription = (e) => {
-    e.preventDefault();
-    setIsDescriptionDisabled(!isDescriptionDisabled);
-    setOriginalDescription(description);
-  };
-  // Canceling will reset the description to the original and will unfocus it
-  const cancelDescription = () => {
-    setDescription(originalDescription);
-    setIsDescriptionDisabled(true);
-  };
-  // This will autofocus the description when it becomes editable
-  useEffect(() => {
-    if (!isDescriptionDisabled) {
-      descriptionRef.current.focus();
-    }
-  }, [isDescriptionDisabled]);
   // Handles the name input change sets the value to what the user types
   const handleInputChange = (e) => {
-    const value = e.target.value;
-    console.log(value);
-    setinputvalue(e.target.value);
-  };
-  // Handles submiting the name will not take an empty string for a name
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (inputvalue === "") {
-      return;
+    if (e.target.value.length <= 50) {
+      setinputvalue(e.target.value);
     } else {
-      setIsDisabled(!isDisabled);
-      setOriginalName(inputvalue);
+      setInputDisabled(!inputDisabled);
     }
   };
   // Handles setting the set name on startup
   useEffect(() => {
-    setOriginalName(set?.name);
-    setinputvalue(set?.name);
+    if (set) {
+      setinputvalue(set?.name);
+    }
   }, [set]);
   // Handles setting the cards on startup
   useEffect(() => {
     setCards(set?.cards || []);
   }, [set]);
-  // Will set the input to the original name and make the input disabled
-  const cancelName = () => {
-    setinputvalue(originalName);
-    setIsDisabled(true);
-  };
-  // This makes the name input autofocus when becoming editable
-  useEffect(() => {
-    if (!isDisabled) {
-      inputRef.current.focus();
-    }
-  }, [isDisabled]);
   // This is the var that determines if the new card popup will be shown to the user
   const showaddNewCard = () => {
     setShowModal(!showModal);
@@ -129,7 +86,7 @@ function EditSet() {
         }
 
         const course_info = await response.json();
-        setCourseInfo(course_info);
+        //setCourseInfo(course_info);
         setSet(course_info?.chapters?.[index]?.sets?.[setindex]);
       } catch (error) {
         console.error("Error:", error);
@@ -137,9 +94,39 @@ function EditSet() {
     };
     fetchCourseInfo();
   }, [courseid, index, setindex]);
-  console.log(course_info);
 
-  console.log(set);
+  // This saves the set by calling the backedn and passing the in the req.body
+  const saveSet = async (e) => {
+    e.preventDefault();
+
+    if (inputvalue.length <= 0) {
+      return setNoName(true);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/editSet", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: courseid,
+          index: index,
+          setindex: setindex,
+          name: inputvalue,
+          description: description,
+          cards: cards,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      navigate(`/courses/${courseid}`);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <div>
@@ -149,117 +136,84 @@ function EditSet() {
         {/* Makes sure the set is defined and will display the name and description edit boxes */}
         {set && (
           <div>
-            <div className="input-wrapper">
-              {/* Name input */}
+            <div className="set-input-containers">
+              <h1 className="edit-set-header">Set Name:</h1>
               <input
-                className="set-name-input"
-                type="text"
-                ref={inputRef}
+                className="course-name-input"
+                placeholder="Enter name..."
                 value={inputvalue}
-                disabled={isDisabled}
                 onChange={handleInputChange}
-                onSubmit={handleSubmit}
-              ></input>
-              {/* Input start edit button */}
-              <button
-                className="set-edit-button"
-                onClick={() => setIsDisabled(!isDisabled)}
-              >
-                {isDisabled ? <BsFillPencilFill /> : null}
-              </button>
-              {/* The cancel button for cancelling edit */}
-              {isDisabled ? null : (
-                <button onClick={cancelName}>
-                  <FaTimes />
-                </button>
-              )}
-              {/* The submit button */}
-              {isDisabled ? null : (
-                <button className="submit-button" onClick={handleSubmit}>
-                  <BsFillCheckCircleFill />
-                </button>
-              )}
-            </div>
-            <div className="description-container">
-              {/* The textarea to edit the description */}
+                required
+              />
+              <p className="char-count">{inputvalue && inputvalue.length}/50</p>
+              {noName ? (
+                <div className="noName-error">
+                  <BsFillExclamationSquareFill />
+                  <p className="noName-text">Please enter a name...</p>
+                </div>
+              ) : null}
+              <h1 className="edit-set-header">Set Description:</h1>
               <textarea
-                className="set-description-input"
-                ref={descriptionRef}
                 value={description}
-                disabled={isDescriptionDisabled}
                 onChange={handleDescriptionChange}
-                placeholder="Description..."
+                className="course-description"
+                placeholder="Enter description..."
               ></textarea>
-              {/* The button to edit the description */}
-              <button
-                className="set-edit-button"
-                onClick={() => setIsDescriptionDisabled(!isDescriptionDisabled)}
-              >
-                {/* Initial edit button will disappear after starting edit */}
-                {isDescriptionDisabled ? <BsFillPencilFill /> : null}
-              </button>
-              {/* Cancel button shows up in place of initial edit button when actively editing */}
-              {isDescriptionDisabled ? null : (
-                <button onClick={cancelDescription}>
-                  <FaTimes />
-                </button>
-              )}
-              {/* Description submit button shows up during edit process */}
-              {isDescriptionDisabled ? null : (
-                <button className="submit-button" onClick={submitDescription}>
-                  <BsFillCheckCircleFill />
-                </button>
-              )}
+              <p className="char-count">
+                {description && description.length}/250
+              </p>
             </div>
           </div>
         )}
       </div>
-      {/* The background for the mock card for the add card button */}
-      <div className="set-new-card-button-container">
-        {/* The button inside the mock card to add a card */}
-        <button className="new-card-button" onClick={showaddNewCard}>
-          <AiFillPlusCircle className="plus-button" />
-        </button>
-        {/* This conditionally renders the add card pop for the user after clicking add card button */}
-        {showModal && (
-          <div className="modal-blur">
-            <div className="modal-container">
-              <div className="modal">
-                {/* front and back text-editors */}
-                <textarea
-                  value={cardFront}
-                  onChange={(e) => setCardFront(e.target.value)}
-                  className="card-description"
-                  placeholder="Front of card"
-                />
-                <textarea
-                  value={cardBack}
-                  onChange={(e) => setCardBack(e.target.value)}
-                  className="card-description"
-                  placeholder="Back of card"
-                />
-              </div>
-              {/* Save and Cancel buttons */}
-              <div className="modal-button-wrap">
-                <button className="course-save" onClick={addNewCard}>
-                  Save
-                </button>
-                <button className="course-cancel" onClick={showaddNewCard}>
-                  Cancel
-                </button>
+      <div className="new-card-wrapper">
+        {/* The background for the mock card for the add card button */}
+        <div className="set-new-card-button-container">
+          {/* The button inside the mock card to add a card */}
+          <button className="set-edit-new-card-button" onClick={showaddNewCard}>
+            <AiFillPlusCircle className="plus-button" />
+          </button>
+          {/* This conditionally renders the add card pop for the user after clicking add card button */}
+          {showModal && (
+            <div className="modal-blur">
+              <div className="modal-container">
+                <div className="modal">
+                  {/* front and back text-editors */}
+                  <textarea
+                    value={cardFront}
+                    onChange={(e) => setCardFront(e.target.value)}
+                    className="card-description"
+                    placeholder="Front of card"
+                  />
+                  <textarea
+                    value={cardBack}
+                    onChange={(e) => setCardBack(e.target.value)}
+                    className="card-description"
+                    placeholder="Back of card"
+                  />
+                </div>
+                {/* Save and Cancel buttons */}
+                <div className="modal-button-wrap">
+                  <button className="course-save" onClick={addNewCard}>
+                    Save
+                  </button>
+                  <button className="course-cancel" onClick={showaddNewCard}>
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       {/* The grid for the cards present in the set already */}
-      <div className="">
+      <div className="card-wrapper">
         <ul>
           {cards.map((card, index) => {
             return (
               <div className="card-container" key={card.id}>
                 {/* Div for card styling */}
-                <div className="card">
+                <div className="card" key={card.id}>
                   {/* Displays the front of the card */}
                   <h1>{card.front}</h1>
                 </div>
@@ -278,6 +232,15 @@ function EditSet() {
             );
           })}
         </ul>
+      </div>
+      {/* The save and cancel buttons */}
+      <div className="button-wrapper">
+        <button className="course-save" onClick={saveSet}>
+          Save
+        </button>
+        <Link to={`/courses/${courseid}`}>
+          <button className="course-cancel">Cancel</button>
+        </Link>
       </div>
     </div>
   );
