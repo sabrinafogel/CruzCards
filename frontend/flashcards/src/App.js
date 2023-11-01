@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import "./App.css";
 import CoursePage from "./pages/CoursePage";
 import NewChapter from "./pages/NewChapter";
+import EditSet from "./pages/EditSet";
 
 function App() {
   return (
@@ -27,6 +28,10 @@ function App() {
           <Route
             path="/courses/:courseid/:index/new-set"
             element={<NewSet />}
+          />
+          <Route
+            path="/courses/:courseid/:index/:setindex"
+            element={<EditSet />}
           />
         </Routes>
       </AuthContextProvider>

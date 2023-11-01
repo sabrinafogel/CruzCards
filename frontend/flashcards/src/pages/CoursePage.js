@@ -69,13 +69,13 @@ function CoursePage() {
 
         <div>
           <ul>
-            {chapters?.map((chapter, index) => (
+            {chapters?.map((chapter, chapterindex) => (
               <div>
-                <div className="chapters" key={index}>
+                <div className="chapters" key={chapterindex}>
                   <h1>
-                    Chapter {index + 1}: {chapter.name}
+                    Chapter {chapterindex + 1}: {chapter.name}
                   </h1>
-                  <Link to={`/courses/${courseid}/${index}/new-set`}>
+                  <Link to={`/courses/${courseid}/${chapterindex}/new-set`}>
                     <button className="addSet">
                       <FaPlus />
                       Add Set
@@ -84,16 +84,20 @@ function CoursePage() {
                 </div>
                 {console.log(chapter.sets)}
                 <ul className="sets-scrollable-container">
-                  {chapter.sets?.map((set, index) => (
-                    <li
-                      key={index}
-                      className={`item ${
-                        breakAll(set.name) ? "break-all" : ""
-                      } color-${index % 4}`}
+                  {chapter.sets?.map((set, setindex) => (
+                    <Link
+                      key={setindex}
+                      to={`/courses/${courseid}/${chapterindex}/${setindex}`}
                     >
-                      <h1 className="Course-name">{set.name}</h1>
-                      <p className="Course-description">{set.description}</p>
-                    </li>
+                      <li
+                        className={`item ${
+                          breakAll(set.name) ? "break-all" : ""
+                        } color-${setindex % 4}`}
+                      >
+                        <h1 className="Course-name">{set.name}</h1>
+                        <p className="Course-description">{set.description}</p>
+                      </li>
+                    </Link>
                   ))}
                 </ul>
               </div>

@@ -1,0 +1,50 @@
+.edit-set-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: fit-content;
+  color: #000000;
+  text-align: start;
+  margin-top: 3rem;
+  margin-left: 4.5rem;
+}
+
+.set-name-input {
+  border-radius: 2rem;
+  padding: 15px;
+  width: 50vw;
+}
+
+.description-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.set-edit-button:hover {
+  color: rgb(115, 115, 252);
+}
+
+.set-description-input {
+  width: 50vw;
+  height: 8rem;
+  font-size: large;
+  margin-left: 0.2rem;
+  margin-top: 10px;
+  border-radius: 1rem;
+  resize: none;
+  padding: 15px;
+}
+
+.set-new-card-button-container {
+  display: flex;
+  padding-top: 10px;
+  justify-self: start;
+  background-color: #f3f3f3;
+  border-radius: 2rem;
+  height: 17vw;
+  width: 100%;
+  transition: 150ms;
+  place-items: center;
+  justify-content: center;
+  color: blue;
+  margin-top: 2rem;
+}
