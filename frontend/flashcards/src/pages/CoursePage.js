@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./CoursePage.css";
 import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 
 function CoursePage() {
   const { courseid } = useParams();
@@ -36,7 +35,6 @@ function CoursePage() {
   const breakAll = (str) => {
     const words = str.split(" ");
 
-    // Check each word
     for (let i = 0; i < words.length; i++) {
       if (words[i].length > 12) {
         return true;
@@ -70,17 +68,20 @@ function CoursePage() {
           <ul>
             {chapters?.map((chapter, chapterindex) => (
               <div>
-                <div className="chapters" key={chapterindex}>
-                  <h1>
-                    Chapter {chapterindex + 1}: {chapter.name}
-                  </h1>
-                  <Link to={`/courses/${courseid}/${chapterindex}/new-set`}>
-                    <button className="addSet">
-                      <FaPlus />
-                      Add Set
-                    </button>
-                  </Link>
-                </div>
+                <Link to={`/courses/${courseid}/chapters/${index}`}>
+                  <button className="chapters">
+                    <h1>
+                      Chapter {index + 1}: {chapter.name}
+                    </h1>
+                    <Link to={`/courses/${courseid}/${index}/new-set`}>
+                      <button className="addSet">
+                        <FaPlus />
+                        Add Set
+                      </button>
+                    </Link>
+                  </button>
+                </Link>
+                {console.log(chapter.sets)}
                 <ul className="sets-scrollable-container">
                   {chapter.sets?.map((set, setindex) => (
                     <Link
