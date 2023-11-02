@@ -68,12 +68,12 @@ function CoursePage() {
           <ul>
             {chapters?.map((chapter, chapterindex) => (
               <div>
-                <Link to={`/courses/${courseid}/chapters/${index}`}>
+                <Link className = "chapter-button" to={`/courses/${courseid}/chapters/${chapterindex}`}>
                   <button className="chapters">
                     <h1>
-                      Chapter {index + 1}: {chapter.name}
+                      Chapter {chapterindex + 1}: {chapter.name}
                     </h1>
-                    <Link to={`/courses/${courseid}/${index}/new-set`}>
+                    <Link to={`/courses/${courseid}/${chapterindex}/new-set`}>
                       <button className="addSet">
                         <FaPlus />
                         Add Set

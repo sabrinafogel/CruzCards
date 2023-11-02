@@ -84,6 +84,7 @@
   justify-content: space-between;
   place-items: center;
   gap: 1rem;
+  height: 50px
 }
 
 .addSet {
@@ -101,4 +102,10 @@
   overflow-x: auto;
   width: 40vw;
   position: relative;
+}
+
+.chapter-button {
+  display: block;
+  width: fit-content;
+  margin-bottom: 10px;
 }
