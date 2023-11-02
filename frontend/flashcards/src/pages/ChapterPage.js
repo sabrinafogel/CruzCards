@@ -73,9 +73,14 @@ function ChapterPage() {
             <div key={index}>
               {console.log(chapter.sets)}
               {chapter.sets?.map((set, setIndex) => (
-                <h1 key={setIndex}>
-                  <ul className="sets">{set.name}</ul>
-                </h1>
+                <Link
+                  key={setIndex}
+                  to={`/courses/${courseid}/${chapterIndex}/${setIndex}`}
+                >
+                  <h1 key={setIndex}>
+                    <ul className="sets">{set.name}</ul>
+                  </h1>
+                </Link>
               ))}
             </div>
           ))}
