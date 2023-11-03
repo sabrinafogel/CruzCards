@@ -75,7 +75,7 @@ function CoursePage() {
                   <h1>
                     Chapter {index + 1}: {chapter.name}
                   </h1>
-                  <Link to={`/courses/${courseid}/${index}/new-set`}>
+                  <Link to={`./${index}/new-set`}>
                     <button className="addSet">
                       <FaPlus />
                       Add Set

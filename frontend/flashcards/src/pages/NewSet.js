@@ -173,7 +173,7 @@ function NewSet() {
           <button className="course-save" onClick={handleSubmit}>
             Save
           </button>
-          <Link to="/">
+          <Link to="../">
             <button className="course-cancel">Cancel</button>
           </Link>
         </div>
