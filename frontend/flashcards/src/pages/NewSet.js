@@ -1,12 +1,10 @@
-import "./NewSet.css";
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-// import { db } from "../components/firebase_config";
-// import { collection, addDoc } from "firebase/firestore";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import { AiFillDelete, AiFillPlusCircle } from "react-icons/ai";
 import Navbar from "../components/Navbar";
 import { UserAuth } from "../components/AuthContext";
+import "./NewSet.css";
 
 function NewSet() {
   const [name, setName] = useState("");
@@ -65,11 +63,12 @@ function NewSet() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      navigate(`/courses/${courseid}`);
+      navigate(`/courses/${courseid}/chapters/${index}`);
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
   const showaddNewCard = () => {
     setShowModal(!showModal);
   };
@@ -90,63 +89,67 @@ function NewSet() {
   return (
     <div className="course-page-wrapper">
       <Navbar />
-      <div className="NewCourse">
-        <h1 className="new-set-header">Create a New Set</h1>
-        <input
-          className="course-name-input"
-          placeholder="Enter name..."
-          value={name}
-          onChange={handleInputChange}
-          required
-        />
-        <p className="char-count">{name.length}/50</p>
-        {noName ? (
-          <div className="noName-error">
-            <BsFillExclamationSquareFill />
-            <p className="noName-text">Please enter a name...</p>
-          </div>
-        ) : null}
-        <textarea
-          value={description}
-          onChange={handleDescriptionChange}
-          className="course-description"
-          placeholder="Enter description..."
-        ></textarea>
-        <p className="char-count">{description.length}/250</p>
-        <div className="new-card-button-container">
-          <button className="new-card-button" onClick={showaddNewCard}>
-            <AiFillPlusCircle className="plus-button" />
-          </button>
-          {showModal && (
-            <div className="modal-blur">
-              <div className="modal-container">
-                <div className="modal">
-                  <textarea
-                    value={cardFront}
-                    onChange={(e) => setCardFront(e.target.value)}
-                    className="card-description"
-                    placeholder="Front of card"
-                  />
-                  <textarea
-                    value={cardBack}
-                    onChange={(e) => setCardBack(e.target.value)}
-                    className="card-description"
-                    placeholder="Back of card"
-                  />
-                </div>
-                <div className="modal-button-wrap">
-                  <button className="course-save" onClick={addNewCard}>
-                    Save
-                  </button>
-                  <button className="course-cancel" onClick={showaddNewCard}>
-                    Cancel
-                  </button>
+      <div className="new-set">
+        <div className="set-input-containers">
+          <h1 className="new-set-header">Create a New Set</h1>
+          <input
+            className="course-name-input"
+            placeholder="Enter name..."
+            value={name}
+            onChange={handleInputChange}
+            required
+          />
+          <p className="char-count">{name.length}/50</p>
+          {noName ? (
+            <div className="noName-error">
+              <BsFillExclamationSquareFill />
+              <p className="noName-text">Please enter a name...</p>
+            </div>
+          ) : null}
+          <textarea
+            value={description}
+            onChange={handleDescriptionChange}
+            className="course-description"
+            placeholder="Enter description..."
+          ></textarea>
+          <p className="char-count">{description.length}/250</p>
+        </div>
+        <div className="new-card-wrapper">
+          <div className="new-card-button-container">
+            <button className="new-card-button" onClick={showaddNewCard}>
+              <AiFillPlusCircle className="plus-button" />
+            </button>
+            {showModal && (
+              <div className="modal-blur">
+                <div className="modal-container">
+                  <div className="modal">
+                    <textarea
+                      value={cardFront}
+                      onChange={(e) => setCardFront(e.target.value)}
+                      className="card-description"
+                      placeholder="Front of card"
+                    />
+                    <textarea
+                      value={cardBack}
+                      onChange={(e) => setCardBack(e.target.value)}
+                      className="card-description"
+                      placeholder="Back of card"
+                    />
+                  </div>
+                  <div className="modal-button-wrap">
+                    <button className="course-save" onClick={addNewCard}>
+                      Save
+                    </button>
+                    <button className="course-cancel" onClick={showaddNewCard}>
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-        <div className="">
+        <div className="card-wrapper">
           <ul>
             {cards.map((card, index) => {
               return (
@@ -173,7 +176,7 @@ function NewSet() {
           <button className="course-save" onClick={handleSubmit}>
             Save
           </button>
-          <Link to="../">
+          <Link to={`/courses/${courseid}/chapters/${index}`}>
             <button className="course-cancel">Cancel</button>
           </Link>
         </div>

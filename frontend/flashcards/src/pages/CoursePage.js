@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./CoursePage.css";
 import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 
 function CoursePage() {
   const { courseid } = useParams();
@@ -11,7 +10,6 @@ function CoursePage() {
 
   useEffect(() => {
     const fetchCourseInfo = async () => {
-      console.log(fetch);
       try {
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
@@ -37,7 +35,6 @@ function CoursePage() {
   const breakAll = (str) => {
     const words = str.split(" ");
 
-    // Check each word
     for (let i = 0; i < words.length; i++) {
       if (words[i].length > 12) {
         return true;
@@ -69,33 +66,18 @@ function CoursePage() {
 
         <div>
           <ul>
-            {chapters?.map((chapter, index) => (
+            {chapters?.map((chapter, chapterindex) => (
               <div>
-                <div className="chapters" key={index}>
-                  <h1>
-                    Chapter {index + 1}: {chapter.name}
-                  </h1>
-                  <Link to={`./${index}/new-set`}>
-                    <button className="addSet">
-                      <FaPlus />
-                      Add Set
-                    </button>
-                  </Link>
-                </div>
-                {console.log(chapter.sets)}
-                <ul className="sets-scrollable-container">
-                  {chapter.sets?.map((set, index) => (
-                    <li
-                      key={index}
-                      className={`item ${
-                        breakAll(set.name) ? "break-all" : ""
-                      } color-${index % 4}`}
-                    >
-                      <h1 className="Course-name">{set.name}</h1>
-                      <p className="Course-description">{set.description}</p>
-                    </li>
-                  ))}
-                </ul>
+                <Link
+                  className="chapter-button"
+                  to={`/courses/${courseid}/chapters/${chapterindex}`}
+                >
+                  <button className="chapters">
+                    <h1>
+                      Chapter {chapterindex + 1}: {chapter.name}
+                    </h1>
+                  </button>
+                </Link>
               </div>
             ))}
           </ul>

@@ -1,0 +1,133 @@
+.edit-set-heading {
+  font-size: 1rem;
+  color: #000000;
+  text-align: start;
+  margin-top: 3rem;
+}
+
+.edit-set-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: fit-content;
+  color: #000000;
+  text-align: start;
+}
+
+.set-input-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.set-name-input {
+  border-radius: 1.5rem;
+  padding: 15px;
+  width: 50vw;
+}
+
+.description-container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.set-description-input {
+  width: 50vw;
+  height: 8rem;
+  font-size: large;
+  margin-left: 0.2rem;
+  margin-top: 10px;
+  border-radius: 1rem;
+  resize: none;
+  padding: 15px;
+}
+
+.new-card-wrapper {
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.set-new-card-button-container {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  justify-self: start;
+  background-color: #f3f3f3;
+  border-radius: 2rem;
+  height: 15vw;
+  width: 40vw;
+  transition: 150ms;
+  place-items: center;
+  justify-content: center;
+  color: rgb(0, 106, 172, 0.5);
+  margin-top: 2rem;
+}
+
+.set-edit-new-card-button {
+  color: rgb(0, 106, 172, 0.8);
+}
+
+.button-wrapper {
+  display: flex;
+  position: absolute;
+  top: 7.5rem;
+  right: 1vw;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.card-wrapper {
+  display: flex;
+  justify-content: center;
+  place-items: center;
+  text-align: center;
+}
+
+.edit-button {
+  position: absolute;
+  top: 25%;
+  left: 4px;
+  font-size: 1.5vw;
+  color: #006aac;
+}
+
+.edit-button:hover {
+  color: rgb(115, 115, 252);
+}
+
+.card-delete-button {
+  position: absolute;
+  top: 10%;
+  left: 10px;
+  font-size: 2vw;
+  color: #b93c3c;
+}
+
+.card-delete-button:hover {
+  color: #cf5a5a;
+}
+
+.edit-card-save {
+  padding: 0.25rem;
+  justify-self: center;
+  place-self: center;
+  border-radius: 0.5rem;
+  width: 5rem;
+  background-color: #329e56;
+  margin-top: 10px;
+  color: white;
+}
+
+.edit-card-save:hover {
+  background-color: #48d386;
+}
+
+.edit-modal-button-wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5vw;
+  place-items: center;
+  justify-content: center;
+}
