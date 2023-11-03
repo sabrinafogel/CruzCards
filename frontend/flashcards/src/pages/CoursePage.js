@@ -68,37 +68,16 @@ function CoursePage() {
           <ul>
             {chapters?.map((chapter, chapterindex) => (
               <div>
-                <Link className = "chapter-button" to={`/courses/${courseid}/chapters/${chapterindex}`}>
+                <Link
+                  className="chapter-button"
+                  to={`/courses/${courseid}/chapters/${chapterindex}`}
+                >
                   <button className="chapters">
                     <h1>
                       Chapter {chapterindex + 1}: {chapter.name}
                     </h1>
-                    <Link to={`/courses/${courseid}/${chapterindex}/new-set`}>
-                      <button className="addSet">
-                        <FaPlus />
-                        Add Set
-                      </button>
-                    </Link>
                   </button>
                 </Link>
-                {console.log(chapter.sets)}
-                <ul className="sets-scrollable-container">
-                  {chapter.sets?.map((set, setindex) => (
-                    <Link
-                      key={setindex}
-                      to={`/courses/${courseid}/${chapterindex}/${setindex}`}
-                    >
-                      <li
-                        className={`item ${
-                          breakAll(set.name) ? "break-all" : ""
-                        } color-${setindex % 4}`}
-                      >
-                        <h1 className="Course-name">{set.name}</h1>
-                        <p className="Course-description">{set.description}</p>
-                      </li>
-                    </Link>
-                  ))}
-                </ul>
               </div>
             ))}
           </ul>

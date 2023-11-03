@@ -122,7 +122,7 @@ function EditSet() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      navigate(`/courses/${courseid}`);
+      navigate(`/courses/${courseid}/chapters/${index}`);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -238,7 +238,7 @@ function EditSet() {
         <button className="course-save" onClick={saveSet}>
           Save
         </button>
-        <Link to={`/courses/${courseid}`}>
+        <Link to={`/courses/${courseid}/chapters/${index}`}>
           <button className="course-cancel">Cancel</button>
         </Link>
       </div>

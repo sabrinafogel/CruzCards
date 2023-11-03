@@ -156,5 +156,32 @@ app.post("/editSet", async (req, res) => {
   }
 });
 
+// This deletes a specified set from the specified chapter by reading and returning a new array without the element to the db
+app.post("/deleteSet", async (req, res) => {
+  const { id, index, setindex } = req.body;
+  console.log("/deleteSet fetch");
+  if (!id) {
+    return res.status(400).send({ error: "Please provide a document ID." });
+  }
+
+  try {
+    // Reads in data from the db
+    const courseRef = db.collection("courses").doc(id);
+    const doc = await courseRef.get();
+    const courseData = doc.data();
+    // Removes the set specified from the chapters set array
+    courseData.chapters[index].sets.splice(setindex, 1);
+    // Updates the course changes in the db
+    await courseRef.update(courseData);
+    // Return an ok status
+    return res.status(200).send({ message: "Course updated successfully." });
+  } catch (error) {
+    // Display error in console
+    console.error("Error updating document: ", error);
+    // Return error status
+    return res.status(500).send({ error: "Failed to update course." });
+  }
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server is running on port ${port}`));

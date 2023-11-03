@@ -63,7 +63,7 @@ function NewSet() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      navigate(`/courses/${courseid}`);
+      navigate(`/courses/${courseid}/chapters/${index}`);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -176,7 +176,7 @@ function NewSet() {
           <button className="course-save" onClick={handleSubmit}>
             Save
           </button>
-          <Link to={`/courses/${courseid}`}>
+          <Link to={`/courses/${courseid}/chapters/${index}`}>
             <button className="course-cancel">Cancel</button>
           </Link>
         </div>
