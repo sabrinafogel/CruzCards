@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { MdDeleteForever } from "react-icons/md";
+import { AiFillDelete } from "react-icons/ai";
 import { UserAuth } from "../components/AuthContext";
 
 function ChapterPage() {
@@ -172,7 +172,7 @@ function ChapterPage() {
                 className="delete-set-button"
                 onClick={() => showDeletePopup(setIndex)}
               >
-                <MdDeleteForever />
+                <AiFillDelete className="delete-icon" />
               </button>
             </div>
           ))}

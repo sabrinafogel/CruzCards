@@ -135,7 +135,6 @@
 
 .sets {
   padding: 1rem;
-  margin-bottom: 10px;
   border-radius: 1rem;
   font-weight: 700;
   color: white;
@@ -148,7 +147,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  place-items: center;
   gap: 1rem;
   border: transparent;
   position: relative;
@@ -180,12 +178,11 @@
 }
 
 .delete-set-button {
-  display: flex;
-  flex-direction: row;
-  place-items: center;
-  gap: 4px;
+  height: fit-content;
   font-size: x-large;
   color: red;
+  margin-top: 20px;
+  place-self: center;
 }
 
 .set-wrapper {

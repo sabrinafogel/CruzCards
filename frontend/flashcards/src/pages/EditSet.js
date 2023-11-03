@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "./EditSet.css";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
-import { AiFillPlusCircle, AiFillDelete } from "react-icons/ai";
+import { AiFillPlusCircle, AiFillDelete, AiFillEdit } from "react-icons/ai";
 
 function EditSet() {
   // For general use in fetching the course
@@ -14,8 +14,10 @@ function EditSet() {
   const [inputDisabled, setInputDisabled] = useState(false);
   // Initial value for the name box
   const [inputvalue, setinputvalue] = useState("");
-  // The popup for adding the card
+  // The popup for adding/editing the card
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editSetIndex, setEditSetIndex] = useState();
   const [cardFront, setCardFront] = useState("");
   const [cardBack, setCardBack] = useState("");
   // Initial value for the description
@@ -65,6 +67,38 @@ function EditSet() {
     setCardBack("");
     setShowModal(false);
   };
+
+  // This shows the edit popup to the user
+  const showEditCard = (index) => {
+    setEditSetIndex(index);
+    setCardFront(cards[index].front);
+    setCardBack(cards[index].back);
+    setShowEditModal(!showEditModal);
+  };
+
+  // This hides the edit popup and resets the value of the inputs
+  const cancelEditCard = (index) => {
+    setEditSetIndex(undefined);
+    setCardFront("");
+    setCardBack("");
+    setShowEditModal(!showEditModal);
+  };
+
+  // This changes the card locally and will only be saved with the save set button
+  const saveCard = () => {
+    const edittedCards = [...cards];
+    edittedCards[editSetIndex] = {
+      front: cardFront,
+      back: cardBack,
+      id: Date.now(),
+    };
+    console.log(edittedCards);
+    setCardFront("");
+    setCardBack("");
+    setEditSetIndex(undefined);
+    setCards(edittedCards);
+    setShowEditModal(false);
+  };
   // This will delete the card specified from the cards arr
   const deleteCard = (index) => {
     const newCards = cards.filter((card, i) => i !== index);
@@ -73,7 +107,6 @@ function EditSet() {
   // This fetches the course from the db
   useEffect(() => {
     const fetchCourseInfo = async () => {
-      console.log(fetch);
       try {
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
@@ -204,6 +237,37 @@ function EditSet() {
               </div>
             </div>
           )}
+          {/* This is the edit popup which houses inputs and save and cancel buttons */}
+          {showEditModal && (
+            <div className="modal-blur">
+              <div className="modal-container">
+                <div className="modal">
+                  {/* front and back text-editors */}
+                  <textarea
+                    value={cardFront}
+                    onChange={(e) => setCardFront(e.target.value)}
+                    className="card-description"
+                    placeholder="Front of card"
+                  />
+                  <textarea
+                    value={cardBack}
+                    onChange={(e) => setCardBack(e.target.value)}
+                    className="card-description"
+                    placeholder="Back of card"
+                  />
+                </div>
+                {/* Save and Cancel buttons */}
+                <div className="edit-modal-button-wrap">
+                  <button className="edit-card-save" onClick={saveCard}>
+                    Save Card
+                  </button>
+                  <button className="course-cancel" onClick={cancelEditCard}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       {/* The grid for the cards present in the set already */}
@@ -223,10 +287,17 @@ function EditSet() {
                 </div>
                 {/* This will render the delete card button on top of the card */}
                 <button
-                  className="delete-button"
+                  className="card-delete-button"
                   onClick={() => deleteCard(index)}
                 >
                   <AiFillDelete />
+                </button>
+
+                <button
+                  className="edit-button"
+                  onClick={() => showEditCard(index)}
+                >
+                  <AiFillEdit />
                 </button>
               </div>
             );
