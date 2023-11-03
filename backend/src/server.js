@@ -38,7 +38,7 @@ app.post("/newcourse", async (req, res) => {
 
 app.get("/mycourses", async (req, res) => {
   try {
-    console.log("fetch");
+    console.log("/mycourses fetch");
     const email = req.query.email;
     const snapshot = await db
       .collection("courses")
@@ -57,7 +57,7 @@ app.get("/mycourses", async (req, res) => {
 
 app.get("/courses", async (req, res) => {
   try {
-    console.log("fetch");
+    console.log("/courses fetch");
     const snapshot = await db.collection("courses").get();
     const courses = snapshot.docs.map((doc) => ({
       id: doc.id,
@@ -74,7 +74,7 @@ app.get("/courseinfo", async (req, res) => {
   try {
     const ref = db.collection("courses").doc(req.query.courseid);
     const doc = await ref.get();
-    console.log("fetch");
+    console.log("/courseinfo fetch");
     //console.log(doc.data().chapters[1].name);
     return res
       .status(200)
@@ -130,6 +130,55 @@ app.post("/newSet", async (req, res) => {
     return res.status(200).send({ message: "Course updated successfully." });
   } catch (error) {
     console.error("Error updating document: ", error);
+    return res.status(500).send({ error: "Failed to update course." });
+  }
+});
+
+// This handles the saving of an edited set by reading and overwriting the set that was changed
+app.post("/editSet", async (req, res) => {
+  const { id, index, setindex, name, description, cards } = req.body;
+  const newSet = { name: name, description: description, cards: cards };
+  console.log("/editSet fetch");
+  if (!id) {
+    return res.status(400).send({ error: "Please provide a document ID." });
+  }
+
+  try {
+    const courseRef = db.collection("courses").doc(id);
+    const doc = await courseRef.get();
+    const courseData = doc.data();
+    courseData.chapters[index].sets[setindex] = newSet;
+    await courseRef.update(courseData);
+    return res.status(200).send({ message: "Course updated successfully." });
+  } catch (error) {
+    console.error("Error updating document: ", error);
+    return res.status(500).send({ error: "Failed to update course." });
+  }
+});
+
+// This deletes a specified set from the specified chapter by reading and returning a new array without the element to the db
+app.post("/deleteSet", async (req, res) => {
+  const { id, index, setindex } = req.body;
+  console.log("/deleteSet fetch");
+  if (!id) {
+    return res.status(400).send({ error: "Please provide a document ID." });
+  }
+
+  try {
+    // Reads in data from the db
+    const courseRef = db.collection("courses").doc(id);
+    const doc = await courseRef.get();
+    const courseData = doc.data();
+    // Removes the set specified from the chapters set array
+    courseData.chapters[index].sets.splice(setindex, 1);
+    // Updates the course changes in the db
+    await courseRef.update(courseData);
+    // Return an ok status
+    return res.status(200).send({ message: "Course updated successfully." });
+  } catch (error) {
+    // Display error in console
+    console.error("Error updating document: ", error);
+    // Return error status
     return res.status(500).send({ error: "Failed to update course." });
   }
 });

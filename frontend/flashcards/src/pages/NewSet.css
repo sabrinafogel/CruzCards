@@ -1,4 +1,5 @@
-.NewCourse {
+.new-set {
+  margin: 0;
   display: flex;
   flex-direction: column;
 }
@@ -9,6 +10,11 @@
   min-width: fit-content;
   color: #000000;
   text-align: start;
+}
+
+.set-input-containers {
+  margin-top: 3rem;
+  margin-left: 5rem;
 }
 
 .course-name-input {
@@ -102,16 +108,29 @@
 
 .new-card-button-container {
   display: flex;
+  flex-direction: row;
   padding-top: 10px;
   justify-self: start;
   background-color: #f3f3f3;
   border-radius: 2rem;
-  height: 17vw;
-  width: 100%;
+  height: 15vw;
+  width: 40vw;
   transition: 150ms;
   place-items: center;
   justify-content: center;
-  color: blue;
+  color: rgb(0, 106, 172, 0.5);
+  margin-top: 2rem;
+}
+
+.new-card-button {
+  color: #006aac;
+}
+
+.new-card-wrapper {
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  border-top: solid 2px rgb(0, 0, 0, 0.1);
 }
 
 .plus-button {
@@ -132,12 +151,20 @@
   background-color: #f3f3f3;
   border-radius: 2rem;
   height: 25vw;
-  width: 50vw;
+  width: 40vw;
   transition: 150ms;
   place-items: center;
   justify-content: center;
-  color: blue;
+  color: #006aac;
   font-size: 2vw;
+  padding: 5px;
+}
+
+.card-wrapper {
+  display: flex;
+  justify-content: center;
+  place-items: center;
+  text-align: center;
 }
 
 .modal-blur {
