@@ -192,7 +192,7 @@ app.post("/deleteSet", async (req, res) => {
   const { id, index, setindex } = req.body;
   let courseindex = dummydata.findIndex((course) => course.id === Number(id));
   console.log("/deleteSet fetch");
-  console.log(set);
+  console.log(index);
 
   dummydata[courseindex].chapters[index].sets.splice(setindex, 1);
   let json = JSON.stringify(dummydata);
