@@ -3,6 +3,7 @@ import "./CoursePage.css";
 import Navbar from "../components/Navbar";
 import { useParams, Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
+import { AiFillEdit } from "react-icons/ai";
 
 function CoursePage() {
   const { courseid } = useParams();
@@ -32,18 +33,6 @@ function CoursePage() {
 
   const chapters = course_info.chapters;
 
-  const breakAll = (str) => {
-    const words = str.split(" ");
-
-    for (let i = 0; i < words.length; i++) {
-      if (words[i].length > 12) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-
   return (
     <div>
       <Navbar />
@@ -67,7 +56,7 @@ function CoursePage() {
         <div>
           <ul>
             {chapters?.map((chapter, chapterindex) => (
-              <div>
+              <div className="chapter-container">
                 <Link
                   className="chapter-button"
                   to={`/courses/${courseid}/chapters/${chapterindex}`}
@@ -77,6 +66,11 @@ function CoursePage() {
                       Chapter {chapterindex + 1}: {chapter.name}
                     </h1>
                   </button>
+                </Link>
+                <Link
+                  to={`/courses/${courseid}/chapters/${chapterindex}/chapter-edit`}
+                >
+                  <AiFillEdit className="course-edit-icon" />
                 </Link>
               </div>
             ))}
