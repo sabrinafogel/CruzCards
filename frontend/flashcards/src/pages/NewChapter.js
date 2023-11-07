@@ -15,8 +15,6 @@ function NewChapter() {
   const [inputvalues, setInputValues] = useState({
     name: "",
     description: "",
-    course_tags: "",
-    chapter_tags: "",
   });
 
   const handleInputChange = (e) => {
@@ -25,9 +23,7 @@ function NewChapter() {
       e.target.name === "name" && value.length <= nameCharlimit;
     const overDescLimit =
       e.target.name === "description" && value.length <= descCharlimit;
-    const isTag =
-      e.target.name === "course_tags" || e.target.name === "chapter_tags";
-    if (overNameLimit || overDescLimit || isTag) {
+    if (overNameLimit || overDescLimit) {
       setInputValues({
         ...inputvalues,
         [e.target.name]: value,
@@ -52,8 +48,6 @@ function NewChapter() {
           courseid: courseid,
           name: inputvalues.name,
           description: inputvalues.description,
-          course_tags: inputvalues.course_tags,
-          chapter_tags: inputvalues.chapter_tags,
         }),
       });
 
@@ -79,23 +73,6 @@ function NewChapter() {
             name="name"
             placeholder="Enter chapter name..."
             value={inputvalues.name}
-            onChange={handleInputChange}
-            required
-          />
-
-          <input
-            className="course-tag-name-input"
-            name="course_tags"
-            placeholder="Enter course tag..."
-            value={inputvalues.course_tags}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            className="chapter-tag-name-input"
-            name="chapter_tags"
-            placeholder="Enter chapter tag..."
-            value={inputvalues.chapter_tags}
             onChange={handleInputChange}
             required
           />

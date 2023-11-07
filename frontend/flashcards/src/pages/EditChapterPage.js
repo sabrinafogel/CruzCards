@@ -14,8 +14,6 @@ function EditChapterPage() {
   const [inputvalues, setInputValues] = useState({
     name: "",
     description: "",
-    course_tags: "",
-    chapter_tags: "",
   });
 
   const handleInputChange = (e) => {
@@ -49,8 +47,6 @@ function EditChapterPage() {
         setInputValues({
           name: course_info.chapters[chapterindex].name,
           description: course_info.chapters[chapterindex].description || "",
-          course_tags: course_info.chapters[chapterindex].course_tags,
-          chapter_tags: course_info.chapters[chapterindex].chapter_tags,
         });
       } catch (error) {
         console.error("Error:", error);
@@ -77,8 +73,6 @@ function EditChapterPage() {
           index: chapterindex,
           name: inputvalues.name,
           description: inputvalues.description,
-          course_tags: inputvalues.course_tags,
-          chapter_tags: inputvalues.chapter_tags,
         }),
       });
 
@@ -104,23 +98,6 @@ function EditChapterPage() {
               className="chapter-name-input"
               placeholder="Enter chapter name..."
               value={inputvalues.name}
-              onChange={handleInputChange}
-              required
-            />
-
-            <input
-              name="course_tags"
-              className="course-tag-name-input"
-              placeholder="Enter course tag..."
-              value={inputvalues.course_tags}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              name="chapter_tags"
-              className="chapter-tag-name-input"
-              placeholder="Enter chapter tag..."
-              value={inputvalues.chapter_tags}
               onChange={handleInputChange}
               required
             />

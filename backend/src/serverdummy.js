@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/newcourse", async (req, res) => {
-  const { name, description, email } = req.body;
+  const { name, description, tags, email, editors } = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
@@ -40,9 +40,9 @@ app.post("/newcourse", async (req, res) => {
           name: name,
           id: arr.length + 1,
           description: description,
-          tag: [],
+          tags: tags,
           owner: email,
-          editors: [],
+          editors: editors,
           last_modified: currentDate.getDate(),
           chapters: chapters,
         });
@@ -111,7 +111,7 @@ app.get("/courseinfo", async (req, res) => {
 });
 
 app.post("/newchapter", async (req, res) => {
-  const { courseid, name, description, course_tags, chapter_tags } = req.body;
+  const { courseid, name, description } = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
@@ -122,8 +122,6 @@ app.post("/newchapter", async (req, res) => {
   const new_chapter = {
     name: name,
     description: description,
-    course_tags: course_tags,
-    chapter_tags: chapter_tags,
     sets: [],
   };
   doc.chapters.push(new_chapter);

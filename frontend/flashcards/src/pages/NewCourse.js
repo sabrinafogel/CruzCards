@@ -6,10 +6,13 @@ import { BsFillExclamationSquareFill } from "react-icons/bs";
 import Navbar from "../components/Navbar";
 import "./NewCourse.css";
 import { UserAuth } from "../components/AuthContext";
+import { FaTimes } from "react-icons/fa";
 
 function NewCourse() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [tags, setTags] = useState([]);
+  const [editors, setEditors] = useState([]);
   const [textAreaDisabled, setTextAreaDisabled] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [noName, setNoName] = useState(false);
@@ -34,6 +37,40 @@ function NewCourse() {
     }
   };
 
+  const handleTagsChange = (e) => {
+    if (e.key !== "Enter") {
+      return;
+    }
+    const new_tag = e.target.value;
+    if (!new_tag.trim()) {
+      return;
+    }
+    setTags([...tags, new_tag]);
+
+    e.target.value = "";
+  };
+
+  const handleEditorsChange = (e) => {
+    if (e.key !== "Enter") {
+      return;
+    }
+    const new_editor = e.target.value;
+    if (!new_editor.trim()) {
+      return;
+    }
+    setEditors([...editors, new_editor]);
+
+    e.target.value = "";
+  };
+
+  const removeTag = (index) => {
+    setTags(tags.filter((el, i) => i !== index));
+  };
+
+  const removeEditor = (index) => {
+    setEditors(editors.filter((el, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -51,6 +88,8 @@ function NewCourse() {
         body: JSON.stringify({
           name: name,
           description: description,
+          tags: tags,
+          editors: editors,
           email: user.email,
         }),
       });
@@ -70,13 +109,15 @@ function NewCourse() {
       <Navbar />
       <div className="NewCourse">
         <h1 className="new-course-header">Create a New Course</h1>
-        <input
-          className="course-name-input"
-          placeholder="Enter name..."
-          value={name}
-          onChange={handleInputChange}
-          required
-        />
+        <div className="name-and-tags">
+          <input
+            className="course-name-input"
+            placeholder="Enter name..."
+            value={name}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
         <p className="char-count">{name.length}/50</p>
         {noName ? (
           <div className="noName-error">
@@ -84,6 +125,7 @@ function NewCourse() {
             <p className="noName-text">Please enter a name...</p>
           </div>
         ) : null}
+
         <textarea
           value={description}
           onChange={handleDescriptionChange}
@@ -99,6 +141,37 @@ function NewCourse() {
             <button className="course-cancel">Cancel</button>
           </Link>
         </div>
+      </div>
+      <div className="course-tag-name-input">
+        {tags.map((tag, index) => (
+          <div className="tag" key={index}>
+            <span className="name">{tag}</span>
+            <span className="delete-tag" onClick={() => removeTag(index)}>
+              <FaTimes className="delete-icon" />
+            </span>
+          </div>
+        ))}
+        <input
+          className="tag-input"
+          onKeyDown={handleTagsChange}
+          placeholder="Enter tag"
+        ></input>
+      </div>
+
+      <div className="course-tag-name-input">
+        {editors.map((editors, index) => (
+          <div className="tag" key={index}>
+            <span className="name">{editors}</span>
+            <span className="delete-tag" onClick={() => removeEditor(index)}>
+              <FaTimes className="delete-icon" />
+            </span>
+          </div>
+        ))}
+        <input
+          className="tag-input"
+          onKeyDown={handleEditorsChange}
+          placeholder="Add an Editor's Email"
+        ></input>
       </div>
     </div>
   );
