@@ -4,14 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import "./NewChapter.css";
-import { FaTimes } from "react-icons/fa";
 
 function NewChapter() {
   const { courseid } = useParams();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [tags, setTags] = useState([]);
   const [textAreaDisabled, setTextAreaDisabled] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [noName, setNoName] = useState(false);
@@ -35,23 +33,6 @@ function NewChapter() {
     }
   };
 
-  const handleTagsChange = (e) => {
-    if (e.key !== "Enter") {
-      return;
-    }
-    const new_tag = e.target.value;
-    if (!new_tag.trim()) {
-      return;
-    }
-    setTags([...tags, new_tag]);
-
-    e.target.value = "";
-  };
-
-  const removeTag = (index) => {
-    setTags(tags.filter((el, i) => i !== index));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,7 +50,6 @@ function NewChapter() {
           courseid: courseid,
           name: name,
           description: description,
-          tags: tags,
         }),
       });
 
