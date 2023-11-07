@@ -6,10 +6,11 @@ import { BsFillExclamationSquareFill } from "react-icons/bs";
 
 function EditChapterPage() {
   const { courseid, chapterindex } = useParams();
-  const [course_info, setCourseInfo] = useState([]);
   const [noName, setNoName] = useState(false);
-  const [chapterName, setChapterName] = useState("");
   const navigate = useNavigate();
+  const nameCharlimit = 50;
+  const descCharlimit = 250;
+
   const [inputvalues, setInputValues] = useState({
     name: "",
     description: "",
@@ -19,11 +20,16 @@ function EditChapterPage() {
 
   const handleInputChange = (e) => {
     const value = e.target.value;
-    console.log(value);
-    setInputValues({
-      ...inputvalues,
-      [e.target.name]: value,
-    });
+    const overNameLimit =
+      e.target.name === "name" && value.length <= nameCharlimit;
+    const overDescLimit =
+      e.target.name === "description" && value.length <= descCharlimit;
+    if (overNameLimit || overDescLimit) {
+      setInputValues({
+        ...inputvalues,
+        [e.target.name]: value,
+      });
+    }
   };
 
   useEffect(() => {
@@ -40,10 +46,9 @@ function EditChapterPage() {
         }
 
         const course_info = await response.json();
-        setCourseInfo(course_info);
         setInputValues({
           name: course_info.chapters[chapterindex].name,
-          description: course_info.chapters[chapterindex].description,
+          description: course_info.chapters[chapterindex].description || "",
           course_tags: course_info.chapters[chapterindex].course_tags,
           chapter_tags: course_info.chapters[chapterindex].chapter_tags,
         });
@@ -52,7 +57,7 @@ function EditChapterPage() {
       }
     };
     fetchCourseInfo();
-  }, [courseid]);
+  }, [courseid, chapterindex]);
 
   const saveChapter = async (e) => {
     e.preventDefault();
@@ -91,7 +96,7 @@ function EditChapterPage() {
       <Navbar />
       <div>
         <div className="NewChapter">
-          <div className="new-chapter-header">Create a New Chapter</div>
+          <div className="new-chapter-header">Edit a Chapter</div>
 
           <div className="name-and-tags">
             <input
@@ -120,7 +125,7 @@ function EditChapterPage() {
               required
             />
           </div>
-
+          <p>{inputvalues.name.length}/50</p>
           {noName ? (
             <div className="noName-error">
               <BsFillExclamationSquareFill />
@@ -135,6 +140,7 @@ function EditChapterPage() {
             value={inputvalues.description}
             onChange={handleInputChange}
           ></textarea>
+          <p>{inputvalues.description.length}/250</p>
 
           <div className="button-wrap">
             <button className="course-save" onClick={saveChapter}>

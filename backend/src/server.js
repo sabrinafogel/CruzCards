@@ -86,7 +86,7 @@ app.get("/courseinfo", async (req, res) => {
 });
 
 app.post("/newchapter", async (req, res) => {
-  const { courseid, name } = req.body;
+  const { courseid, name, description, course_tags, chapter_tags } = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
@@ -94,6 +94,9 @@ app.post("/newchapter", async (req, res) => {
 
   const new_chapter = {
     name: name,
+    description: description,
+    course_tags: course_tags,
+    chapter_tags: chapter_tags,
     sets: [],
   };
 
