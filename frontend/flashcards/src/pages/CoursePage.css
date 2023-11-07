@@ -84,7 +84,7 @@
   justify-content: space-between;
   place-items: center;
   gap: 1rem;
-  height: 50px
+  height: 50px;
 }
 
 .addSet {
@@ -108,4 +108,16 @@
   display: block;
   width: fit-content;
   margin-bottom: 10px;
+}
+
+.chapter-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  place-items: center;
+}
+
+.course-edit-icon {
+  scale: 200%;
+  color: #022d47;
 }

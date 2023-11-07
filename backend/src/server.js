@@ -186,5 +186,34 @@ app.post("/deleteSet", async (req, res) => {
   }
 });
 
+app.post("/editChapter", async (req, res) => {
+  const { id, index, name, description, course_tags, chapter_tags } = req.body;
+  console.log("/editChapter fetch");
+
+  if (!id) {
+    return res.status(400).send({ error: "Please provide a document ID." });
+  }
+
+  try {
+    const courseRef = db.collection("courses").doc(id);
+    const doc = await courseRef.get();
+    const courseData = doc.data();
+    const newChapter = {
+      name: name,
+      description: description,
+      course_tags: course_tags || "",
+      chapter_tags: chapter_tags || "",
+      sets: courseData.chapters[index].sets,
+    };
+
+    courseData.chapters[index] = newChapter;
+    await courseRef.update(courseData);
+    return res.status(200).send({ message: "Course updated successfully." });
+  } catch (error) {
+    console.error("Error updating document: ", error);
+    return res.status(500).send({ error: "Failed to update course." });
+  }
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
