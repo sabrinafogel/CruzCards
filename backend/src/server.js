@@ -187,7 +187,7 @@ app.post("/deleteSet", async (req, res) => {
 });
 
 app.post("/editChapter", async (req, res) => {
-  const { id, index, name, description, course_tags, chapter_tags } = req.body;
+  const { id, index, name, description } = req.body;
   console.log("/editChapter fetch");
 
   if (!id) {
@@ -201,8 +201,6 @@ app.post("/editChapter", async (req, res) => {
     const newChapter = {
       name: name,
       description: description,
-      course_tags: course_tags || "",
-      chapter_tags: chapter_tags || "",
       sets: courseData.chapters[index].sets,
     };
 
