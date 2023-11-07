@@ -8,18 +8,20 @@
 .new-course-header {
   font-size: 2rem;
   font-weight: 700;
-  min-width: fit-content;
+  width: 35vw;
   color: #000000;
   text-align: start;
 }
 
-.name-and-tags{
+.name-and-tags {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.course-tag-name-input{
+.course-tag-name-input {
+  margin-left: 4.5rem;
+  margin-top: 2rem;
   padding: 1rem;
   margin-right: 200px;
   border-width: 1px;
@@ -29,7 +31,8 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: .5em;
+  gap: 0.5em;
+  width: 80vw;
 }
 
 .course-name-input {
@@ -45,32 +48,37 @@
   margin-right: 5px;
 }
 
-.tag-input{
+.tag-input {
   flex-grow: 1;
   border: none;
   outline: none;
   background-color: #f9fafb;
 }
 
-.tag{
+.tag {
   background-color: rgb(195, 195, 195);
-  display: inline-block;
-  padding: .5em .75em;
+  display: flex;
+  flex-direction: row;
+  place-items: center;
   border-radius: 20px;
+  padding: 0.5rem;
 }
 
-.delete-tag{
-  background-color: rgb(178, 178, 178);
+.delete-tag {
+  background-color: rgb(197, 58, 58);
   color: white;
   height: 20px;
   width: 20px;
   display: inline-flex;
   justify-content: center;
-  align-items: center;
+  place-items: center;
   border-radius: 50%;
-  margin-left: .25em;
+  margin-left: 0.25rem;
   cursor: pointer;
-  
+}
+
+.delete-icon {
+  scale: 75%;
 }
 
 .course-description {

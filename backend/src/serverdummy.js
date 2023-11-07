@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/newcourse", async (req, res) => {
-  const { name, description, email } = req.body;
+  const { name, description, tags, email, editors } = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
@@ -40,9 +40,9 @@ app.post("/newcourse", async (req, res) => {
           name: name,
           id: arr.length + 1,
           description: description,
-          tag: [],
+          tags: tags,
           owner: email,
-          editors: [],
+          editors: editors,
           last_modified: currentDate.getDate(),
           chapters: chapters,
         });

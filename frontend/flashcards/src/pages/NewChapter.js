@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import "./NewChapter.css";
+import { FaTimes } from "react-icons/fa";
 
 function NewChapter() {
   const { courseid } = useParams();
@@ -35,17 +36,16 @@ function NewChapter() {
   };
 
   const handleTagsChange = (e) => {
-    if (e.key !== "Enter"){
+    if (e.key !== "Enter") {
       return;
     }
     const new_tag = e.target.value;
-    if (!new_tag.trim()){
+    if (!new_tag.trim()) {
       return;
     }
     setTags([...tags, new_tag]);
-    
-    e.target.value="";
-    
+
+    e.target.value = "";
   };
 
   const removeTag = (index) => {
@@ -69,7 +69,7 @@ function NewChapter() {
           courseid: courseid,
           name: name,
           description: description,
-          tags: tags
+          tags: tags,
         }),
       });
 
@@ -97,20 +97,6 @@ function NewChapter() {
             onChange={handleInputChange}
             required
           />
-
-          <div className="chapter-tag-input">
-            {tags.map((tag, index) => (
-              <div className="tag" key={index}>
-                <span className="name">{tag}</span>
-                <span className="delete-tag" onClick={() =>removeTag(index)}>&times;</span>
-              </div>
-            ))}
-            <input
-              className="tag-input"
-              onKeyDown={handleTagsChange}
-              placeholder="Enter tag">
-            </input>
-          </div>
         </div>
 
         {noName ? (
