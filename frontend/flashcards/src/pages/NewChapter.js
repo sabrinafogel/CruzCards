@@ -10,6 +10,7 @@ function NewChapter() {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [tags, setTags] = useState([]);
   const [textAreaDisabled, setTextAreaDisabled] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [noName, setNoName] = useState(false);
@@ -33,6 +34,24 @@ function NewChapter() {
     }
   };
 
+  const handleTagsChange = (e) => {
+    if (e.key !== "Enter"){
+      return;
+    }
+    const new_tag = e.target.value;
+    if (!new_tag.trim()){
+      return;
+    }
+    setTags([...tags, new_tag]);
+    
+    e.target.value="";
+    
+  };
+
+  const removeTag = (index) => {
+    setTags(tags.filter((el, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -49,6 +68,8 @@ function NewChapter() {
         body: JSON.stringify({
           courseid: courseid,
           name: name,
+          description: description,
+          tags: tags
         }),
       });
 
@@ -77,16 +98,19 @@ function NewChapter() {
             required
           />
 
-          <input
-            className="course-tag-name-input"
-            placeholder="Enter course tag..."
-            required
-          />
-          <input
-            className="chapter-tag-name-input"
-            placeholder="Enter chapter tag..."
-            required
-          />
+          <div className="chapter-tag-input">
+            {tags.map((tag, index) => (
+              <div className="tag" key={index}>
+                <span className="name">{tag}</span>
+                <span className="delete-tag" onClick={() =>removeTag(index)}>&times;</span>
+              </div>
+            ))}
+            <input
+              className="tag-input"
+              onKeyDown={handleTagsChange}
+              placeholder="Enter tag">
+            </input>
+          </div>
         </div>
 
         {noName ? (

@@ -17,6 +17,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    position: relative;
+    gap: 50px;
   }
   
   .chapter-name-input {
@@ -29,29 +31,47 @@
     color: #111827;
     background-color: #f9fafb;
     border-radius: 1rem;
-    margin-right: 5px;
   }
   
-  .course-tag-name-input {
+  .chapter-tag-input {
     padding: 1rem;
-    margin-top: 15px;
+    margin-right: 200px;
     border-width: 1px;
-    max-height: 3rem;
-    width: 15vw;
     color: #111827;
     background-color: #f9fafb;
     border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5em;
   }
-  
-  .chapter-tag-name-input {
-    padding: 1rem;
-    margin-top: 15px;
-    border-width: 1px;
-    max-height: 3rem;
-    width: 15vw;
-    color: #111827;
+
+  .tag-input{
+    flex-grow: 1;
+    border: none;
+    outline: none;
     background-color: #f9fafb;
-    border-radius: 1rem;
+  }
+
+  .tag{
+    background-color: rgb(195, 195, 195);
+    display: inline-block;
+    padding: .5em .75em;
+    border-radius: 20px;
+  }
+
+  .delete-tag{
+    background-color: rgb(178, 178, 178);
+    color: white;
+    height: 20px;
+    width: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-left: .25em;
+    cursor: pointer;
+    
   }
   
   .chapter-description {

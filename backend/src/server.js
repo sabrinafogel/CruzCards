@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/newcourse", async (req, res) => {
-  const { name, description, email } = req.body;
+  const { name, description, tags, email } = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
@@ -28,7 +28,7 @@ app.post("/newcourse", async (req, res) => {
   ];
 
   try {
-    await db.collection("courses").add({ name, description, email, chapters });
+    await db.collection("courses").add({ name, description, tags, email, chapters });
     return res.status(200).send({ message: "Course added successfully." });
   } catch (error) {
     console.error("Error adding document: ", error);
@@ -86,7 +86,7 @@ app.get("/courseinfo", async (req, res) => {
 });
 
 app.post("/newchapter", async (req, res) => {
-  const { courseid, name } = req.body;
+  const { courseid, name, description, tags } = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
@@ -94,6 +94,8 @@ app.post("/newchapter", async (req, res) => {
 
   const new_chapter = {
     name: name,
+    description: description,
+    tags: tags,
     sets: [],
   };
 
