@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ChapterPage.css";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaAngleLeft } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
 import { UserAuth } from "../components/AuthContext";
@@ -129,6 +129,12 @@ function ChapterPage() {
       )}
       {/* Wrap for the rest of the page */}
       <div className="ChapterPage">
+        <button className="back-nav">
+          <Link to={`/courses/${courseid}`}>
+            <FaAngleLeft />
+          </Link>
+        </button>
+
         <div className="heading-wrapper">
           {/* Heading which displays the chapter number and its name */}
           <h1 className="course-heading">

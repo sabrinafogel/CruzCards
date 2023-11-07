@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CoursePage.css";
 import Navbar from "../components/Navbar";
 import { useParams, Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaAngleLeft } from "react-icons/fa6";
 import { AiFillEdit } from "react-icons/ai";
 
 function CoursePage() {
@@ -37,6 +37,12 @@ function CoursePage() {
     <div>
       <Navbar />
       <div className="CourseHome">
+        <button className="back-nav">
+          <Link to={`/`}>
+            <FaAngleLeft />
+          </Link>
+        </button>
+
         <div className="heading-wrapper">
           <h1 className="course-heading">{course_info.name}</h1>
           <div className="input-wrapper">
