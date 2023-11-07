@@ -1,8 +1,7 @@
-# CSE115a Project
+# CruzCards
 
-**CruzCards **\\
-Sabrina Fogel \\
-Noble Foley \\
-Teresa Joseph \\
-Ryan Nelson \\
+Sabrina Fogel \
+Noble Foley \
+Teresa Joseph \
+Ryan Nelson \
 Mitchell Tansey
