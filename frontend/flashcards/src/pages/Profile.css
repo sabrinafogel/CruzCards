@@ -1,7 +1,6 @@
 .page-wrapper {
   background: #003c6c;
   min-height: 100vh;
-
 }
 
 .profile {
@@ -38,9 +37,15 @@
   place-content: flex-start;
 }
 
+.profile-input-wrapper {
+  display: flex;
+  max-width: 100%;
+  place-content: flex-start;
+  flex-direction: row;
+}
+
 .profile-input {
   color: #000000;
-  width: 100%;
   font-size: 2rem;
   border: transparent;
   padding: 10px;
@@ -56,7 +61,7 @@
   outline: none;
 }
 
-.edit-button {
+.profile-edit-button {
   display: flex;
   scale: 150%;
   justify-self: center;
@@ -64,7 +69,7 @@
   margin-left: 10px;
 }
 
-.edit-button:hover {
+.profile-edit-button:hover {
   color: rgb(106, 167, 238);
 }
 
@@ -90,7 +95,7 @@
   color: #616161;
 }
 
-.back-button{
+.back-button {
   font-size: 25px;
   padding: 5px;
   padding-left: 10px;

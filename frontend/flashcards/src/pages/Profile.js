@@ -46,7 +46,7 @@ function Profile() {
         </Link>
         <h1 className="profile-heading">Profile </h1>
         <h1 className="username">Username:</h1>
-        <div className="input-wrapper">
+        <div className="profile-input-wrapper">
           {console.log(user)}
           <input
             className="profile-input"
@@ -58,7 +58,7 @@ function Profile() {
             onSubmit={handleSubmit}
           ></input>
           <button
-            className="edit-button"
+            className="profile-edit-button"
             onClick={() => setIsDisabled(!isDisabled)}
           >
             {isDisabled ? <BsFillPencilFill /> : <FaTimes />}

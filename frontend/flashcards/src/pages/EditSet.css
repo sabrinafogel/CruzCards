@@ -85,7 +85,7 @@
   text-align: center;
 }
 
-.edit-button {
+.set-edit-button {
   position: absolute;
   top: 25%;
   left: 4px;
@@ -93,7 +93,7 @@
   color: #006aac;
 }
 
-.edit-button:hover {
+.set-edit-button:hover {
   color: rgb(115, 115, 252);
 }
 

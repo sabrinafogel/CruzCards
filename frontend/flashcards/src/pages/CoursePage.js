@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { useParams, Link } from "react-router-dom";
 import { FaPlus, FaAngleLeft } from "react-icons/fa6";
 import { AiFillEdit } from "react-icons/ai";
+import { FaAngleRight } from "react-icons/fa";
 
 function CoursePage() {
   const { courseid } = useParams();
@@ -42,6 +43,15 @@ function CoursePage() {
             <FaAngleLeft />
           </Link>
         </button>
+        <div className="Link-wrapper">
+          <Link className="Link-tree" to={`/`}>
+            <p>Courses</p>
+          </Link>
+          <FaAngleRight className="angle-right" />
+          <div className="Link-current">
+            <p className="Link-current">{course_info.name}</p>
+          </div>
+        </div>
 
         <div className="heading-wrapper">
           <h1 className="course-heading">{course_info.name}</h1>
@@ -49,6 +59,10 @@ function CoursePage() {
             <input className="search-input" placeholder="Search"></input>
           </div>
         </div>
+
+        {course_info.description ? (
+          <p className="description">{course_info.description}</p>
+        ) : null}
 
         <button className="create-set">
           <div className="new-chapter-text">New Chapter</div>
@@ -67,7 +81,7 @@ function CoursePage() {
                   className="chapter-button"
                   to={`/courses/${courseid}/chapters/${chapterindex}`}
                 >
-                  <button className="chapters">
+                  <button className={`chapters item-${chapterindex % 4}`}>
                     <h1>
                       Chapter {chapterindex + 1}: {chapter.name}
                     </h1>

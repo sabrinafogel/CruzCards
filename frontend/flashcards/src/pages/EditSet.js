@@ -294,7 +294,7 @@ function EditSet() {
                 </button>
 
                 <button
-                  className="edit-button"
+                  className="set-edit-button"
                   onClick={() => showEditCard(index)}
                 >
                   <AiFillEdit />

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
-import { AiFillDelete, AiFillPlusCircle } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit, AiFillPlusCircle } from "react-icons/ai";
 import Navbar from "../components/Navbar";
 import { UserAuth } from "../components/AuthContext";
 import "./NewSet.css";
@@ -15,6 +15,8 @@ function NewSet() {
   const [cards, setCards] = useState([]);
   const { user } = UserAuth();
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editSetIndex, setEditSetIndex] = useState();
   const [cardFront, setCardFront] = useState("");
   const [cardBack, setCardBack] = useState("");
   const { courseid, index } = useParams();
@@ -79,6 +81,35 @@ function NewSet() {
     setCardFront("");
     setCardBack("");
     setShowModal(false);
+  };
+
+  const showEditCard = (index) => {
+    setEditSetIndex(index);
+    setCardFront(cards[index].front);
+    setCardBack(cards[index].back);
+    setShowEditModal(!showEditModal);
+  };
+
+  const cancelEditCard = (index) => {
+    setEditSetIndex(undefined);
+    setCardFront("");
+    setCardBack("");
+    setShowEditModal(!showEditModal);
+  };
+
+  const saveCard = () => {
+    const edittedCards = [...cards];
+    edittedCards[editSetIndex] = {
+      front: cardFront,
+      back: cardBack,
+      id: Date.now(),
+    };
+    console.log(edittedCards);
+    setCardFront("");
+    setCardBack("");
+    setEditSetIndex(undefined);
+    setCards(edittedCards);
+    setShowEditModal(false);
   };
 
   const deleteCard = (index) => {
@@ -147,6 +178,37 @@ function NewSet() {
                 </div>
               </div>
             )}
+            {/* This is the edit popup which houses inputs and save and cancel buttons */}
+            {showEditModal && (
+              <div className="modal-blur">
+                <div className="modal-container">
+                  <div className="modal">
+                    {/* front and back text-editors */}
+                    <textarea
+                      value={cardFront}
+                      onChange={(e) => setCardFront(e.target.value)}
+                      className="card-description"
+                      placeholder="Front of card"
+                    />
+                    <textarea
+                      value={cardBack}
+                      onChange={(e) => setCardBack(e.target.value)}
+                      className="card-description"
+                      placeholder="Back of card"
+                    />
+                  </div>
+                  {/* Save and Cancel buttons */}
+                  <div className="edit-modal-button-wrap">
+                    <button className="edit-card-save" onClick={saveCard}>
+                      Save Card
+                    </button>
+                    <button className="course-cancel" onClick={cancelEditCard}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="card-wrapper">
@@ -165,6 +227,12 @@ function NewSet() {
                     onClick={() => deleteCard(index)}
                   >
                     <AiFillDelete />
+                  </button>
+                  <button
+                    className="edit-button"
+                    onClick={() => showEditCard(index)}
+                  >
+                    <AiFillEdit />
                   </button>
                 </div>
               );

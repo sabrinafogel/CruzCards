@@ -6,6 +6,7 @@ import { FaPlus, FaAngleLeft } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
 import { UserAuth } from "../components/AuthContext";
+import { FaAngleRight } from "react-icons/fa";
 
 function ChapterPage() {
   // Gets these params from the url
@@ -20,34 +21,33 @@ function ChapterPage() {
   // User from authcontext provider this will be used later for restricting non-editors from changing the sets
   const { user } = UserAuth();
 
-  // Fetches the course info from the backend
-  const fetchCourseInfo = async () => {
-    try {
-      // Encodes the courseid in the url for fetching
-      const response = await fetch(
-        `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
-          courseid
-        )}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const course_info = await response.json();
-      // Sets the returned course_info for future use
-      setCourseInfo(course_info);
-      // Will keep a local copy of the sets for removing sets without extra reads and refreshes
-      setSets(course_info.chapters[chapterIndex].sets);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
+    // Fetches the course info from the backend
+    const fetchCourseInfo = async () => {
+      try {
+        // Encodes the courseid in the url for fetching
+        const response = await fetch(
+          `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
+            courseid
+          )}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const course_info = await response.json();
+        // Sets the returned course_info for future use
+        setCourseInfo(course_info);
+        // Will keep a local copy of the sets for removing sets without extra reads and refreshes
+        setSets(course_info.chapters[chapterIndex].sets);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
     fetchCourseInfo();
-  }, [courseid]);
+  }, [courseid, chapterIndex]);
 
   // Returns a loading screen if the fetch hasn't finished yet
   if (!course_info || !course_info.chapters) {
@@ -107,6 +107,7 @@ function ChapterPage() {
   return (
     <div>
       <Navbar />
+
       {/* The popup for deleting a set */}
       {showDeleteModal && (
         <div className="delete-popup-blur">
@@ -134,6 +135,20 @@ function ChapterPage() {
             <FaAngleLeft />
           </Link>
         </button>
+        <div className="Link-wrapper">
+          <Link className="Link-tree" to={`/`}>
+            <p>Courses</p>
+          </Link>
+          <FaAngleRight className="angle-right" />
+
+          <Link className="Link-tree" to={`/courses/${courseid}`}>
+            <p>{course_info.name}</p>
+          </Link>
+
+          <FaAngleRight className="angle-right" />
+
+          <p className="Link-current">{currentChapter.name}</p>
+        </div>
 
         <div className="heading-wrapper">
           {/* Heading which displays the chapter number and its name */}
@@ -147,6 +162,12 @@ function ChapterPage() {
             <input className="search-input" placeholder="Search" />
           </div>
         </div>
+        {course_info && currentChapter.description ? (
+          <div>
+            <p>Description:</p>
+            <p className="description">{currentChapter.description}</p>
+          </div>
+        ) : null}
         {/* New Set button */}
         <Link to={`/courses/${courseid}/${chapterIndex}/new-set/`}>
           <button className="create-set">
