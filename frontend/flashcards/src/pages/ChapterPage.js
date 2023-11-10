@@ -4,9 +4,10 @@ import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
 import { FaPlus, FaAngleLeft } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { UserAuth } from "../components/AuthContext";
 import { FaAngleRight } from "react-icons/fa";
+import { BiPlay } from "react-icons/bi";
 
 function ChapterPage() {
   // Gets these params from the url
@@ -184,14 +185,24 @@ function ChapterPage() {
           {/* Maps all of the sets with this format */}
           {sets?.map((set, setIndex) => (
             <div className="set-wrapper">
+              <button className={`sets color-${setIndex % 4}`}>
+                <h1>{set.name}</h1>
+                <Link
+                  to={`/courses/${courseid}/${chapterIndex}/${setIndex}/play-set`}
+                >
+                  <button>
+                    <BiPlay className="play-button" />
+                  </button>
+                </Link>
+              </button>
               {/* Link to EditSetPage */}
               <Link
                 key={setIndex}
                 className="link-fix"
                 to={`/courses/${courseid}/${chapterIndex}/${setIndex}`}
               >
-                <button className={`sets color-${setIndex % 4}`}>
-                  <h1>{set.name}</h1>
+                <button className="sets-edit-button">
+                  <AiFillEdit />
                 </button>
               </Link>
               {/* Delete Button */}

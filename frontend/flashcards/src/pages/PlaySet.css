@@ -1,0 +1,24 @@
+.play-heading {
+  margin-left: 4.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: fit-content;
+  color: #000000;
+  text-align: start;
+  margin-top: 4.5rem;
+}
+
+.card-grid {
+  margin-left: 4.5rem;
+  margin-top: 4.5rem;
+  margin-right: 4.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.card-item {
+  background-color: beige;
+  text-align: center;
+  padding: 5rem;
+}

@@ -13,6 +13,7 @@ import NewChapter from "./pages/NewChapter";
 import ChapterPage from "./pages/ChapterPage";
 import EditSet from "./pages/EditSet";
 import EditChapterPage from "./pages/EditChapterPage";
+import PlaySet from "./pages/PlaySet";
 
 function App() {
   return (
@@ -42,6 +43,10 @@ function App() {
           <Route
             path="/courses/:courseid/chapters/:chapterindex/chapter-edit"
             element={<EditChapterPage />}
+          />
+          <Route
+            path="/courses/:courseid/:chapterindex/:setindex/play-set"
+            element={<PlaySet />}
           />
         </Routes>
       </AuthContextProvider>
