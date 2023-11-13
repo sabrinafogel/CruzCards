@@ -213,5 +213,29 @@ app.post("/editChapter", async (req, res) => {
   }
 });
 
+app.get("/searchcourse", async (req, res) => {
+  try {
+    const ref = db.collection("courses").doc(req.query.courseid);
+    const doc = await ref.get();
+    const chapters = doc.data().chapters;
+
+    const searchChapters = [];
+
+    for (let i = 0; i < chapters.length; i++){
+      if ((chapters[i].name).startsWith(req.query.search)){
+        searchChapters.push(chapters[i]);
+      }
+    }
+    
+    console.log("/searchcourse fetch");
+    return res
+      .status(200)
+      .send({ chapters: searchChapters });
+  } catch (error) {
+    console.error("Error fetching documents: ", error);
+    return res.status(500).send({ error: "Failed to fetch course info." });
+  }
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server is running on port ${port}`));

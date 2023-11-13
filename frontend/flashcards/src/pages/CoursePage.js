@@ -12,8 +12,12 @@ function CoursePage() {
 
   const { courseid } = useParams();
   const [course_info, setCourseInfo] = useState([]);
-
+  
   const [isEditor, setIsEditor] = useState(false);
+
+  //const [search, setSearch] = useState("xxx");
+  var search = "";
+  const [searchChapters, setSearchChapters] = useState([]);
 
   useEffect(() => {
     const fetchCourseInfo = async () => {
@@ -30,6 +34,7 @@ function CoursePage() {
 
         const course_info = await response.json();
         setCourseInfo(course_info);
+        setSearchChapters(course_info.chapters);
 
         const course_editors = [course_info.owner];
 
@@ -51,6 +56,32 @@ function CoursePage() {
   }, [courseid, user]);
 
   const chapters = course_info.chapters;
+  
+  // Search feature
+ const searchFeature = async(e) => {
+      //setSearch(e.target.value);
+      search = e.target.value.trim();
+      if (search === ""){
+        setSearchChapters(chapters);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:8080/searchcourse?search=${encodeURIComponent(search)}&courseid=${encodeURIComponent(courseid)}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const searchChapters = await response.json();
+        setSearchChapters(searchChapters.chapters);
+        
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
 
   return (
     <div>
@@ -74,7 +105,7 @@ function CoursePage() {
         <div className="heading-wrapper">
           <h1 className="course-heading">{course_info.name}</h1>
           <div className="input-wrapper">
-            <input className="search-input" placeholder="Search"></input>
+            <input className="search-input" placeholder="Search" onChange={searchFeature}></input>
           </div>
         </div>
 
@@ -95,7 +126,7 @@ function CoursePage() {
 
         <div>
           <ul>
-            {chapters?.map((chapter, chapterindex) => (
+            {searchChapters?.map((chapter, chapterindex) => (
               <div className="chapter-container">
                 <Link
                   className="chapter-button"
@@ -107,13 +138,11 @@ function CoursePage() {
                     </h1>
                   </button>
                 </Link>
-                {isEditor ? (
-                  <Link
-                    to={`/courses/${courseid}/chapters/${chapterindex}/chapter-edit`}
-                  >
-                    <AiFillEdit className="course-edit-icon" />
-                  </Link>
-                ) : null}
+                <Link
+                  to={`/courses/${courseid}/chapters/${chapterindex}/chapter-edit`}
+                >
+                  <AiFillEdit className="course-edit-icon" />
+                </Link>
               </div>
             ))}
           </ul>
