@@ -16,7 +16,7 @@ function Courses() {
         }
         const courses = await response.json();
 
-        console.log(courses);
+        //console.log(courses);
         setCourses(courses);
       } catch (error) {
         console.error("Error:", error);

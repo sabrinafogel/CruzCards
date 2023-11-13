@@ -12,7 +12,7 @@ function ChapterPage() {
   // Gets these params from the url
   const { courseid, chapterIndex } = useParams();
   // Used to keep the course_info and sets for use on the page
-  const [course_info, setCourseInfo] = useState([]);
+  const [course_info, setCourseInfo] = useState({});
   const [sets, setSets] = useState([]);
   // Keeps the index for what the user wants to delete since the delete popup is located outside of the mapping
   const [deleteindex, setDeleteindex] = useState();
@@ -20,6 +20,8 @@ function ChapterPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   // User from authcontext provider this will be used later for restricting non-editors from changing the sets
   const { user } = UserAuth();
+
+  const [isEditor, setIsEditor] = useState(false);
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
@@ -40,6 +42,19 @@ function ChapterPage() {
         const course_info = await response.json();
         // Sets the returned course_info for future use
         setCourseInfo(course_info);
+
+        const course_editors = [course_info.owner];
+
+        course_info.editors.forEach(editor => {
+          course_editors.push(editor);
+        });
+
+        if (course_editors.includes(user.email)) {
+          setIsEditor(true);
+        } else {
+          setIsEditor(false);
+        }
+
         // Will keep a local copy of the sets for removing sets without extra reads and refreshes
         setSets(course_info.chapters[chapterIndex].sets);
       } catch (error) {
@@ -47,7 +62,7 @@ function ChapterPage() {
       }
     };
     fetchCourseInfo();
-  }, [courseid, chapterIndex]);
+  }, [courseid, chapterIndex, user]);
 
   // Returns a loading screen if the fetch hasn't finished yet
   if (!course_info || !course_info.chapters) {
@@ -169,14 +184,16 @@ function ChapterPage() {
           </div>
         ) : null}
         {/* New Set button */}
-        <Link to={`/courses/${courseid}/${chapterIndex}/new-set/`}>
-          <button className="create-set">
-            <div className="new-set-text">New Set</div>
-            <div className="new-set-icon">
-              <FaPlus />
-            </div>
-          </button>
-        </Link>
+        {isEditor ? (
+          <Link to={`/courses/${courseid}/${chapterIndex}/new-set/`}>
+            <button className="create-set">
+              <div className="new-set-text">New Set</div>
+              <div className="new-set-icon">
+                <FaPlus />
+              </div>
+            </button>
+          </Link>
+        ) : null}
       </div>
       {/* Div for the sets */}
       <div className="setDisplay">
@@ -195,12 +212,15 @@ function ChapterPage() {
                 </button>
               </Link>
               {/* Delete Button */}
-              <button
-                className="delete-set-button"
-                onClick={() => showDeletePopup(setIndex)}
-              >
-                <AiFillDelete className="delete-icon" />
-              </button>
+              {isEditor ? (
+                <button
+                  className="delete-set-button"
+                  onClick={() => showDeletePopup(setIndex)}
+                >
+                  <AiFillDelete className="delete-icon" />
+                </button>
+              ) : null}
+              
             </div>
           ))}
         </ul>

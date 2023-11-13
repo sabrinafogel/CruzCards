@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./CoursePage.css";
 import Navbar from "../components/Navbar";
+import { UserAuth } from "../components/AuthContext";
 import { useParams, Link } from "react-router-dom";
 import { FaPlus, FaAngleLeft } from "react-icons/fa6";
 import { AiFillEdit } from "react-icons/ai";
 import { FaAngleRight } from "react-icons/fa";
 
 function CoursePage() {
+  const { user } = UserAuth();
+
   const { courseid } = useParams();
   const [course_info, setCourseInfo] = useState([]);
+
+  const [isEditor, setIsEditor] = useState(false);
 
   useEffect(() => {
     const fetchCourseInfo = async () => {
@@ -25,12 +30,25 @@ function CoursePage() {
 
         const course_info = await response.json();
         setCourseInfo(course_info);
+
+        const course_editors = [course_info.owner];
+
+        course_info.editors.forEach(editor => {
+          course_editors.push(editor);
+        });
+
+        if (course_editors.includes(user.email)) {
+          setIsEditor(true);
+        } else {
+          setIsEditor(false);
+        }
+        
       } catch (error) {
         console.error("Error:", error);
       }
     };
     fetchCourseInfo();
-  }, [courseid]);
+  }, [courseid, user]);
 
   const chapters = course_info.chapters;
 
@@ -64,14 +82,16 @@ function CoursePage() {
           <p className="description">{course_info.description}</p>
         ) : null}
 
-        <button className="create-set">
-          <div className="new-chapter-text">New Chapter</div>
-          <div className="new-chapter-icon">
-            <Link to={`/new-chapter/${courseid}`}>
-              <FaPlus />
-            </Link>
-          </div>
-        </button>
+        {isEditor ? (
+          <button className="create-set">
+            <div className="new-chapter-text">New Chapter</div>
+            <div className="new-chapter-icon">
+              <Link to={`/new-chapter/${courseid}`}>
+                <FaPlus />
+              </Link>
+            </div>
+          </button>
+        ) : null}
 
         <div>
           <ul>
@@ -87,11 +107,13 @@ function CoursePage() {
                     </h1>
                   </button>
                 </Link>
-                <Link
-                  to={`/courses/${courseid}/chapters/${chapterindex}/chapter-edit`}
-                >
-                  <AiFillEdit className="course-edit-icon" />
-                </Link>
+                {isEditor ? (
+                  <Link
+                    to={`/courses/${courseid}/chapters/${chapterindex}/chapter-edit`}
+                  >
+                    <AiFillEdit className="course-edit-icon" />
+                  </Link>
+                ) : null}
               </div>
             ))}
           </ul>
