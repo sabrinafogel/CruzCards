@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { UserAuth } from "../components/AuthContext";
 import Navbar from "../components/Navbar";
 import "./EditSet.css";
+import { FaPlus, FaAngleLeft } from "react-icons/fa6";
+import { FaAngleRight } from "react-icons/fa";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import { AiFillPlusCircle, AiFillDelete, AiFillEdit } from "react-icons/ai";
 
@@ -26,6 +29,12 @@ function EditSet() {
   const [noName, setNoName] = useState(false);
   // This allows the use of the navigate function to move the user back to the sets page after saving
   const navigate = useNavigate();
+
+  const [course_info, setCourseInfo] = useState({});
+
+  const { user } = UserAuth();
+
+  const [isEditor, setIsEditor] = useState(false);
 
   // Will set the description when the set first starts up
   useEffect(() => {
@@ -120,13 +129,27 @@ function EditSet() {
 
         const course_info = await response.json();
         //setCourseInfo(course_info);
+        setCourseInfo(course_info);
         setSet(course_info?.chapters?.[index]?.sets?.[setindex]);
+
+        const course_editors = [course_info.owner];
+
+        course_info.editors.forEach(editor => {
+          course_editors.push(editor);
+        });
+
+        if (course_editors.includes(user.email)) {
+          setIsEditor(true);
+        } else {
+          setIsEditor(false);
+        }
+
       } catch (error) {
         console.error("Error:", error);
       }
     };
     fetchCourseInfo();
-  }, [courseid, index, setindex]);
+  }, [courseid, index, setindex, user]);
 
   // This saves the set by calling the backedn and passing the in the req.body
   const saveSet = async (e) => {
@@ -161,6 +184,21 @@ function EditSet() {
     }
   };
 
+  // Returns a loading screen if the fetch hasn't finished yet
+  if (!course_info || !course_info.chapters) {
+    return (
+      <div>
+        <Navbar />
+        <div className="ChapterPage">
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const chapters = course_info.chapters;
+  const currentChapter = chapters[index];
+
   return (
     <div>
       {/* Puts the navbar on the top of the screen */}
@@ -170,6 +208,31 @@ function EditSet() {
         {set && (
           <div>
             <div className="set-input-containers">
+              <button className="back-nav">
+                <Link to={`/courses/${courseid}/chapters/${index}`}>
+                  <FaAngleLeft />
+                </Link>
+              </button>
+              <div className="Link-wrapper">
+                <Link className="Link-tree" to={`/`}>
+                  <p>Courses</p>
+                </Link>
+                <FaAngleRight className="angle-right" />
+
+                <Link className="Link-tree" to={`/courses/${courseid}`}>
+                  <p>{course_info.name}</p>
+                </Link>
+
+                <FaAngleRight className="angle-right" />
+
+                <Link className="Link-tree" to={`/courses/${courseid}/chapters/${index}`}>
+                  <p>{currentChapter.name}</p>
+                </Link>
+
+                <FaAngleRight className="angle-right" />
+
+                <p className="Link-current">{set.name}</p>
+              </div>
               <h1 className="edit-set-header">Set Name:</h1>
               <input
                 className="course-name-input"
@@ -177,6 +240,7 @@ function EditSet() {
                 value={inputvalue}
                 onChange={handleInputChange}
                 required
+                disabled={!isEditor}
               />
               <p className="char-count">{inputvalue && inputvalue.length}/50</p>
               {noName ? (
@@ -191,6 +255,7 @@ function EditSet() {
                 onChange={handleDescriptionChange}
                 className="course-description"
                 placeholder="Enter description..."
+                disabled={!isEditor}
               ></textarea>
               <p className="char-count">
                 {description && description.length}/250
@@ -199,77 +264,79 @@ function EditSet() {
           </div>
         )}
       </div>
-      <div className="new-card-wrapper">
-        {/* The background for the mock card for the add card button */}
-        <div className="set-new-card-button-container">
-          {/* The button inside the mock card to add a card */}
-          <button className="set-edit-new-card-button" onClick={showaddNewCard}>
-            <AiFillPlusCircle className="plus-button" />
-          </button>
-          {/* This conditionally renders the add card pop for the user after clicking add card button */}
-          {showModal && (
-            <div className="modal-blur">
-              <div className="modal-container">
-                <div className="modal">
-                  {/* front and back text-editors */}
-                  <textarea
-                    value={cardFront}
-                    onChange={(e) => setCardFront(e.target.value)}
-                    className="card-description"
-                    placeholder="Front of card"
-                  />
-                  <textarea
-                    value={cardBack}
-                    onChange={(e) => setCardBack(e.target.value)}
-                    className="card-description"
-                    placeholder="Back of card"
-                  />
-                </div>
-                {/* Save and Cancel buttons */}
-                <div className="modal-button-wrap">
-                  <button className="course-save" onClick={addNewCard}>
-                    Save
-                  </button>
-                  <button className="course-cancel" onClick={showaddNewCard}>
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-          {/* This is the edit popup which houses inputs and save and cancel buttons */}
-          {showEditModal && (
-            <div className="modal-blur">
-              <div className="modal-container">
-                <div className="modal">
-                  {/* front and back text-editors */}
-                  <textarea
-                    value={cardFront}
-                    onChange={(e) => setCardFront(e.target.value)}
-                    className="card-description"
-                    placeholder="Front of card"
-                  />
-                  <textarea
-                    value={cardBack}
-                    onChange={(e) => setCardBack(e.target.value)}
-                    className="card-description"
-                    placeholder="Back of card"
-                  />
-                </div>
-                {/* Save and Cancel buttons */}
-                <div className="edit-modal-button-wrap">
-                  <button className="edit-card-save" onClick={saveCard}>
-                    Save Card
-                  </button>
-                  <button className="course-cancel" onClick={cancelEditCard}>
-                    Cancel
-                  </button>
+      {isEditor ? (
+        <div className="new-card-wrapper">
+          {/* The background for the mock card for the add card button */}
+          <div className="set-new-card-button-container">
+            {/* The button inside the mock card to add a card */}
+            <button className="set-edit-new-card-button" onClick={showaddNewCard}>
+              <AiFillPlusCircle className="plus-button" />
+            </button>
+            {/* This conditionally renders the add card pop for the user after clicking add card button */}
+            {showModal && (
+              <div className="modal-blur">
+                <div className="modal-container">
+                  <div className="modal">
+                    {/* front and back text-editors */}
+                    <textarea
+                      value={cardFront}
+                      onChange={(e) => setCardFront(e.target.value)}
+                      className="card-description"
+                      placeholder="Front of card"
+                    />
+                    <textarea
+                      value={cardBack}
+                      onChange={(e) => setCardBack(e.target.value)}
+                      className="card-description"
+                      placeholder="Back of card"
+                    />
+                  </div>
+                  {/* Save and Cancel buttons */}
+                  <div className="modal-button-wrap">
+                    <button className="course-save" onClick={addNewCard}>
+                      Save
+                    </button>
+                    <button className="course-cancel" onClick={showaddNewCard}>
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+            {/* This is the edit popup which houses inputs and save and cancel buttons */}
+            {showEditModal && (
+              <div className="modal-blur">
+                <div className="modal-container">
+                  <div className="modal">
+                    {/* front and back text-editors */}
+                    <textarea
+                      value={cardFront}
+                      onChange={(e) => setCardFront(e.target.value)}
+                      className="card-description"
+                      placeholder="Front of card"
+                    />
+                    <textarea
+                      value={cardBack}
+                      onChange={(e) => setCardBack(e.target.value)}
+                      className="card-description"
+                      placeholder="Back of card"
+                    />
+                  </div>
+                  {/* Save and Cancel buttons */}
+                  <div className="edit-modal-button-wrap">
+                    <button className="edit-card-save" onClick={saveCard}>
+                      Save Card
+                    </button>
+                    <button className="course-cancel" onClick={cancelEditCard}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      ) : null}
       {/* The grid for the cards present in the set already */}
       <div className="card-wrapper">
         <ul>
@@ -286,33 +353,39 @@ function EditSet() {
                   <h1>{card.back}</h1>
                 </div>
                 {/* This will render the delete card button on top of the card */}
-                <button
-                  className="card-delete-button"
-                  onClick={() => deleteCard(index)}
-                >
-                  <AiFillDelete />
-                </button>
+                {isEditor ? (
+                  <div>
+                    <button
+                      className="card-delete-button"
+                      onClick={() => deleteCard(index)}
+                    >
+                      <AiFillDelete />
+                    </button>
 
-                <button
-                  className="set-edit-button"
-                  onClick={() => showEditCard(index)}
-                >
-                  <AiFillEdit />
-                </button>
+                    <button
+                      className="set-edit-button"
+                      onClick={() => showEditCard(index)}
+                    >
+                      <AiFillEdit />
+                    </button>
+                  </div>
+                ) : null}
               </div>
             );
           })}
         </ul>
       </div>
       {/* The save and cancel buttons */}
-      <div className="button-wrapper">
-        <button className="course-save" onClick={saveSet}>
-          Save
-        </button>
-        <Link to={`/courses/${courseid}/chapters/${index}`}>
-          <button className="course-cancel">Cancel</button>
-        </Link>
-      </div>
+      {isEditor ? (
+        <div className="button-wrapper">
+          <button className="course-save" onClick={saveSet}>
+            Save
+          </button>
+          <Link to={`/courses/${courseid}/chapters/${index}`}>
+            <button className="course-cancel">Cancel</button>
+          </Link>
+        </div>
+      ) : null}
     </div>
   );
 }
