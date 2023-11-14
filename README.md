@@ -4,7 +4,7 @@
 2. [Inspiration](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#inspiration)
 3. [How to Run CruzCards](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#how-to-run-cruzcards)
 4. [How to Use CruzCards](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#how-to-use-cruzcards)\
-  4.1. [Website Navigation](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#general-design-and-log-insign-up)\
+  4.1. [General Design and Log-In/Sign-Up](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#general-design-and-log-insign-up)\
   4.2. [Courses vs. Chapters vs. Sets](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#courses-vs-chapters-vs-sets)
 
 ## General Information
