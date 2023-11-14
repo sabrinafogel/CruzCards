@@ -34,6 +34,14 @@
   margin-right: 5px;
 }
 
+.New-set-button{
+  margin-bottom: 10px;
+  background-color: white;
+  margin-right: 20px;
+  margin-top: 20px;
+  width: 40vw;
+}
+
 .create-set {
   padding: 1rem;
   margin-bottom: 10px;

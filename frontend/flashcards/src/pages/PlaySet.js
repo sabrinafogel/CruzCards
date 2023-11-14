@@ -8,6 +8,8 @@ function PlaySet() {
   const [set, setSet] = useState([]);
   const [course_info, setCourseInfo] = useState();
   const [cards, setCards] = useState([]);
+  const [visibleCardIndex, setVisibleCardIndex] = useState(null);
+
   useEffect(() => {
     const fetchCourseInfo = async () => {
       try {
@@ -32,6 +34,10 @@ function PlaySet() {
     fetchCourseInfo();
   }, [courseid]);
 
+  const handleCardClick = (index) => {
+    setVisibleCardIndex(index === visibleCardIndex ? null : index);
+  };
+
   if (!course_info || !set || !cards) {
     return (
       <div>
@@ -50,12 +56,12 @@ function PlaySet() {
       <div className="card-grid">
         {cards.map((card, index) => {
           return (
-            <div className="card-item" key={index}>
+            <div className="card-item" key={index} onClick={() => handleCardClick(index)}>
               <div className="play-card">
-                <div className="play-card-front">
+                <div className={`play-card-front ${visibleCardIndex === index ? "hidden" : "visible"}`}>
                   <p>{card.front}</p>
                 </div>
-                <div className="play-card-back">
+                <div className={`play-card-back ${visibleCardIndex === index ? "visible" : "hidden"}`}>
                   <p>{card.back}</p>
                 </div>
               </div>
