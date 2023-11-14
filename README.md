@@ -1,11 +1,11 @@
 # CruzCards
 ## Table of Contents
 1. [General Information](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#general-information)
-2. [Inspiration](https://github.com/sabrinafogel/CruzCards/main/README.md#inspiration)
-3. [How to Run CruzCards](https://github.com/sabrinafogel/CruzCards/main/README.md#how-to-run-cruzcards)
-4. [How to Use CruzCards](https://github.com/sabrinafogel/CruzCards/main/README.md#how-to-use-cruzcards)\
-  4.1. [Website Navigation](https://github.com/sabrinafogel/CruzCards/main/README.md#general-design-and-log-insign-up)\
-  4.2. [Courses vs. Chapters vs. Sets](https://github.com/sabrinafogel/CruzCards/main/README.md#courses-vs-chapters-vs-sets)
+2. [Inspiration](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#inspiration)
+3. [How to Run CruzCards](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#how-to-run-cruzcards)
+4. [How to Use CruzCards](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#how-to-use-cruzcards)\
+  4.1. [Website Navigation](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#general-design-and-log-insign-up)\
+  4.2. [Courses vs. Chapters vs. Sets](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#courses-vs-chapters-vs-sets)
 
 ## General Information
 <ins>Class:</ins> CSE 115A, Fall 2023, UCSC \
