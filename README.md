@@ -1,6 +1,6 @@
 # CruzCards
 ## Table of Contents
-1. [General Information](https://github.com/sabrinafogel/CruzCards/main/README.md#general-information)
+1. [General Information](https://github.com/sabrinafogel/CruzCards/blob/main/README.md#general-information)
 2. [Inspiration](https://github.com/sabrinafogel/CruzCards/main/README.md#inspiration)
 3. [How to Run CruzCards](https://github.com/sabrinafogel/CruzCards/main/README.md#how-to-run-cruzcards)
 4. [How to Use CruzCards](https://github.com/sabrinafogel/CruzCards/main/README.md#how-to-use-cruzcards)\
