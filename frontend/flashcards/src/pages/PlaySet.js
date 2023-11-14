@@ -48,6 +48,10 @@ function PlaySet() {
 
   const [showDesc, setShowDesc] = useState(false);
 
+  const handleCardClick = (index) => {
+    setVisibleCardIndex(index === visibleCardIndex ? null : index);
+  };
+
   if (!course_info || !set || !cards) {
     return (
       <div>
