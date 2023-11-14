@@ -33,9 +33,16 @@ function EditSet() {
       setDescription(set?.description);
     }
   }, [set]);
+
+  const [descriptionDisabled, setDescriptionDisabled] = useState(false);
+
   // Will handle the value the input shows for the description
   const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
+    if (e.target.value.length <= 250) {
+      setDescription(e.target.value);
+    } else {
+      setDescriptionDisabled(descriptionDisabled);
+    }
   };
   // Handles the name input change sets the value to what the user types
   const handleInputChange = (e) => {

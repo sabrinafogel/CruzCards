@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
 import "./PlaySet.css";
+import { BiPlay } from "react-icons/bi";
+import CardViewer from "../components/CardViewer";
 
 function PlaySet() {
   const { courseid, chapterindex, setindex } = useParams();
   const [set, setSet] = useState([]);
   const [course_info, setCourseInfo] = useState();
   const [cards, setCards] = useState([]);
+  const [playing, setPlaying] = useState(false);
+
   useEffect(() => {
     const fetchCourseInfo = async () => {
       try {
@@ -30,7 +34,19 @@ function PlaySet() {
       }
     };
     fetchCourseInfo();
-  }, [courseid]);
+  }, [courseid, chapterindex, setindex]);
+
+  const [isflipped, setIsFlipped] = useState(
+    new Array(cards.length).fill(false)
+  );
+
+  const handleFlip = (index) => {
+    const newIsFlipped = [...isflipped];
+    newIsFlipped[index] = !newIsFlipped[index];
+    setIsFlipped(newIsFlipped);
+  };
+
+  const [showDesc, setShowDesc] = useState(false);
 
   if (!course_info || !set || !cards) {
     return (
@@ -44,25 +60,50 @@ function PlaySet() {
   return (
     <div>
       <Navbar />
+      {playing ? <CardViewer setPlaying={setPlaying} cards={cards} /> : null}
       <div className="play-heading">
-        <h1>Playing: {set?.name}</h1>
+        <h1 className="play-header">Playing: {set?.name}</h1>
+        <>
+          <p className={`play-desc ${showDesc ? "" : "cut"}`}>
+            {set?.description}
+          </p>
+          <button
+            className="desc-show-more"
+            onClick={() => setShowDesc(!showDesc)}
+          >
+            Show More
+          </button>
+        </>
       </div>
-      <div className="card-grid">
+      <button
+        className="play-set-button"
+        onClick={() => {
+          setPlaying(!playing);
+        }}
+      >
+        <BiPlay />
+        Play
+      </button>
+      <ul className="card-grid">
         {cards.map((card, index) => {
           return (
-            <div className="card-item" key={index}>
-              <div className="play-card">
-                <div className="play-card-front">
+            <li
+              className="card-play-container"
+              key={index}
+              onClick={() => handleFlip(index)}
+            >
+              <div className={`card-play ${isflipped[index] ? "flipped" : ""}`}>
+                <div className="card-play-front">
                   <p>{card.front}</p>
                 </div>
-                <div className="play-card-back">
+                <div className="card-play-back">
                   <p>{card.back}</p>
                 </div>
               </div>
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 }
