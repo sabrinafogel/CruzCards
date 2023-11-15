@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./CardViewer.css";
 import { FaTimes } from "react-icons/fa";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 function CardViewer({ setPlaying, cards }) {
   const [isflipped, setIsFlipped] = useState(false);
@@ -24,19 +25,27 @@ function CardViewer({ setPlaying, cards }) {
 
   const nextCard = () => {
     if (currindex !== cards.length - 1) {
-      setIsFlipped(false);
-      setTimeout(() => {
+      if (isflipped !== false) {
+        setIsFlipped(false);
+        setTimeout(() => {
+          setCurrIndex(currindex + 1);
+        }, 1000);
+      } else {
         setCurrIndex(currindex + 1);
-      }, 1000);
+      }
     }
   };
 
   const prevCard = () => {
     if (currindex !== 0) {
-      setIsFlipped(false);
-      setTimeout(() => {
+      if (isflipped !== false) {
+        setIsFlipped(false);
+        setTimeout(() => {
+          setCurrIndex(currindex - 1);
+        }, 1000);
+      } else {
         setCurrIndex(currindex - 1);
-      }, 1000);
+      }
     }
   };
   return (
@@ -57,7 +66,7 @@ function CardViewer({ setPlaying, cards }) {
           {console.log(shuffledCards)}
 
           <div className={`card-viewing ${isflipped ? "flipped" : ""}`}>
-            <div className="card-viewing-front">
+            <div className={`card-viewing-front`}>
               <p>{cards[currindex].front}</p>
             </div>
             <div className="card-viewing-back">
@@ -66,8 +75,12 @@ function CardViewer({ setPlaying, cards }) {
           </div>
         </div>
         <div className="card-nav-buttons">
-          <button onClick={() => prevCard()}>Back</button>
-          <button onClick={() => nextCard()}>Next</button>
+          <button onClick={() => prevCard()}>
+            <FaArrowLeftLong />
+          </button>
+          <button onClick={() => nextCard()}>
+            <FaArrowRightLong />
+          </button>
         </div>
       </div>
     </div>

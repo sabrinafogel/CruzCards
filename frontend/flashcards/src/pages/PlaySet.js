@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./PlaySet.css";
 import { BiPlay } from "react-icons/bi";
 import CardViewer from "../components/CardViewer";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 function PlaySet() {
   const { courseid, chapterindex, setindex } = useParams();
@@ -62,17 +63,48 @@ function PlaySet() {
       <Navbar />
       {playing ? <CardViewer setPlaying={setPlaying} cards={cards} /> : null}
       <div className="play-heading">
+        <button className="back-nav">
+          <Link to={`/courses/${courseid}`}>
+            <FaAngleLeft />
+          </Link>
+        </button>
+        <div className="Link-wrapper">
+          <Link className="Link-tree" to={`/`}>
+            <p>Courses</p>
+          </Link>
+          <FaAngleRight className="angle-right" />
+
+          <Link className="Link-tree" to={`/courses/${courseid}`}>
+            <p>{course_info.name}</p>
+          </Link>
+
+          <FaAngleRight className="angle-right" />
+
+          <Link
+            className="Link-tree"
+            to={`/courses/${courseid}/chapters/${chapterindex}`}
+          >
+            {course_info?.chapters?.[chapterindex].name}
+          </Link>
+          <FaAngleRight className="angle-right" />
+
+          <p className="Link-current">Playing: {set?.name}</p>
+        </div>
         <h1 className="play-header">Playing: {set?.name}</h1>
         <>
-          <p className={`play-desc ${showDesc ? "" : "cut"}`}>
-            {set?.description}
-          </p>
-          <button
-            className="desc-show-more"
-            onClick={() => setShowDesc(!showDesc)}
-          >
-            Show More
-          </button>
+          {set?.description !== undefined || set?.description > 0 ? (
+            <>
+              <p className={`play-desc ${showDesc ? "" : "cut"}`}>
+                {set?.description}
+              </p>
+              <button
+                className="desc-show-more"
+                onClick={() => setShowDesc(!showDesc)}
+              >
+                {showDesc ? "Show Less" : "Show More"}
+              </button>
+            </>
+          ) : null}
         </>
       </div>
       <button
@@ -93,7 +125,7 @@ function PlaySet() {
               onClick={() => handleFlip(index)}
             >
               <div className={`card-play ${isflipped[index] ? "flipped" : ""}`}>
-                <div className="card-play-front">
+                <div className={`card-play-front color-${index % 4}`}>
                   <p>{card.front}</p>
                 </div>
                 <div className="card-play-back">

@@ -206,7 +206,7 @@
   margin-bottom: 10px;
   margin-top: 50px;
   border-width: 1px;
-  height: 60vh;
+  height: 40vh;
   width: 30vw;
   color: #111827;
   background-color: #f9fafb;
@@ -250,4 +250,10 @@
 .card-container {
   animation-name: card;
   animation-duration: 0.5s;
+}
+
+.char-count-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 32vw;
 }

@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 10px;
   margin-left: 4.5rem;
+  margin-top: 4.5rem;
 }
 
 .play-header {
@@ -11,11 +12,11 @@
   min-width: fit-content;
   color: #000000;
   text-align: start;
-  margin-top: 4.5rem;
 }
 
 .play-desc {
   width: 80vw;
+  color: rgb(0, 0, 0, 0.8);
 }
 
 .play-desc.cut {
@@ -26,6 +27,11 @@
 
 .desc-show-more {
   align-self: flex-start;
+  text-decoration: underline;
+}
+
+.desc-show-more:hover {
+  color: #006aac;
 }
 
 .card-grid {
@@ -44,10 +50,12 @@
   perspective: 1000px;
   min-width: 200px;
   width: 20vw;
+  transition: transform 200ms ease-in-out;
 }
 
 .card-play-container:hover {
   cursor: pointer;
+  transform: translateY(-10px) scale(105%);
 }
 
 .card-play.flipped {
