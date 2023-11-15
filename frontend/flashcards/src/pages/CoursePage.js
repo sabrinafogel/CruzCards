@@ -14,8 +14,7 @@ function CoursePage() {
   const [course_info, setCourseInfo] = useState([]);
   
   const [isEditor, setIsEditor] = useState(false);
-
-  //const [search, setSearch] = useState("xxx");
+  
   var search = "";
   const [searchChapters, setSearchChapters] = useState([]);
 
@@ -105,7 +104,7 @@ function CoursePage() {
         <div className="heading-wrapper">
           <h1 className="course-heading">{course_info.name}</h1>
           <div className="input-wrapper">
-            <input className="search-input" placeholder="Search" onChange={searchFeature}></input>
+            <input className="search-input" placeholder="Search by name or tag" onChange={searchFeature}></input>
           </div>
         </div>
 

@@ -88,7 +88,7 @@ app.get("/courseinfo", async (req, res) => {
 });
 
 app.post("/newchapter", async (req, res) => {
-  const { courseid, name, description } = req.body;
+  const { courseid, name, description, tags} = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
@@ -98,6 +98,7 @@ app.post("/newchapter", async (req, res) => {
     name: name,
     description: description,
     sets: [],
+    tags: tags,
   };
 
   try {
@@ -222,8 +223,22 @@ app.get("/searchcourse", async (req, res) => {
     const searchChapters = [];
 
     for (let i = 0; i < chapters.length; i++){
-      if ((chapters[i].name).startsWith(req.query.search)){
+      if ((chapters[i].name.toLowerCase()).startsWith(req.query.search.toLowerCase())){
         searchChapters.push(chapters[i]);
+      }
+      if (typeof chapters[i].tags !== 'undefined'){
+        const chapter_tags = (chapters[i].tags).map(element => {
+          return element.toLowerCase();
+        });
+
+        const stat = chapter_tags.find(entry => entry.startsWith(req.query.search.toLowerCase()));
+        if (stat !== undefined && searchChapters.indexOf(chapters[i]) === -1){
+          searchChapters.push(chapters[i]);
+        }
+
+      }
+      else {
+        //console.log("tags array does not exist in chapter");
       }
     }
     
