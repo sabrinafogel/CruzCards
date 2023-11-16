@@ -69,16 +69,24 @@ function CardViewer({ setPlaying, cards }) {
             <div className={`card-viewing-front`}>
               <p>{cards[currindex].front}</p>
             </div>
-            <div className="card-viewing-back">
+            <div className={`card-viewing-back`}>
               <p>{cards[currindex].back}</p>
             </div>
           </div>
         </div>
         <div className="card-nav-buttons">
-          <button onClick={() => prevCard()}>
+          <button
+            className={`card-prev-button ${currindex === 0 ? "first" : ""}`}
+            onClick={() => prevCard()}
+          >
             <FaArrowLeftLong />
           </button>
-          <button onClick={() => nextCard()}>
+          <button
+            className={`card-next-button ${
+              currindex === cards.length - 1 ? "last" : ""
+            }`}
+            onClick={() => nextCard()}
+          >
             <FaArrowRightLong />
           </button>
         </div>

@@ -80,6 +80,16 @@
   overflow-x: hidden;
 }
 
+.card-next-button,
+.card-prev-button {
+  transition: all 0.5s ease-in-out;
+}
+
+.card-prev-button.first,
+.card-next-button.last {
+  color: rgb(141, 132, 132);
+}
+
 .card-viewing-back {
   background-color: #ddd;
   transform: rotateY(180deg);

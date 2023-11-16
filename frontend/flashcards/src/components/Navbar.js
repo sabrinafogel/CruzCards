@@ -6,36 +6,10 @@ import { AiFillCaretDown } from "react-icons/ai";
 import { UserAuth } from "./AuthContext";
 import AccountDropDown from "./AccountDropDown";
 import "./Navbar.css";
+import Sidebar from "./Sidebar";
 
 const Navbar = () => {
   const { user } = UserAuth();
-  const Sidebar = ({ open, toggleMenu }) => {
-    return (
-      <div className={open ? "SidebarOpened" : "SidebarHidden"}>
-        <ul>
-          <li>
-            <button
-              className="Close-button"
-              onClick={toggleMenu}
-              style={{ color: "red" }}
-            >
-              <FaTimes />
-            </button>
-          </li>
-          <li>
-            <Link to="/" onClick={() => toggleMenu(toggleMenu)}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/profile" onClick={() => toggleMenu(toggleMenu)}>
-              Profile
-            </Link>
-          </li>
-        </ul>
-      </div>
-    );
-  };
 
   const [menuStat, setMenuStat] = useState(false);
   const [dropDownVisible, setdropDownVisible] = useState(false);
@@ -52,7 +26,7 @@ const Navbar = () => {
   return (
     <div>
       <div className="Sidebarcontainer">
-        <Sidebar open={menuStat} toggleMenu={toggleMenu} />
+        <Sidebar menuStat={menuStat} toggleMenu={toggleMenu} />
       </div>
 
       <div className="NavContainer">
