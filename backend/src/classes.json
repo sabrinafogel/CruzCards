@@ -5,7 +5,7 @@
     "description": "Introduction to computer science concepts",
     "tag": ["Computer Science", "Technology"],
     "owner": "ownerCS101@email.com",
-    "editors": ["editorCS101_1@email.com", "editorCS101_2@email.com"],
+    "editors": ["editorCS101_1@email.com", "editorCS101_2@email.com", "tkjoseph@ucsc.edu"],
     "last_modified": "2023-10-30T12:00:00Z",
     "chapters": [
       {

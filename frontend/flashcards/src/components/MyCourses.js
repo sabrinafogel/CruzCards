@@ -4,10 +4,13 @@ import React, { useEffect, useState } from "react";
 import "./MyCourses.css";
 import { UserAuth } from "./AuthContext";
 import { Link } from "react-router-dom";
+import { FaPlus } from "react-icons/fa6";
 
 function MyCourses() {
   const [courses, setCourses] = useState([]);
   const { user } = UserAuth();
+
+  var search = "";
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -44,8 +47,25 @@ function MyCourses() {
     return false;
   };
 
+  const searchFeature = async(e) => {
+    //setSearch(e.target.value);
+    search = e.target.value.trim();
+    console.log(search);
+  };
+
   return (
     <div className="Course-wrapper">
+      <div className="heading-wrapper">
+        <h1 className="course-heading">Courses</h1>
+        <div className="input-wrapper">
+          <input className="search-input" placeholder="Search" onChange={searchFeature}></input>
+          <Link to="/new-course">
+            <button className="create-course">
+              <FaPlus />
+            </button>
+          </Link>
+        </div>
+      </div>
       <ul className="scrollable-container">
         {courses.map((item, index) => (
           <Link key={item.id} to={`/courses/${item.id}`}>
