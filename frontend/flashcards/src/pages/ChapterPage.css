@@ -35,6 +35,14 @@
   margin-right: 5px;
 }
 
+.New-set-button {
+  margin-bottom: 10px;
+  background-color: white;
+  margin-right: 20px;
+  margin-top: 20px;
+  width: 40vw;
+}
+
 .create-set {
   padding: 1rem;
   margin-bottom: 10px;
@@ -151,6 +159,7 @@
   gap: 1rem;
   border: transparent;
   position: relative;
+  place-items: center;
 }
 
 .setDisplay {
@@ -189,6 +198,8 @@
 .set-wrapper {
   display: flex;
   flex-direction: row;
+  place-items: center;
+  gap: 15px;
 }
 
 .delete-popup-blur {
@@ -282,4 +293,19 @@
 
 .chapter-namedesc-save-icon:hover {
   color: #036aaa;
+}
+.sets-edit-button {
+  display: flex;
+  margin-top: 23px;
+  height: fit-content;
+  font-size: x-large;
+  place-self: center;
+}
+
+.play-button {
+  scale: 150%;
+}
+
+.play-button:hover {
+  color: rgb(32, 173, 27);
 }

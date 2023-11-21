@@ -4,10 +4,10 @@ import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
 import { FaPlus, FaAngleLeft } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { UserAuth } from "../components/AuthContext";
-import { AiFillEdit } from "react-icons/ai";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
+import { BiPlay } from "react-icons/bi";
 
 function ChapterPage() {
   // Gets these params from the url
@@ -58,7 +58,7 @@ function ChapterPage() {
 
         const course_editors = [rec_course_info.owner];
 
-        rec_course_info.editors.forEach(editor => {
+        rec_course_info.editors.forEach((editor) => {
           course_editors.push(editor);
         });
 
@@ -131,11 +131,11 @@ function ChapterPage() {
 
   const handleChapNameChange = (e) => {
     setChapNameInput(e.target.value);
-  }
+  };
 
   const handleChapDescChange = (e) => {
     setChapDescInput(e.target.value);
-  }
+  };
 
   const handleNameChangeSubmit = async () => {
     setIsChangingName(false);
@@ -158,12 +158,12 @@ function ChapterPage() {
       throw new Error("Network response was not ok");
     }
 
-    const newChapInfo = {...currentChapter};
+    const newChapInfo = { ...currentChapter };
     newChapInfo.name = chapNameInput;
     newChapInfo.description = chapDescInput;
 
     setCurrentChapter(newChapInfo);
-  }
+  };
 
   return (
     <div>
@@ -218,13 +218,16 @@ function ChapterPage() {
             <div>
               <h1 className="chapter-heading">
                 {currentChapter
-                  ? `Chapter ${parseInt(chapterIndex) + 1}: ${currentChapter.name}`
+                  ? `Chapter ${parseInt(chapterIndex) + 1}: ${
+                      currentChapter.name
+                    }`
                   : "Loading..."}
               </h1>
               {isEditor ? (
-              <AiFillEdit 
-                className="chapter-namedesc-edit-icon" 
-                onClick={(e) => setIsChangingName(true)}/>
+                <AiFillEdit
+                  className="chapter-namedesc-edit-icon"
+                  onClick={(e) => setIsChangingName(true)}
+                />
               ) : null}
             </div>
           ) : (
@@ -238,10 +241,11 @@ function ChapterPage() {
               />
               <FaCheck
                 className="chapter-namedesc-edit-icon"
-                onClick={handleNameChangeSubmit} />
-            </div> 
+                onClick={handleNameChangeSubmit}
+              />
+            </div>
           )}
-          
+
           {/* Search to look through your sets (NOT IMPLEMENTED) */}
           <div className="input-wrapper">
             <input className="search-input" placeholder="Search" />
@@ -250,11 +254,16 @@ function ChapterPage() {
 
         {!isChangingDesc ? (
           <div>
-            <p className="description">{currentChapter.description ? currentChapter.description : "No Description"}</p>
+            <p className="description">
+              {currentChapter.description
+                ? currentChapter.description
+                : "No Description"}
+            </p>
             {isEditor ? (
               <AiFillEdit
                 className="chapter-namedesc-edit-icon"
-                onClick={(e) => setIsChangingDesc(true)} />
+                onClick={(e) => setIsChangingDesc(true)}
+              />
             ) : null}
           </div>
         ) : (
@@ -268,10 +277,11 @@ function ChapterPage() {
             />
             <FaCheck
               className="chapter-namedesc-edit-icon"
-              onClick={handleNameChangeSubmit} />
+              onClick={handleNameChangeSubmit}
+            />
           </div>
         )}
-        
+
         {/* New Set button */}
         {isEditor ? (
           <Link to={`/courses/${courseid}/${chapterIndex}/new-set/`}>
@@ -283,6 +293,17 @@ function ChapterPage() {
             </button>
           </Link>
         ) : null}
+        <Link
+          to={`/courses/${courseid}/${chapterIndex}/new-set/`}
+          className="New-set-button"
+        >
+          <button className="create-set">
+            <div className="new-set-text">New Set</div>
+            <div className="new-set-icon">
+              <FaPlus />
+            </div>
+          </button>
+        </Link>
       </div>
       {/* Div for the sets */}
       <div className="setDisplay">
@@ -290,14 +311,24 @@ function ChapterPage() {
           {/* Maps all of the sets with this format */}
           {sets?.map((set, setIndex) => (
             <div className="set-wrapper">
+              <button className={`sets color-${setIndex % 4}`}>
+                <h1>{set.name}</h1>
+                <Link
+                  to={`/courses/${courseid}/${chapterIndex}/${setIndex}/play-set`}
+                >
+                  <button>
+                    <BiPlay className="play-button" />
+                  </button>
+                </Link>
+              </button>
               {/* Link to EditSetPage */}
               <Link
                 key={setIndex}
                 className="link-fix"
                 to={`/courses/${courseid}/${chapterIndex}/${setIndex}`}
               >
-                <button className={`sets color-${setIndex % 4}`}>
-                  <h1>{set.name}</h1>
+                <button className="sets-edit-button">
+                  <AiFillEdit />
                 </button>
               </Link>
               {/* Delete Button */}
@@ -309,7 +340,6 @@ function ChapterPage() {
                   <AiFillDelete className="delete-icon" />
                 </button>
               ) : null}
-              
             </div>
           ))}
         </ul>

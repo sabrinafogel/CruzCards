@@ -156,16 +156,28 @@ function NewSet() {
                   <div className="modal">
                     <textarea
                       value={cardFront}
-                      onChange={(e) => setCardFront(e.target.value)}
+                      onChange={(e) => {
+                        if (e.target.value.length < 150) {
+                          setCardFront(e.target.value);
+                        }
+                      }}
                       className="card-description"
                       placeholder="Front of card"
                     />
                     <textarea
                       value={cardBack}
-                      onChange={(e) => setCardBack(e.target.value)}
+                      onChange={(e) => {
+                        if (e.target.value.length < 250) {
+                          setCardBack(e.target.value);
+                        }
+                      }}
                       className="card-description"
                       placeholder="Back of card"
                     />
+                  </div>
+                  <div className="char-count-wrapper">
+                    <p>{cardFront.length}/150</p>
+                    <p>{cardBack.length}/250</p>
                   </div>
                   <div className="modal-button-wrap">
                     <button className="course-save" onClick={addNewCard}>

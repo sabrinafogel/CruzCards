@@ -1,0 +1,34 @@
+.Sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #d2ba50;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.25rem;
+  font-weight: 700;
+  background-color: #1a3b68;
+  border-right: 2px solid #112647;
+  box-shadow: 1px 1px 35px rgb(0, 0, 0, 0.8);
+  position: fixed;
+  left: -200px;
+  width: 120px;
+  height: 100vh;
+  padding: 20px;
+  z-index: 9999;
+  transition: left 0.8s ease-in-out;
+}
+
+.Sidebar.SidebarOpened {
+  display: flex;
+  position: fixed;
+  left: 0;
+}
+
+.close-button {
+  display: flex;
+  width: 100%;
+  place-content: flex-end;
+  flex-direction: row;
+}
