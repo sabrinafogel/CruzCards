@@ -7,12 +7,13 @@
   flex-direction: column;
 }
 
-.course-heading {
+.chapter-heading {
   font-size: 2rem;
   font-weight: 700;
   min-width: fit-content;
   color: #000000;
   text-align: start;
+  display: inline-block;
 }
 
 .heading-wrapper {
@@ -261,4 +262,24 @@
   color: rgba(90, 90, 90, 0.9);
   scale: 80%;
   margin-top: 3px;
+}
+
+.chapter-namedesc-edit-icon {
+  scale: 150%;
+  color: #022d47;
+  display: inline-block;
+}
+
+.chapter-namedesc-edit-icon:hover {
+  color: #036aaa;
+}
+
+.chapter-namedesc-save-icon {
+  scale: 150%;
+  color: #022d47;
+  display: inline-block;
+}
+
+.chapter-namedesc-save-icon:hover {
+  color: #036aaa;
 }

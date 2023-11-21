@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-dummydata = require("./classes.json");
+dummydata = require("../classes.json");
 const fs = require("fs");
 var admin = require("firebase-admin");
 var serviceAccount = require("./serviceAccountKey.json");
