@@ -6,6 +6,7 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 function CardViewer({ setPlaying, cards }) {
   const [isflipped, setIsFlipped] = useState(false);
   const [shuffledCards, setShuffledCards] = useState([]);
+  const [isLoading, setisLoading] = useState(true);
 
   useState(() => {
     const shuffleArray = (cards) => {
@@ -16,15 +17,19 @@ function CardViewer({ setPlaying, cards }) {
         newCards[i] = newCards[j];
         newCards[j] = temp;
       }
+      for (var a = 0; a < newCards.length; a++) {
+        newCards[a].marked = false;
+      }
       setShuffledCards(newCards);
     };
     shuffleArray(cards);
-  }, [cards]);
+    setisLoading(false);
+  }, [cards, setPlaying]);
 
   const [currindex, setCurrIndex] = useState(0);
 
   const nextCard = () => {
-    if (currindex !== cards.length - 1) {
+    if (currindex !== shuffledCards.length - 1) {
       if (isflipped !== false) {
         setIsFlipped(false);
         setTimeout(() => {
@@ -48,6 +53,20 @@ function CardViewer({ setPlaying, cards }) {
       }
     }
   };
+
+  const handleMark = () => {
+    let newShuffledCards = [...shuffledCards];
+    let duplicatedCard = { ...newShuffledCards[currindex] };
+    duplicatedCard.marked = false;
+    newShuffledCards.push(duplicatedCard);
+    newShuffledCards[currindex].marked = true;
+    setShuffledCards(newShuffledCards);
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="card-viewer-blur">
       <div className="card-view-modal-container">
@@ -67,10 +86,14 @@ function CardViewer({ setPlaying, cards }) {
 
           <div className={`card-viewing ${isflipped ? "flipped" : ""}`}>
             <div className={`card-viewing-front`}>
-              <p>{cards[currindex].front}</p>
+              {shuffledCards[currindex] ? (
+                <p>{shuffledCards[currindex].front}</p>
+              ) : null}
             </div>
             <div className={`card-viewing-back`}>
-              <p>{cards[currindex].back}</p>
+              {shuffledCards[currindex] ? (
+                <p>{shuffledCards[currindex].back}</p>
+              ) : null}
             </div>
           </div>
         </div>
@@ -81,9 +104,14 @@ function CardViewer({ setPlaying, cards }) {
           >
             <FaArrowLeftLong />
           </button>
+          {shuffledCards[currindex].marked === false ? (
+            <button className="mark-card" onClick={() => handleMark()}>
+              Mark Card for Review
+            </button>
+          ) : null}
           <button
             className={`card-next-button ${
-              currindex === cards.length - 1 ? "last" : ""
+              currindex === shuffledCards.length - 1 ? "last" : ""
             }`}
             onClick={() => nextCard()}
           >

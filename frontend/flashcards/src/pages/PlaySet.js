@@ -12,6 +12,7 @@ function PlaySet() {
   const [course_info, setCourseInfo] = useState();
   const [cards, setCards] = useState([]);
   const [playing, setPlaying] = useState(false);
+  const [markedCards, setMarkedCards] = useState([]);
 
   useEffect(() => {
     const fetchCourseInfo = async () => {
@@ -61,7 +62,14 @@ function PlaySet() {
   return (
     <div>
       <Navbar />
-      {playing ? <CardViewer setPlaying={setPlaying} cards={cards} /> : null}
+      {playing ? (
+        <CardViewer
+          setPlaying={setPlaying}
+          cards={cards}
+          markedCards={markedCards}
+          setMarkedCards={setMarkedCards}
+        />
+      ) : null}
       <div className="play-heading">
         <button className="back-nav">
           <Link to={`/courses/${courseid}`}>

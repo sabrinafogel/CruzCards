@@ -29,6 +29,6 @@
 .close-button {
   display: flex;
   width: 100%;
-  place-content: end;
+  place-content: flex-end;
   flex-direction: row;
 }
