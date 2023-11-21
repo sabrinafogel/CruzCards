@@ -293,17 +293,6 @@ function ChapterPage() {
             </button>
           </Link>
         ) : null}
-        <Link
-          to={`/courses/${courseid}/${chapterIndex}/new-set/`}
-          className="New-set-button"
-        >
-          <button className="create-set">
-            <div className="new-set-text">New Set</div>
-            <div className="new-set-icon">
-              <FaPlus />
-            </div>
-          </button>
-        </Link>
       </div>
       {/* Div for the sets */}
       <div className="setDisplay">
