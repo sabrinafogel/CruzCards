@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 
 function MyCourses() {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses, searchedCourses] = useState([]);
   const { user } = UserAuth();
 
   var search = "";
@@ -47,10 +47,30 @@ function MyCourses() {
     return false;
   };
 
+  // Search feature for MyCourses
   const searchFeature = async(e) => {
     //setSearch(e.target.value);
     search = e.target.value.trim();
-    console.log(search);
+      if (search === ""){
+        setCourses(searchedCourses);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:8080/searchcourse?search=${encodeURIComponent(search)}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const searchedCourses = await response.json();
+        setCourses(searchedCourses);
+        
+      } catch (error) {
+        console.error("Error:", error);
+      }
   };
 
   return (
