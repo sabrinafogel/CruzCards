@@ -7,6 +7,7 @@ function CardViewer({ setPlaying, cards }) {
   const [isflipped, setIsFlipped] = useState(false);
   const [shuffledCards, setShuffledCards] = useState([]);
   const [isLoading, setisLoading] = useState(true);
+  const [highIndexNum, setHighIndexNum] = useState(0);
 
   useState(() => {
     const shuffleArray = (cards) => {
@@ -29,13 +30,18 @@ function CardViewer({ setPlaying, cards }) {
   const [currindex, setCurrIndex] = useState(0);
 
   const nextCard = () => {
-    if (currindex !== shuffledCards.length - 1) {
+    if (
+      currindex !== shuffledCards.length - 1 &&
+      shuffledCards[currindex].marked === true
+    ) {
       if (isflipped !== false) {
         setIsFlipped(false);
         setTimeout(() => {
+          setHighIndexNum(currindex + 1);
           setCurrIndex(currindex + 1);
         }, 1000);
       } else {
+        setHighIndexNum(currindex + 1);
         setCurrIndex(currindex + 1);
       }
     }
@@ -61,6 +67,19 @@ function CardViewer({ setPlaying, cards }) {
     newShuffledCards.push(duplicatedCard);
     newShuffledCards[currindex].marked = true;
     setShuffledCards(newShuffledCards);
+    setHighIndexNum(currindex + 1);
+    setIsFlipped(false);
+    setTimeout(() => {
+      setHighIndexNum(currindex + 1);
+      setCurrIndex(currindex + 1);
+    }, 1000);
+  };
+
+  const handleRight = () => {
+    let newShuffledCards = [...shuffledCards];
+    newShuffledCards[currindex].marked = true;
+    setShuffledCards(newShuffledCards);
+    nextCard();
   };
 
   if (isLoading) {
@@ -77,46 +96,55 @@ function CardViewer({ setPlaying, cards }) {
             }}
           />
         </button>
-        <div
-          className="card-viewing-container"
-          onClick={() => setIsFlipped(!isflipped)}
-        >
-          {console.log(currindex)}
-          {console.log(shuffledCards)}
-
-          <div className={`card-viewing ${isflipped ? "flipped" : ""}`}>
-            <div className={`card-viewing-front`}>
-              {shuffledCards[currindex] ? (
-                <p>{shuffledCards[currindex].front}</p>
-              ) : null}
-            </div>
-            <div className={`card-viewing-back`}>
-              {shuffledCards[currindex] ? (
-                <p>{shuffledCards[currindex].back}</p>
-              ) : null}
-            </div>
-          </div>
-        </div>
-        <div className="card-nav-buttons">
+        <div className="card-buttons">
           <button
             className={`card-prev-button ${currindex === 0 ? "first" : ""}`}
             onClick={() => prevCard()}
           >
             <FaArrowLeftLong />
           </button>
-          {shuffledCards[currindex].marked === false ? (
-            <button className="mark-card" onClick={() => handleMark()}>
-              Mark Card for Review
-            </button>
-          ) : null}
+          <div
+            className="card-viewing-container"
+            onClick={() => setIsFlipped(!isflipped)}
+          >
+            {console.log(currindex)}
+            {console.log(shuffledCards)}
+
+            <div className={`card-viewing ${isflipped ? "flipped" : ""}`}>
+              <div className={`card-viewing-front`}>
+                {shuffledCards[currindex] ? (
+                  <p>{shuffledCards[currindex].front}</p>
+                ) : null}
+              </div>
+              <div className={`card-viewing-back`}>
+                {shuffledCards[currindex] ? (
+                  <p>{shuffledCards[currindex].back}</p>
+                ) : null}
+              </div>
+            </div>
+          </div>
+
           <button
             className={`card-next-button ${
               currindex === shuffledCards.length - 1 ? "last" : ""
-            }`}
+            } ${currindex === highIndexNum ? "not_answered" : ""}`}
             onClick={() => nextCard()}
           >
             <FaArrowRightLong />
           </button>
+        </div>
+
+        <div className="card-nav-buttons">
+          {shuffledCards[currindex].marked === false ? (
+            <>
+              <button className="mark-card-right" onClick={() => handleRight()}>
+                Right
+              </button>
+              <button className="mark-card-wrong" onClick={() => handleMark()}>
+                Wrong
+              </button>
+            </>
+          ) : null}
         </div>
       </div>
     </div>

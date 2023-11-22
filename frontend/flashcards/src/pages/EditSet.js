@@ -141,7 +141,7 @@ function EditSet() {
 
         const course_editors = [course_info.owner];
 
-        course_info.editors.forEach(editor => {
+        course_info.editors.forEach((editor) => {
           course_editors.push(editor);
         });
 
@@ -150,7 +150,6 @@ function EditSet() {
         } else {
           setIsEditor(false);
         }
-
       } catch (error) {
         console.error("Error:", error);
       }
@@ -232,7 +231,10 @@ function EditSet() {
 
                 <FaAngleRight className="angle-right" />
 
-                <Link className="Link-tree" to={`/courses/${courseid}/chapters/${index}`}>
+                <Link
+                  className="Link-tree"
+                  to={`/courses/${courseid}/chapters/${index}`}
+                >
                   <p>{currentChapter.name}</p>
                 </Link>
 
@@ -276,7 +278,10 @@ function EditSet() {
           {/* The background for the mock card for the add card button */}
           <div className="set-new-card-button-container">
             {/* The button inside the mock card to add a card */}
-            <button className="set-edit-new-card-button" onClick={showaddNewCard}>
+            <button
+              className="set-edit-new-card-button"
+              onClick={showaddNewCard}
+            >
               <AiFillPlusCircle className="plus-button" />
             </button>
             {/* This conditionally renders the add card pop for the user after clicking add card button */}
@@ -287,16 +292,28 @@ function EditSet() {
                     {/* front and back text-editors */}
                     <textarea
                       value={cardFront}
-                      onChange={(e) => setCardFront(e.target.value)}
+                      onChange={(e) => {
+                        if (e.target.value.length < 150) {
+                          setCardFront(e.target.value);
+                        }
+                      }}
                       className="card-description"
                       placeholder="Front of card"
                     />
                     <textarea
                       value={cardBack}
-                      onChange={(e) => setCardBack(e.target.value)}
+                      onChange={(e) => {
+                        if (e.target.value.length < 250) {
+                          setCardBack(e.target.value);
+                        }
+                      }}
                       className="card-description"
                       placeholder="Back of card"
                     />
+                  </div>
+                  <div className="char-count-wrapper">
+                    <p>{cardFront.length}/150</p>
+                    <p>{cardBack.length}/250</p>
                   </div>
                   {/* Save and Cancel buttons */}
                   <div className="modal-button-wrap">

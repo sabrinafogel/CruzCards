@@ -85,10 +85,13 @@
 .card-next-button,
 .card-prev-button {
   transition: all 0.5s ease-in-out;
+  color: white;
+  scale: 200%;
 }
 
 .card-prev-button.first,
-.card-next-button.last {
+.card-next-button.last,
+.card-next-button.not_answered {
   color: rgb(141, 132, 132);
 }
 
@@ -100,22 +103,40 @@
 }
 
 .card-nav-buttons {
+  position: fixed;
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 15px;
   margin-top: 100px;
   color: white;
+  top: calc(50vh + 100px);
 }
 
-.mark-card {
+.mark-card-right,
+.mark-card-wrong {
   border: 2px solid #006aac;
   padding: 5px;
   border-radius: 0.5rem;
   transition: all 0.5s ease-in-out;
+  font-weight: bold;
 }
 
-.mark-card:hover {
-  background-color: #006aac;
+.mark-card-right:hover {
+  background-color: rgb(0, 172, 72);
   color: black;
+  border: 2px solid transparent;
+}
+
+.mark-card-wrong:hover {
+  background-color: rgb(209, 35, 43);
+  color: black;
+  border: 2px solid transparent;
+}
+
+.card-buttons {
+  display: flex;
+  flex-direction: row;
+  place-items: center;
+  gap: 25px;
 }
