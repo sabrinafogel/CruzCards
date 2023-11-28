@@ -214,7 +214,7 @@ app.post("/editChapter", async (req, res) => {
   }
 });
 
-app.get("/searchcourse", async (req, res) => {
+app.get("/searchchapter", async (req, res) => {
   try {
     const ref = db.collection("courses").doc(req.query.courseid);
     const doc = await ref.get();
@@ -242,13 +242,13 @@ app.get("/searchcourse", async (req, res) => {
       }
     }
     
-    console.log("/searchcourse fetch");
+    console.log("/searchchapter fetch");
     return res
       .status(200)
       .send({ chapters: searchChapters });
   } catch (error) {
     console.error("Error fetching documents: ", error);
-    return res.status(500).send({ error: "Failed to fetch course info." });
+    return res.status(500).send({ error: "Failed to fetch chapter info." });
   }
 });
 

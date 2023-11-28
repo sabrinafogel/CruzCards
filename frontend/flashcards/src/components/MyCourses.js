@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 
 function MyCourses() {
-  const [courses, setCourses, searchedCourses] = useState([]);
+  const [courses, setCourses] = useState([]);
   const { user } = UserAuth();
 
   var search = "";
+  const [searchCourses, setSearchCourses] = useState([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -26,12 +27,15 @@ function MyCourses() {
         const courses = await response.json();
 
         setCourses(courses);
+        setSearchCourses(courses);
+        
       } catch (error) {
         console.error("Error:", error);
       }
     };
 
     fetchCourses();
+    
   }, [user.email]);
 
   const breakAll = (str) => {
@@ -49,28 +53,35 @@ function MyCourses() {
 
   // Search feature for MyCourses
   const searchFeature = async(e) => {
-    //setSearch(e.target.value);
     search = e.target.value.trim();
-      if (search === ""){
-        setCourses(searchedCourses);
-        return;
-      }
+    if (search === ""){
+      setSearchCourses(courses);
+      return;
+    }
 
-      try {
-        const response = await fetch(
-          `http://localhost:8080/searchcourse?search=${encodeURIComponent(search)}`
-        );
+    const searchChapters = [];
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+    try{
+      for (let i = 0; i < courses.length; i++){
+        if ((courses[i].name.toLowerCase()).startsWith(search.toLowerCase())){
+          searchChapters.push(courses[i]);
         }
+        if (typeof courses[i].tags !== 'undefined'){
+          const course_tags = (courses[i].tags).map(element => {
+            return element.toLowerCase();
+          });
 
-        const searchedCourses = await response.json();
-        setCourses(searchedCourses);
-        
-      } catch (error) {
-        console.error("Error:", error);
+          const stat = course_tags.find(entry => entry.startsWith(search.toLowerCase()));
+          if (stat !== undefined && searchChapters.indexOf(courses[i]) === -1){
+            searchChapters.push(courses[i]);
+          }
+        }
       }
+      setSearchCourses(searchChapters);
+    }
+    catch (error){
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -87,7 +98,7 @@ function MyCourses() {
         </div>
       </div>
       <ul className="scrollable-container">
-        {courses.map((item, index) => (
+        {searchCourses.map((item, index) => (
           <Link key={item.id} to={`/courses/${item.id}`}>
             <li
               key={index}

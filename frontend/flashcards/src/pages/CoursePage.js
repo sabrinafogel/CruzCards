@@ -67,7 +67,7 @@ function CoursePage() {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/searchcourse?search=${encodeURIComponent(search)}&courseid=${encodeURIComponent(courseid)}`
+          `http://localhost:8080/searchchapter?search=${encodeURIComponent(search)}&courseid=${encodeURIComponent(courseid)}`
         );
 
         if (!response.ok) {
