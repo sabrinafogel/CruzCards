@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-dummydata = require("../classes.json");
+dummydata = require("./classes.json");
 const fs = require("fs");
 var admin = require("firebase-admin");
 var serviceAccount = require("./serviceAccountKey.json");
@@ -238,7 +238,7 @@ app.post("/editChapter", async (req, res) => {
 });
 
 app.post("/editCourse", async (req, res) => {
-  const {id, name, description, course_tags } = req.body;
+  const { id, name, description, course_tags } = req.body;
   let courseindex = dummydata.findIndex((course) => course.id === Number(id));
   console.log("/editCourse fetch");
 
@@ -256,7 +256,7 @@ app.post("/editCourse", async (req, res) => {
   } catch (err) {
     console.log("Error writing or reading file:", err);
   }
-})
+});
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server is running on port ${port}`));

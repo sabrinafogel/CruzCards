@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./CardViewer.css";
 import { FaTimes } from "react-icons/fa";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+import { TfiReload } from "react-icons/tfi";
 
 function CardViewer({ setPlaying, cards }) {
   const [isflipped, setIsFlipped] = useState(false);
@@ -11,7 +12,7 @@ function CardViewer({ setPlaying, cards }) {
 
   useState(() => {
     const shuffleArray = (cards) => {
-      const newCards = cards;
+      const newCards = [...cards];
       for (var i = newCards.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
         var temp = newCards[i];
@@ -26,6 +27,21 @@ function CardViewer({ setPlaying, cards }) {
     shuffleArray(cards);
     setisLoading(false);
   }, [cards, setPlaying]);
+
+  const shuffleAgain = () => {
+    const newShuffledCards = [...cards]; // Create a copy of the original array
+    for (let i = newShuffledCards.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = newShuffledCards[i];
+      newShuffledCards[i] = newShuffledCards[j];
+      newShuffledCards[j] = temp;
+    }
+    for (let a = 0; a < newShuffledCards.length; a++) {
+      newShuffledCards[a].marked = false;
+    }
+    setShuffledCards(newShuffledCards);
+    setCurrIndex(0);
+  };
 
   const [currindex, setCurrIndex] = useState(0);
 
@@ -145,6 +161,14 @@ function CardViewer({ setPlaying, cards }) {
               </button>
             </>
           ) : null}
+        </div>
+        <div className="card-reshuffle">
+          <button
+            className="mark-card-right reshuffle"
+            onClick={() => shuffleAgain(cards)}
+          >
+            Reshuffle <TfiReload className="reload" />
+          </button>
         </div>
       </div>
     </div>

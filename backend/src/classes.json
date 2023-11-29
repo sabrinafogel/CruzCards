@@ -16,8 +16,26 @@
             "creator": "creatorPython@email.com",
             "last_modified": "2023-10-29T15:00:00Z",
             "cards": [
-              {"front": "What is a variable?", "back": "A container for storing data values."},
-              {"front": "What is a function?", "back": "A block of code that performs a specific task."}
+              {
+                "front": "What is a variable?",
+                "back": "A container for storing data values."
+              },
+              {
+                "front": "What is a function?",
+                "back": "A block of code that performs a specific task."
+              },
+              {
+                "front": "What is a loop?",
+                "back": "A way to repeat a block of code until a certain condition is met."
+              },
+              {
+                "front": "How do you comment in Python?",
+                "back": "Using the '#' symbol."
+              },
+              {
+                "front": "What is the 'print' function used for?",
+                "back": "To display output on the console."
+              }
             ]
           },
           {
@@ -25,8 +43,26 @@
             "creator": "creatorDataStructures@email.com",
             "last_modified": "2023-10-28T16:00:00Z",
             "cards": [
-              {"front": "What is an array?", "back": "A data structure that stores a collection of elements."},
-              {"front": "Define a linked list.", "back": "A linear data structure where elements are linked using pointers."}
+              {
+                "front": "What is an array?",
+                "back": "A data structure that stores a collection of elements."
+              },
+              {
+                "front": "Define a linked list.",
+                "back": "A linear data structure where elements are linked using pointers."
+              },
+              {
+                "front": "What is a stack?",
+                "back": "A data structure that follows the Last In, First Out (LIFO) principle."
+              },
+              {
+                "front": "Explain the concept of a queue.",
+                "back": "A data structure that follows the First In, First Out (FIFO) principle."
+              },
+              {
+                "front": "What is a hash table?",
+                "back": "A data structure that maps keys to values, allowing for efficient retrieval."
+              }
             ]
           }
         ]
@@ -50,8 +86,14 @@
             "creator": "creatorPavlov@email.com",
             "last_modified": "2023-10-29T16:00:00Z",
             "cards": [
-              {"front": "What is classical conditioning?", "back": "Learning through association between a stimulus and a response."},
-              {"front": "Who conducted the famous 'Pavlov's dogs' experiment?", "back": "Ivan Pavlov"}
+              {
+                "front": "What is classical conditioning?",
+                "back": "Learning through association between a stimulus and a response."
+              },
+              {
+                "front": "Who conducted the famous 'Pavlov's dogs' experiment?",
+                "back": "Ivan Pavlov"
+              }
             ]
           }
         ]
@@ -64,7 +106,10 @@
     "description": "Exploring the history of art and artists",
     "tag": ["Art", "History"],
     "owner": "ownerArtHistory101@email.com",
-    "editors": ["editorArtHistory101_1@email.com", "editorArtHistory101_2@email.com"],
+    "editors": [
+      "editorArtHistory101_1@email.com",
+      "editorArtHistory101_2@email.com"
+    ],
     "last_modified": "2023-10-30T14:00:00Z",
     "chapters": [
       {
@@ -75,8 +120,14 @@
             "creator": "creatorDaVinci@email.com",
             "last_modified": "2023-10-29T17:00:00Z",
             "cards": [
-              {"front": "What is Leonardo da Vinci known for?", "back": "Mona Lisa, The Last Supper, Vitruvian Man."},
-              {"front": "In which field did da Vinci make significant contributions?", "back": "Art, Science, and Engineering."}
+              {
+                "front": "What is Leonardo da Vinci known for?",
+                "back": "Mona Lisa, The Last Supper, Vitruvian Man."
+              },
+              {
+                "front": "In which field did da Vinci make significant contributions?",
+                "back": "Art, Science, and Engineering."
+              }
             ]
           },
           {
@@ -84,8 +135,14 @@
             "creator": "creatorMichelangelo@email.com",
             "last_modified": "2023-10-28T18:00:00Z",
             "cards": [
-              {"front": "What famous sculpture did Michelangelo create?", "back": "David."},
-              {"front": "Where can the Sistine Chapel be found?", "back": "Vatican City."}
+              {
+                "front": "What famous sculpture did Michelangelo create?",
+                "back": "David."
+              },
+              {
+                "front": "Where can the Sistine Chapel be found?",
+                "back": "Vatican City."
+              }
             ]
           }
         ]
@@ -98,7 +155,10 @@
     "description": "Fundamental concepts in chemistry",
     "tag": ["Science", "Chemistry"],
     "owner": "ownerChemistry101@email.com",
-    "editors": ["editorChemistry101_1@email.com", "editorChemistry101_2@email.com"],
+    "editors": [
+      "editorChemistry101_1@email.com",
+      "editorChemistry101_2@email.com"
+    ],
     "last_modified": "2023-10-30T15:00:00Z",
     "chapters": [
       {
@@ -109,8 +169,14 @@
             "creator": "creatorSubatomic@email.com",
             "last_modified": "2023-10-29T19:00:00Z",
             "cards": [
-              {"front": "What are protons?", "back": "Positively charged particles in an atomic nucleus."},
-              {"front": "What is the charge of an electron?", "back": "Negative."}
+              {
+                "front": "What are protons?",
+                "back": "Positively charged particles in an atomic nucleus."
+              },
+              {
+                "front": "What is the charge of an electron?",
+                "back": "Negative."
+              }
             ]
           }
         ]
@@ -134,8 +200,11 @@
             "creator": "creatorMacbeth@email.com",
             "last_modified": "2023-10-29T20:00:00Z",
             "cards": [
-              {"front": "Who wrote Macbeth?", "back": "William Shakespeare."},
-              {"front": "What is the famous line from Macbeth?", "back": "\"Out, damned spot!\""}
+              { "front": "Who wrote Macbeth?", "back": "William Shakespeare." },
+              {
+                "front": "What is the famous line from Macbeth?",
+                "back": "\"Out, damned spot!\""
+              }
             ]
           }
         ]
@@ -148,7 +217,10 @@
     "description": "Exploring geographical concepts",
     "tag": ["Geography", "Education"],
     "owner": "ownerGeography101@email.com",
-    "editors": ["editorGeography101_1@email.com", "editorGeography101_2@email.com"],
+    "editors": [
+      "editorGeography101_1@email.com",
+      "editorGeography101_2@email.com"
+    ],
     "last_modified": "2023-10-30T17:00:00Z",
     "chapters": [
       {
@@ -159,8 +231,8 @@
             "creator": "creatorEurope@email.com",
             "last_modified": "2023-10-29T21:00:00Z",
             "cards": [
-              {"front": "What is the capital of France?", "back": "Paris."},
-              {"front": "Capital of Italy?", "back": "Rome."}
+              { "front": "What is the capital of France?", "back": "Paris." },
+              { "front": "Capital of Italy?", "back": "Rome." }
             ]
           }
         ]
@@ -173,7 +245,10 @@
     "description": "Fundamentals of music theory",
     "tag": ["Music", "Education"],
     "owner": "ownerMusicTheory101@email.com",
-    "editors": ["editorMusicTheory101_1@email.com", "editorMusicTheory101_2@email.com"],
+    "editors": [
+      "editorMusicTheory101_1@email.com",
+      "editorMusicTheory101_2@email.com"
+    ],
     "last_modified": "2023-10-30T18:00:00Z",
     "chapters": [
       {
@@ -184,8 +259,14 @@
             "creator": "creatorNotes@email.com",
             "last_modified": "2023-10-29T22:00:00Z",
             "cards": [
-              {"front": "How many notes are there in a standard musical scale?", "back": "Seven."},
-              {"front": "What is a half step?", "back": "The smallest interval between two notes in Western music."}
+              {
+                "front": "How many notes are there in a standard musical scale?",
+                "back": "Seven."
+              },
+              {
+                "front": "What is a half step?",
+                "back": "The smallest interval between two notes in Western music."
+              }
             ]
           }
         ]
@@ -198,7 +279,10 @@
     "description": "Basic concepts in economics",
     "tag": ["Economics", "Social Sciences"],
     "owner": "ownerEconomics101@email.com",
-    "editors": ["editorEconomics101_1@email.com", "editorEconomics101_2@email.com"],
+    "editors": [
+      "editorEconomics101_1@email.com",
+      "editorEconomics101_2@email.com"
+    ],
     "last_modified": "2023-10-30T19:00:00Z",
     "chapters": [
       {
@@ -209,8 +293,14 @@
             "creator": "creatorDemand@email.com",
             "last_modified": "2023-10-29T23:00:00Z",
             "cards": [
-              {"front": "What does the Law of Demand state?", "back": "As the price of a good decreases, the quantity demanded increases."},
-              {"front": "What factors influence demand?", "back": "Price, income, preferences, expectations."}
+              {
+                "front": "What does the Law of Demand state?",
+                "back": "As the price of a good decreases, the quantity demanded increases."
+              },
+              {
+                "front": "What factors influence demand?",
+                "back": "Price, income, preferences, expectations."
+              }
             ]
           }
         ]
@@ -234,8 +324,14 @@
             "creator": "creatorCardio@email.com",
             "last_modified": "2023-10-29T00:00:00Z",
             "cards": [
-              {"front": "What are examples of cardiovascular exercises?", "back": "Running, swimming, cycling."},
-              {"front": "What are the benefits of cardiovascular fitness?", "back": "Improved heart health, increased endurance."}
+              {
+                "front": "What are examples of cardiovascular exercises?",
+                "back": "Running, swimming, cycling."
+              },
+              {
+                "front": "What are the benefits of cardiovascular fitness?",
+                "back": "Improved heart health, increased endurance."
+              }
             ]
           }
         ]
@@ -259,8 +355,14 @@
             "creator": "creatorSpanish@email.com",
             "last_modified": "2023-10-30T01:00:00Z",
             "cards": [
-              {"front": "How do you say 'hello' in Spanish?", "back": "'Hola'."},
-              {"front": "What is 'thank you' in Spanish?", "back": "'Gracias'."}
+              {
+                "front": "How do you say 'hello' in Spanish?",
+                "back": "'Hola'."
+              },
+              {
+                "front": "What is 'thank you' in Spanish?",
+                "back": "'Gracias'."
+              }
             ]
           }
         ]
