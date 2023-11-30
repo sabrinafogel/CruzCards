@@ -4,15 +4,17 @@ import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
 import { FaPlus, FaAngleLeft } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { UserAuth } from "../components/AuthContext";
-import { FaAngleRight } from "react-icons/fa";
+import { FaAngleRight, FaCheck } from "react-icons/fa";
+import { BiPlay } from "react-icons/bi";
 
 function ChapterPage() {
   // Gets these params from the url
   const { courseid, chapterIndex } = useParams();
   // Used to keep the course_info and sets for use on the page
   const [course_info, setCourseInfo] = useState({});
+  const [currentChapter, setCurrentChapter] = useState({});
   const [sets, setSets] = useState([]);
   // Keeps the index for what the user wants to delete since the delete popup is located outside of the mapping
   const [deleteindex, setDeleteindex] = useState();
@@ -25,6 +27,12 @@ function ChapterPage() {
 
   var search = "";
   const [searchChapters, setSearchChapters] = useState([]);
+
+  const [isChangingName, setIsChangingName] = useState(false);
+  const [chapNameInput, setChapNameInput] = useState(currentChapter.name);
+
+  const [isChangingDesc, setIsChangingDesc] = useState(false);
+  const [chapDescInput, setChapDescInput] = useState(course_info.description);
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
@@ -42,13 +50,18 @@ function ChapterPage() {
           throw new Error("Network response was not ok");
         }
 
-        const course_info = await response.json();
+        const rec_course_info = await response.json();
+        const rec_chap = rec_course_info.chapters[chapterIndex];
+
         // Sets the returned course_info for future use
-        setCourseInfo(course_info);
+        setCourseInfo(rec_course_info);
+        setCurrentChapter(rec_chap);
+        setChapNameInput(rec_chap.name);
+        setChapDescInput(rec_chap.description);
 
-        const course_editors = [course_info.owner];
+        const course_editors = [rec_course_info.owner];
 
-        course_info.editors.forEach(editor => {
+        rec_course_info.editors.forEach((editor) => {
           course_editors.push(editor);
         });
 
@@ -135,8 +148,41 @@ function ChapterPage() {
     setDeleteindex(index);
   };
 
-  const chapters = course_info.chapters;
-  const currentChapter = chapters[chapterIndex];
+  const handleChapNameChange = (e) => {
+    setChapNameInput(e.target.value);
+  };
+
+  const handleChapDescChange = (e) => {
+    setChapDescInput(e.target.value);
+  };
+
+  const handleNameChangeSubmit = async () => {
+    setIsChangingName(false);
+    setIsChangingDesc(false);
+
+    const response = await fetch("http://localhost:8080/editChapter", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: courseid,
+        index: chapterIndex,
+        name: chapNameInput,
+        description: chapDescInput,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const newChapInfo = { ...currentChapter };
+    newChapInfo.name = chapNameInput;
+    newChapInfo.description = chapDescInput;
+
+    setCurrentChapter(newChapInfo);
+  };
 
   return (
     <div>
@@ -186,22 +232,75 @@ function ChapterPage() {
 
         <div className="heading-wrapper">
           {/* Heading which displays the chapter number and its name */}
-          <h1 className="course-heading">
-            {currentChapter
-              ? `Chapter ${parseInt(chapterIndex) + 1}: ${currentChapter.name}`
-              : "Loading..."}
-          </h1>
+
+          {!isChangingName ? (
+            <div>
+              <h1 className="chapter-heading">
+                {currentChapter
+                  ? `Chapter ${parseInt(chapterIndex) + 1}: ${
+                      currentChapter.name
+                    }`
+                  : "Loading..."}
+              </h1>
+              {isEditor ? (
+                <AiFillEdit
+                  className="chapter-namedesc-edit-icon"
+                  onClick={(e) => setIsChangingName(true)}
+                />
+              ) : null}
+            </div>
+          ) : (
+            <div>
+              <input
+                className="chapter-name-input"
+                placeholder={chapNameInput}
+                value={chapNameInput}
+                onChange={handleChapNameChange}
+                required
+              />
+              <FaCheck
+                className="chapter-namedesc-edit-icon"
+                onClick={handleNameChangeSubmit}
+              />
+            </div>
+          )}
+
           {/* Search to look through your sets (NOT IMPLEMENTED) */}
           <div className="input-wrapper">
             <input className="search-input" placeholder="Search" onChange={searchFeature}/>
           </div>
         </div>
-        {course_info && currentChapter.description ? (
+
+        {!isChangingDesc ? (
           <div>
-            <p>Description:</p>
-            <p className="description">{currentChapter.description}</p>
+            <p className="description">
+              {currentChapter.description
+                ? currentChapter.description
+                : "No Description"}
+            </p>
+            {isEditor ? (
+              <AiFillEdit
+                className="chapter-namedesc-edit-icon"
+                onClick={(e) => setIsChangingDesc(true)}
+              />
+            ) : null}
           </div>
-        ) : null}
+        ) : (
+          <div>
+            <textarea
+              className="chapter-description"
+              placeholder={chapDescInput}
+              value={chapDescInput}
+              onChange={handleChapDescChange}
+              required
+            />
+            <FaCheck
+              className="chapter-namedesc-edit-icon"
+              onClick={handleNameChangeSubmit}
+            />
+          </div>
+        )}
+
         {/* New Set button */}
         {isEditor ? (
           <Link to={`/courses/${courseid}/${chapterIndex}/new-set/`}>
@@ -220,14 +319,24 @@ function ChapterPage() {
           {/* Maps all of the sets with this format */}
           {searchChapters?.map((set, setIndex) => (
             <div className="set-wrapper">
+              <button className={`sets color-${setIndex % 4}`}>
+                <h1>{set.name}</h1>
+                <Link
+                  to={`/courses/${courseid}/${chapterIndex}/${setIndex}/play-set`}
+                >
+                  <button>
+                    <BiPlay className="play-button" />
+                  </button>
+                </Link>
+              </button>
               {/* Link to EditSetPage */}
               <Link
                 key={setIndex}
                 className="link-fix"
                 to={`/courses/${courseid}/${chapterIndex}/${setIndex}`}
               >
-                <button className={`sets color-${setIndex % 4}`}>
-                  <h1>{set.name}</h1>
+                <button className="sets-edit-button">
+                  <AiFillEdit />
                 </button>
               </Link>
               {/* Delete Button */}
@@ -239,7 +348,6 @@ function ChapterPage() {
                   <AiFillDelete className="delete-icon" />
                 </button>
               ) : null}
-              
             </div>
           ))}
         </ul>

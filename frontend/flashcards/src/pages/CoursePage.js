@@ -5,7 +5,7 @@ import { UserAuth } from "../components/AuthContext";
 import { useParams, Link } from "react-router-dom";
 import { FaPlus, FaAngleLeft } from "react-icons/fa6";
 import { AiFillEdit } from "react-icons/ai";
-import { FaAngleRight } from "react-icons/fa";
+import { FaAngleRight, FaCheck } from "react-icons/fa";
 
 function CoursePage() {
   const { user } = UserAuth();
@@ -34,6 +34,7 @@ function CoursePage() {
         const course_info = await response.json();
         setCourseInfo(course_info);
         setSearchChapters(course_info.chapters);
+        setCourseNameInput(course_info.name);
 
         const course_editors = [course_info.owner];
 
@@ -82,6 +83,47 @@ function CoursePage() {
       }
     };
 
+  const [isChangingName, setIsChangingName] = useState(false);
+  const [courseNameInput, setCourseNameInput] = useState(course_info.name);
+
+  const [isChangingDesc, setIsChangingDesc] = useState(false);
+  const [courseDescInput, setCourseDescInput] = useState(course_info.description);
+
+  const handleCourseNameChange = (e) => {
+    setCourseNameInput(e.target.value);
+  }
+
+  const handleCourseDescChange = (e) => {
+    setCourseDescInput(e.target.value);
+  }
+
+  const handleNameChangeSubmit = async (e) => {
+    setIsChangingName(false);
+    setIsChangingDesc(false);
+
+    const response = await fetch("http://localhost:8080/editCourse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: courseid,
+        name: courseNameInput,
+        description: courseDescInput,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const newCourseInfo = {...course_info};
+    newCourseInfo.name = courseNameInput;
+    newCourseInfo.description = courseDescInput;
+
+    setCourseInfo(newCourseInfo);
+  }
+
   return (
     <div>
       <Navbar />
@@ -102,15 +144,59 @@ function CoursePage() {
         </div>
 
         <div className="heading-wrapper">
-          <h1 className="course-heading">{course_info.name}</h1>
+
+          {!isChangingName ? (
+            <div>
+              <h1 className="course-heading">{course_info.name}</h1>
+              {isEditor ? (
+              <AiFillEdit 
+                className="course-namedesc-edit-icon" 
+                onClick={(e) => setIsChangingName(true)}/>
+              ) : null}
+            </div>
+          ) : (
+            <div>
+              <input
+                className="course-name-input"
+                placeholder={courseNameInput}
+                value={courseNameInput}
+                onChange={handleCourseNameChange}
+                required
+              />
+              <FaCheck
+                className="course-namedesc-edit-icon"
+                onClick={handleNameChangeSubmit} />
+            </div>
+          )}
           <div className="input-wrapper">
             <input className="search-input" placeholder="Search by name or tag" onChange={searchFeature}></input>
           </div>
         </div>
 
-        {course_info.description ? (
-          <p className="description">{course_info.description}</p>
-        ) : null}
+        {!isChangingDesc ? (
+          <div>
+            <p className="description">{course_info.description ? course_info.description : "No Description"}</p>
+            {isEditor ? (
+              <AiFillEdit
+                className="course-namedesc-edit-icon"
+                onClick={(e) => setIsChangingDesc(true)} />
+            ) : null}
+          </div>
+        ) : (
+          <div>
+            <textarea
+              className="course-description"
+              placeholder={courseDescInput}
+              value={courseDescInput}
+              onChange={handleCourseDescChange}
+              required
+            />
+            <FaCheck
+              className="course-namedesc-edit-icon"
+              onClick={handleNameChangeSubmit} />
+          </div>
+        )}
+        
 
         {isEditor ? (
           <button className="create-set">

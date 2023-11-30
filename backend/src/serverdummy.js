@@ -30,7 +30,7 @@ app.post("/newcourse", async (req, res) => {
   ];
 
   try {
-    fs.readFile("classes.json", "utf8", function readFileCallback(err, data) {
+    fs.readFile("./classes.json", "utf8", function readFileCallback(err, data) {
       if (err) {
         console.log(err);
       } else {
@@ -49,7 +49,7 @@ app.post("/newcourse", async (req, res) => {
 
         let json = JSON.stringify(arr);
 
-        fs.writeFile("classes.json", json, "utf8", function (err) {
+        fs.writeFile("./classes.json", json, "utf8", function (err) {
           if (err) {
             console.log("Error writing file:", err);
           } else {
@@ -57,7 +57,7 @@ app.post("/newcourse", async (req, res) => {
 
             // Read the JSON file again to reset the data in the server
             try {
-              let data = fs.readFileSync("classes.json", "utf8");
+              let data = fs.readFileSync("./classes.json", "utf8");
               dummydata = JSON.parse(data); // Reset the data in the server
             } catch (err) {
               console.log(err);
@@ -128,13 +128,13 @@ app.post("/newchapter", async (req, res) => {
   let json = JSON.stringify(courses);
 
   // Write the modified JSON back to the file
-  fs.writeFile("classes.json", json, "utf8", function (err) {
+  fs.writeFile("./classes.json", json, "utf8", function (err) {
     if (err) {
       console.log("Error writing file:", err);
     } else {
       console.log("File written successfully");
       try {
-        let data = fs.readFileSync("classes.json", "utf8");
+        let data = fs.readFileSync("./classes.json", "utf8");
         dummydata = JSON.parse(data); // Reset the data in the server
         return res
           .status(200)
@@ -158,9 +158,9 @@ app.post("/newSet", async (req, res) => {
   let json = JSON.stringify(dummydata);
 
   try {
-    fs.writeFileSync("classes.json", json, "utf8");
+    fs.writeFileSync("./classes.json", json, "utf8");
     console.log("File written successfully");
-    let data = fs.readFileSync("classes.json", "utf8");
+    let data = fs.readFileSync("./classes.json", "utf8");
     dummydata = JSON.parse(data); // Reset the data in the server
     return res.status(200).send({ message: "set created successfully." });
   } catch (err) {
@@ -179,9 +179,9 @@ app.post("/editSet", async (req, res) => {
   let json = JSON.stringify(dummydata);
 
   try {
-    fs.writeFileSync("classes.json", json, "utf8");
+    fs.writeFileSync("./classes.json", json, "utf8");
     console.log("File written successfully");
-    let data = fs.readFileSync("classes.json", "utf8");
+    let data = fs.readFileSync("./classes.json", "utf8");
     dummydata = JSON.parse(data); // Reset the data in the server
     return res.status(200).send({ message: "set created successfully." });
   } catch (err) {
@@ -199,9 +199,9 @@ app.post("/deleteSet", async (req, res) => {
   let json = JSON.stringify(dummydata);
 
   try {
-    fs.writeFileSync("classes.json", json, "utf8");
+    fs.writeFileSync("./classes.json", json, "utf8");
     console.log("File written successfully");
-    let data = fs.readFileSync("classes.json", "utf8");
+    let data = fs.readFileSync("./classes.json", "utf8");
     dummydata = JSON.parse(data); // Reset the data in the server
     return res.status(200).send({ message: "set created successfully." });
   } catch (err) {
@@ -227,11 +227,32 @@ app.post("/editChapter", async (req, res) => {
   let json = JSON.stringify(dummydata);
 
   try {
-    fs.writeFileSync("classes.json", json, "utf8");
+    fs.writeFileSync("./classes.json", json, "utf8");
     console.log("File written successfully");
-    let data = fs.readFileSync("classes.json", "utf8");
+    let data = fs.readFileSync("./classes.json", "utf8");
     dummydata = JSON.parse(data); // Reset the data in the server
     return res.status(200).send({ message: "set created successfully." });
+  } catch (err) {
+    console.log("Error writing or reading file:", err);
+  }
+});
+
+app.post("/editCourse", async (req, res) => {
+  const { id, name, description, course_tags } = req.body;
+  let courseindex = dummydata.findIndex((course) => course.id === Number(id));
+  console.log("/editCourse fetch");
+
+  dummydata[courseindex].name = name;
+  dummydata[courseindex].description = description;
+
+  let json = JSON.stringify(dummydata);
+
+  try {
+    fs.writeFileSync("./classes.json", json, "utf8");
+    console.log("File written successfully");
+    let data = fs.readFileSync("./classes.json", "utf8");
+    dummydata = JSON.parse(data); // Reset the data in the server
+    return res.status(200).send({ message: "course edited successfully" });
   } catch (err) {
     console.log("Error writing or reading file:", err);
   }

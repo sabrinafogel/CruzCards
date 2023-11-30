@@ -1,0 +1,165 @@
+.card-viewer-blur {
+  position: fixed;
+  background-color: rgb(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  place-items: center;
+  padding-bottom: 50px;
+}
+
+.card-view-modal-container {
+  position: relative;
+  place-items: center;
+  width: 65vw;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.exit-button {
+  position: absolute;
+  display: flex;
+  justify-self: start;
+  place-self: end;
+  top: 2rem;
+  right: 2rem;
+  scale: 125%;
+  color: white;
+}
+
+.card-viewing-container {
+  perspective: 1000px;
+  width: 45vw;
+  max-width: 600px;
+  height: 400px;
+}
+
+.card-viewing-container:hover {
+  cursor: pointer;
+}
+
+.card-viewing.flipped {
+  cursor: pointer;
+  transform: rotateY(180deg);
+}
+
+.card-viewing {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 1000ms ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.card-viewing-front,
+.card-viewing-back {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  height: 100%;
+  padding: 10px;
+  position: absolute;
+  margin-right: -20px;
+  backface-visibility: hidden;
+  color: #006aac;
+  overflow: auto;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.card-viewing-front {
+  background-color: #f8f8f8;
+  font-weight: bold;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.card-next-button,
+.card-prev-button {
+  transition: all 0.5s ease-in-out;
+  color: white;
+  scale: 200%;
+}
+
+.card-prev-button.first,
+.card-next-button.last,
+.card-next-button.not_answered {
+  color: rgb(141, 132, 132);
+}
+
+.card-viewing-back {
+  background-color: #ddd;
+  transform: rotateY(180deg);
+  font-weight: 500;
+  overflow-x: hidden;
+}
+
+.card-nav-buttons {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 100px;
+  color: white;
+  top: calc(50vh + 100px);
+}
+
+.mark-card-right,
+.mark-card-wrong {
+  border: 2px solid #006aac;
+  padding: 5px;
+  border-radius: 0.5rem;
+  transition: all 0.5s ease-in-out;
+  font-weight: bold;
+}
+
+.mark-card-right:hover {
+  background-color: rgb(0, 172, 72);
+  color: black;
+  border: 2px solid transparent;
+}
+
+.mark-card-wrong:hover {
+  background-color: rgb(209, 35, 43);
+  color: black;
+  border: 2px solid transparent;
+}
+
+.card-buttons {
+  display: flex;
+  flex-direction: row;
+  place-items: center;
+  gap: 25px;
+}
+
+.card-reshuffle {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 100px;
+  color: white;
+  top: calc(50vh + 160px);
+}
+
+.mark-card-right.reshuffle {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  place-items: center;
+}
+
+.mark-card-right.reshuffle:hover > .reload {
+  transition: transform 1000ms ease-in-out;
+  transform: rotateZ(360deg);
+}

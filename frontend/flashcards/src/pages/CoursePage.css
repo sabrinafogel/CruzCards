@@ -11,6 +11,27 @@
   min-width: fit-content;
   color: #000000;
   text-align: start;
+  display: inline;
+}
+
+.course-namedesc-edit-icon {
+  scale: 150%;
+  color: #022d47;
+  display: inline-block;
+}
+
+.course-namedesc-edit-icon:hover {
+  color: #036aaa;
+}
+
+.course-namedesc-save-icon {
+  scale: 150%;
+  color: #022d47;
+  display: inline-block;
+}
+
+.course-namedesc-save-icon:hover {
+  color: #036aaa;
 }
 
 .heading-wrapper {
@@ -136,6 +157,7 @@
 .course-edit-icon {
   scale: 200%;
   color: #022d47;
+  display: inline-block;
 }
 
 .course-edit-icon:hover {
@@ -171,8 +193,38 @@
 .description {
   max-width: 65vw;
   margin-left: 10px;
+  display: inline-block;
 }
 
 .back-nav {
   margin-bottom: 10px;
+}
+
+.course-name-input {
+  padding: 1rem;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  border-width: 1px;
+  max-height: 3rem;
+  width: 60vw;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  margin-right: 5px;
+  transition: 150ms;
+}
+
+.course-description {
+  padding: 1rem;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  border-width: 1px;
+  min-height: 10vw;
+  width: 60vw;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  margin-right: 5px;
+  resize: none;
+  transition: 150ms;
 }

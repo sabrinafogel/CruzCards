@@ -1,0 +1,123 @@
+.play-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 4.5rem;
+  margin-top: 4.5rem;
+}
+
+.play-header {
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: fit-content;
+  color: #000000;
+  text-align: start;
+}
+
+.play-desc {
+  width: 80vw;
+  color: rgb(0, 0, 0, 0.8);
+}
+
+.play-desc.cut {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.desc-show-more {
+  align-self: flex-start;
+  text-decoration: underline;
+}
+
+.desc-show-more:hover {
+  color: #006aac;
+}
+
+.card-grid {
+  margin-left: 4.5rem;
+  margin-top: 2.5rem;
+  margin-right: 4.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 20vw));
+  grid-auto-rows: 220px;
+  gap: 15px;
+  grid-row-gap: 20px;
+  margin-bottom: 2.5rem;
+}
+
+.card-play-container {
+  perspective: 1000px;
+  min-width: 200px;
+  width: 20vw;
+  transition: transform 200ms ease-in-out;
+}
+
+.card-play-container:hover {
+  cursor: pointer;
+  transform: translateY(-10px) scale(105%);
+}
+
+.card-play.flipped {
+  cursor: pointer;
+  transform: rotateY(180deg);
+}
+
+.card-play {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 1000ms ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.card-play-front,
+.card-play-back {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  height: 100%;
+  padding: 10px;
+  position: absolute;
+  backface-visibility: hidden;
+  color: #006aac;
+  overflow: auto;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.card-play-front {
+  background-color: #f8f8f8;
+  font-weight: bold;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.card-play-back {
+  background-color: #ddd;
+  transform: rotateY(180deg);
+  font-weight: 500;
+  overflow-x: hidden;
+}
+
+.play-set-button {
+  background-color: #43c76f;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 1rem;
+  border: solid 1px #288547;
+  margin-left: 4.5rem;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  place-items: center;
+  font-weight: bold;
+  color: rgb(0, 0, 0, 0.8);
+}
+
+.play-set-button:hover {
+  background-color: #51e081;
+}
