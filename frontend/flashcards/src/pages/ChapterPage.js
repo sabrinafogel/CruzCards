@@ -72,8 +72,8 @@ function ChapterPage() {
         }
 
         // Will keep a local copy of the sets for removing sets without extra reads and refreshes
-        setSets(course_info.chapters[chapterIndex].sets);
-        setSearchChapters(course_info.chapters[chapterIndex].sets);
+        setSets(rec_course_info.chapters[chapterIndex].sets);
+        setSearchChapters(rec_course_info.chapters[chapterIndex].sets);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -319,26 +319,22 @@ function ChapterPage() {
           {/* Maps all of the sets with this format */}
           {searchChapters?.map((set, setIndex) => (
             <div className="set-wrapper">
-              <button className={`sets color-${setIndex % 4}`}>
-                <h1>{set.name}</h1>
-                <Link
-                  to={`/courses/${courseid}/${chapterIndex}/${setIndex}/play-set`}
-                >
-                  <button>
-                    <BiPlay className="play-button" />
-                  </button>
-                </Link>
-              </button>
-              {/* Link to EditSetPage */}
               <Link
                 key={setIndex}
                 className="link-fix"
                 to={`/courses/${courseid}/${chapterIndex}/${setIndex}`}
               >
-                <button className="sets-edit-button">
-                  <AiFillEdit />
-                </button>
+                <button className={`sets color-${setIndex % 4}`}>
+                <h1>{set.name}</h1>
+              </button>
               </Link>
+              <Link
+                to={`/courses/${courseid}/${chapterIndex}/${setIndex}/play-set`}
+              >
+                <button>
+                  <BiPlay className="play-button" />
+                </button>
+              </Link>              
               {/* Delete Button */}
               {isEditor ? (
                 <button

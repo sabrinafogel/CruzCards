@@ -223,11 +223,6 @@ function CoursePage() {
                     </h1>
                   </button>
                 </Link>
-                <Link
-                  to={`/courses/${courseid}/chapters/${chapterindex}/chapter-edit`}
-                >
-                  <AiFillEdit className="course-edit-icon" />
-                </Link>
               </div>
             ))}
           </ul>
