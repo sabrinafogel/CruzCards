@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../components/AuthContext";
 import Navbar from "../components/Navbar";
 import "./EditSet.css";
-import { FaPlus, FaAngleLeft } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import { AiFillPlusCircle, AiFillDelete, AiFillEdit } from "react-icons/ai";

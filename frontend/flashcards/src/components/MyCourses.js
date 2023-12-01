@@ -53,7 +53,7 @@ function MyCourses() {
 
   // Search feature for MyCourses
   const searchFeature = async(e) => {
-    search = e.target.value.trim();
+    search = e.target.value.trim().toLowerCase();
     if (search === ""){
       setSearchCourses(courses);
       return;
@@ -63,7 +63,7 @@ function MyCourses() {
 
     try{
       for (let i = 0; i < courses.length; i++){
-        if ((courses[i].name.toLowerCase()).startsWith(search.toLowerCase())){
+        if ((courses[i].name.toLowerCase()).startsWith(search)){
           searchChapters.push(courses[i]);
         }
         if (typeof courses[i].tags !== 'undefined'){
@@ -71,7 +71,7 @@ function MyCourses() {
             return element.toLowerCase();
           });
 
-          const stat = course_tags.find(entry => entry.startsWith(search.toLowerCase()));
+          const stat = course_tags.find(entry => entry.startsWith(search));
           if (stat !== undefined && searchChapters.indexOf(courses[i]) === -1){
             searchChapters.push(courses[i]);
           }
@@ -87,7 +87,7 @@ function MyCourses() {
   return (
     <div className="Course-wrapper">
       <div className="heading-wrapper">
-        <h1 className="course-heading">Courses</h1>
+        <h1 className="course-heading">My Courses</h1>
         <div className="input-wrapper">
           <input className="search-input" placeholder="Search" onChange={searchFeature}></input>
           <Link to="/new-course">
