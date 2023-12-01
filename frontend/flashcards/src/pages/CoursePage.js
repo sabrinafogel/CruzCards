@@ -12,9 +12,9 @@ function CoursePage() {
 
   const { courseid } = useParams();
   const [course_info, setCourseInfo] = useState([]);
-  
+
   const [isEditor, setIsEditor] = useState(false);
-  
+
   var search = "";
   const [searchChapters, setSearchChapters] = useState([]);
 
@@ -38,7 +38,7 @@ function CoursePage() {
 
         const course_editors = [course_info.owner];
 
-        course_info.editors.forEach(editor => {
+        course_info.editors.forEach((editor) => {
           course_editors.push(editor);
         });
 
@@ -47,7 +47,6 @@ function CoursePage() {
         } else {
           setIsEditor(false);
         }
-        
       } catch (error) {
         console.error("Error:", error);
       }
@@ -56,62 +55,67 @@ function CoursePage() {
   }, [courseid, user]);
 
   const chapters = course_info.chapters;
-  
+
   // Search feature
- const searchFeature = async(e) => {
-      //setSearch(e.target.value);
-      search = e.target.value.trim();
-      if (search === ""){
-        setSearchChapters(chapters);
-        return;
+  const searchFeature = async (e) => {
+    //setSearch(e.target.value);
+    search = e.target.value.trim();
+    if (search === "") {
+      setSearchChapters(chapters);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/searchchapter?search=${encodeURIComponent(
+          search
+        )}&courseid=${encodeURIComponent(courseid)}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
 
-      try {
-        const response = await fetch(
-          `http://localhost:8080/searchchapter?search=${encodeURIComponent(search)}&courseid=${encodeURIComponent(courseid)}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const searchChapters = await response.json();
-        setSearchChapters(searchChapters.chapters);
-        
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
+      const searchChapters = await response.json();
+      setSearchChapters(searchChapters.chapters);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const [isChangingName, setIsChangingName] = useState(false);
   const [courseNameInput, setCourseNameInput] = useState(course_info.name);
 
   const [isChangingDesc, setIsChangingDesc] = useState(false);
-  const [courseDescInput, setCourseDescInput] = useState(course_info.description);
+  const [courseDescInput, setCourseDescInput] = useState(
+    course_info.description
+  );
 
   const handleCourseNameChange = (e) => {
     setCourseNameInput(e.target.value);
-  }
+  };
 
   const handleCourseDescChange = (e) => {
     setCourseDescInput(e.target.value);
-  }
+  };
 
   const handleJSONDownload = (e) => {
     const courseJSONData = JSON.stringify(course_info);
-    const blob = new Blob([courseJSONData], { type: 'application/json' });
-    const link = document.createElement('a');
+    const blob = new Blob([courseJSONData], { type: "application/json" });
+    const link = document.createElement("a");
     link.download = `${course_info.name}.json`;
     link.href = window.URL.createObjectURL(blob);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }
+  };
 
   const handleNameChangeSubmit = async (e) => {
     setIsChangingName(false);
     setIsChangingDesc(false);
-
+    if (courseNameInput.length === 0) {
+      return;
+    }
     const response = await fetch("http://localhost:8080/editCourse", {
       method: "POST",
       headers: {
@@ -128,12 +132,12 @@ function CoursePage() {
       throw new Error("Network response was not ok");
     }
 
-    const newCourseInfo = {...course_info};
+    const newCourseInfo = { ...course_info };
     newCourseInfo.name = courseNameInput;
     newCourseInfo.description = courseDescInput;
 
     setCourseInfo(newCourseInfo);
-  }
+  };
 
   return (
     <div>
@@ -155,14 +159,14 @@ function CoursePage() {
         </div>
 
         <div className="heading-wrapper">
-
           {!isChangingName ? (
             <div>
               <h1 className="course-heading">{course_info.name}</h1>
               {isEditor ? (
-              <AiFillEdit 
-                className="course-namedesc-edit-icon" 
-                onClick={(e) => setIsChangingName(true)}/>
+                <AiFillEdit
+                  className="course-namedesc-edit-icon"
+                  onClick={(e) => setIsChangingName(true)}
+                />
               ) : null}
             </div>
           ) : (
@@ -176,21 +180,31 @@ function CoursePage() {
               />
               <FaCheck
                 className="course-namedesc-edit-icon"
-                onClick={handleNameChangeSubmit} />
+                onClick={handleNameChangeSubmit}
+              />
             </div>
           )}
           <div className="input-wrapper">
-            <input className="search-input" placeholder="Search by name or tag" onChange={searchFeature}></input>
+            <input
+              className="search-input"
+              placeholder="Search by name or tag"
+              onChange={searchFeature}
+            ></input>
           </div>
         </div>
 
         {!isChangingDesc ? (
           <div>
-            <p className="description">{course_info.description ? course_info.description : "No Description"}</p>
+            <p className="description">
+              {course_info.description
+                ? course_info.description
+                : "No Description"}
+            </p>
             {isEditor ? (
               <AiFillEdit
                 className="course-namedesc-edit-icon"
-                onClick={(e) => setIsChangingDesc(true)} />
+                onClick={(e) => setIsChangingDesc(true)}
+              />
             ) : null}
           </div>
         ) : (
@@ -204,13 +218,12 @@ function CoursePage() {
             />
             <FaCheck
               className="course-namedesc-edit-icon"
-              onClick={handleNameChangeSubmit} />
+              onClick={handleNameChangeSubmit}
+            />
           </div>
         )}
         <div className="course-download-div">
-          <button
-            className="download-JSON"
-            onClick={handleJSONDownload}>
+          <button className="download-JSON" onClick={handleJSONDownload}>
             Download Course JSON
           </button>
         </div>
