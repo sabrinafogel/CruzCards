@@ -228,3 +228,18 @@
   resize: none;
   transition: 150ms;
 }
+
+.course-download-div {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.download-JSON {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.download-JSON:hover {
+  color: #0056b3;
+}

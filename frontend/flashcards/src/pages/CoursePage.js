@@ -97,6 +97,17 @@ function CoursePage() {
     setCourseDescInput(e.target.value);
   }
 
+  const handleJSONDownload = (e) => {
+    const courseJSONData = JSON.stringify(course_info);
+    const blob = new Blob([courseJSONData], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.download = `${course_info.name}.json`;
+    link.href = window.URL.createObjectURL(blob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   const handleNameChangeSubmit = async (e) => {
     setIsChangingName(false);
     setIsChangingDesc(false);
@@ -196,8 +207,13 @@ function CoursePage() {
               onClick={handleNameChangeSubmit} />
           </div>
         )}
-        
-
+        <div className="course-download-div">
+          <button
+            className="download-JSON"
+            onClick={handleJSONDownload}>
+            Download Course JSON
+          </button>
+        </div>
         {isEditor ? (
           <button className="create-set">
             <div className="new-chapter-text">New Chapter</div>

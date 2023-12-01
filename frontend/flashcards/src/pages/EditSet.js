@@ -205,6 +205,17 @@ function EditSet() {
   const chapters = course_info.chapters;
   const currentChapter = chapters[index];
 
+  const handleJSONDownload = (e) => {
+    const setJSONData = JSON.stringify(set);
+    const blob = new Blob([setJSONData], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.download = `${set.name}.json`;
+    link.href = window.URL.createObjectURL(blob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   return (
     <div>
       {/* Puts the navbar on the top of the screen */}
@@ -273,6 +284,13 @@ function EditSet() {
           </div>
         )}
       </div>
+      <div className="set-download-div">
+          <button
+            className="download-JSON"
+            onClick={handleJSONDownload}>
+            Download Set JSON
+          </button>
+        </div>
       {isEditor ? (
         <div className="new-card-wrapper">
           {/* The background for the mock card for the add card button */}
