@@ -3,11 +3,13 @@ import Navbar from "../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
+import { FaTimes } from "react-icons/fa";
 import "./NewChapter.css";
 
 function NewChapter() {
   const { courseid } = useParams();
   const [noName, setNoName] = useState(false);
+  const [tags, setTags] = useState([]);
   const nameCharlimit = 50;
   const descCharlimit = 250;
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ function NewChapter() {
   const [inputvalues, setInputValues] = useState({
     name: "",
     description: "",
+    tags: [],
   });
 
   const handleInputChange = (e) => {
@@ -29,6 +32,24 @@ function NewChapter() {
         [e.target.name]: value,
       });
     }
+  };
+
+  const handleTagsChange = (e) => {
+    if (e.key !== "Enter"){
+      return;
+    }
+    const new_tag = e.target.value;
+    if (!new_tag.trim()){
+      return;
+    }
+    setTags([...tags, new_tag]);
+
+    e.target.value="";
+
+  };
+
+  const removeTag = (index) => {
+    setTags(tags.filter((el, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -48,6 +69,7 @@ function NewChapter() {
           courseid: courseid,
           name: inputvalues.name,
           description: inputvalues.description,
+          tags: tags,
         }),
       });
 
@@ -95,6 +117,22 @@ function NewChapter() {
         ></textarea>
 
         <p>{inputvalues.description.length}/250</p>
+
+        <div className="chapter-tag-name-input">
+          {tags.map((tag, index) => (
+            <div className="tag" key={index}>
+              <span className="name">{tag}</span>
+              <span className="delete-tag" onClick={() => removeTag(index)}>
+                <FaTimes className="delete-icon" />
+              </span>
+            </div>
+          ))}
+          <input
+            className="tag-input"
+            onKeyDown={handleTagsChange}
+            placeholder="Enter tag"
+          ></input>
+        </div>
 
         <div className="button-wrap">
           <button className="course-save" onClick={handleSubmit}>

@@ -15,6 +15,9 @@ function CoursePage() {
 
   const [isEditor, setIsEditor] = useState(false);
 
+  var search = "";
+  const [searchChapters, setSearchChapters] = useState([]);
+
   useEffect(() => {
     const fetchCourseInfo = async () => {
       try {
@@ -30,6 +33,7 @@ function CoursePage() {
 
         const course_info = await response.json();
         setCourseInfo(course_info);
+        setSearchChapters(course_info.chapters);
         setCourseNameInput(course_info.name);
 
         const course_editors = [course_info.owner];
@@ -52,6 +56,33 @@ function CoursePage() {
 
   const chapters = course_info.chapters;
 
+  // Search feature
+  const searchFeature = async (e) => {
+    //setSearch(e.target.value);
+    search = e.target.value.trim();
+    if (search === "") {
+      setSearchChapters(chapters);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/searchchapter?search=${encodeURIComponent(
+          search
+        )}&courseid=${encodeURIComponent(courseid)}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const searchChapters = await response.json();
+      setSearchChapters(searchChapters.chapters);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   const [isChangingName, setIsChangingName] = useState(false);
   const [courseNameInput, setCourseNameInput] = useState(course_info.name);
 
@@ -66,6 +97,17 @@ function CoursePage() {
 
   const handleCourseDescChange = (e) => {
     setCourseDescInput(e.target.value);
+  };
+
+  const handleJSONDownload = (e) => {
+    const courseJSONData = JSON.stringify(course_info);
+    const blob = new Blob([courseJSONData], { type: "application/json" });
+    const link = document.createElement("a");
+    link.download = `${course_info.name}.json`;
+    link.href = window.URL.createObjectURL(blob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleNameChangeSubmit = async (e) => {
@@ -143,7 +185,11 @@ function CoursePage() {
             </div>
           )}
           <div className="input-wrapper">
-            <input className="search-input" placeholder="Search"></input>
+            <input
+              className="search-input"
+              placeholder="Search by name or tag"
+              onChange={searchFeature}
+            ></input>
           </div>
         </div>
 
@@ -176,7 +222,11 @@ function CoursePage() {
             />
           </div>
         )}
-
+        <div className="course-download-div">
+          <button className="download-JSON" onClick={handleJSONDownload}>
+            Download Course JSON
+          </button>
+        </div>
         {isEditor ? (
           <button className="create-set">
             <div className="new-chapter-text">New Chapter</div>
@@ -190,7 +240,7 @@ function CoursePage() {
 
         <div>
           <ul>
-            {chapters?.map((chapter, chapterindex) => (
+            {searchChapters?.map((chapter, chapterindex) => (
               <div className="chapter-container">
                 <Link
                   className="chapter-button"
@@ -202,13 +252,6 @@ function CoursePage() {
                     </h1>
                   </button>
                 </Link>
-                {isEditor ? (
-                  <Link
-                    to={`/courses/${courseid}/chapters/${chapterindex}/chapter-edit`}
-                  >
-                    <AiFillEdit className="course-edit-icon" />
-                  </Link>
-                ) : null}
               </div>
             ))}
           </ul>

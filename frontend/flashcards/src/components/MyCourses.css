@@ -63,3 +63,29 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: var(--max-lines);
 }
+
+.course-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: fit-content;
+  color: #000000;
+  text-align: start;
+}
+
+.heading-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.search-input {
+  padding: 1rem;
+  margin-bottom: 10px;
+  border-width: 1px;
+  max-height: 3rem;
+  width: 15vw;
+  color: #111827;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  margin-right: 5px;
+}

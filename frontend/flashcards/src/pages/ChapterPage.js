@@ -25,6 +25,9 @@ function ChapterPage() {
 
   const [isEditor, setIsEditor] = useState(false);
 
+  var search = "";
+  const [searchChapters, setSearchChapters] = useState([]);
+
   const [isChangingName, setIsChangingName] = useState(false);
   const [chapNameInput, setChapNameInput] = useState(currentChapter.name);
 
@@ -69,13 +72,29 @@ function ChapterPage() {
         }
 
         // Will keep a local copy of the sets for removing sets without extra reads and refreshes
-        setSets(rec_chap.sets);
+        setSets(rec_course_info.chapters[chapterIndex].sets);
+        setSearchChapters(rec_course_info.chapters[chapterIndex].sets);
       } catch (error) {
         console.error("Error:", error);
       }
     };
     fetchCourseInfo();
   }, [courseid, chapterIndex, user]);
+
+  const searchFeature = async(e) => {
+    search = e.target.value.trim();
+    if (search === ""){
+      setSearchChapters(sets);
+      return;
+    }
+    var newSets = [];
+    for (let i = 0; i < sets.length; i++){
+      if ((sets[i].name.toLowerCase()).startsWith(search.toLowerCase())){
+        newSets.push(sets[i]);
+      }
+    }
+    setSearchChapters(newSets);
+  }
 
   // Returns a loading screen if the fetch hasn't finished yet
   if (!course_info || !course_info.chapters) {
@@ -248,7 +267,7 @@ function ChapterPage() {
 
           {/* Search to look through your sets (NOT IMPLEMENTED) */}
           <div className="input-wrapper">
-            <input className="search-input" placeholder="Search" />
+            <input className="search-input" placeholder="Search" onChange={searchFeature}/>
           </div>
         </div>
 
@@ -298,28 +317,24 @@ function ChapterPage() {
       <div className="setDisplay">
         <ul>
           {/* Maps all of the sets with this format */}
-          {sets?.map((set, setIndex) => (
+          {searchChapters?.map((set, setIndex) => (
             <div className="set-wrapper">
-              <button className={`sets color-${setIndex % 4}`}>
-                <h1>{set.name}</h1>
-                <Link
-                  to={`/courses/${courseid}/${chapterIndex}/${setIndex}/play-set`}
-                >
-                  <button>
-                    <BiPlay className="play-button" />
-                  </button>
-                </Link>
-              </button>
-              {/* Link to EditSetPage */}
               <Link
                 key={setIndex}
                 className="link-fix"
                 to={`/courses/${courseid}/${chapterIndex}/${setIndex}`}
               >
-                <button className="sets-edit-button">
-                  <AiFillEdit />
-                </button>
+                <button className={`sets color-${setIndex % 4}`}>
+                <h1>{set.name}</h1>
+              </button>
               </Link>
+              <Link
+                to={`/courses/${courseid}/${chapterIndex}/${setIndex}/play-set`}
+              >
+                <button>
+                  <BiPlay className="play-button" />
+                </button>
+              </Link>              
               {/* Delete Button */}
               {isEditor ? (
                 <button

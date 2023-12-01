@@ -192,6 +192,7 @@
   font-size: x-large;
   color: red;
   margin-top: 20px;
+  margin-left: 5px;
   place-self: center;
 }
 
@@ -303,7 +304,8 @@
 }
 
 .play-button {
-  scale: 150%;
+  margin-top: 25px;
+  scale: 250%;
 }
 
 .play-button:hover {
