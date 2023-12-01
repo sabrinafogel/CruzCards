@@ -91,6 +91,7 @@ function NewCourse() {
           tags: tags,
           editors: editors,
           email: user.email,
+          privacy: false,
         }),
       });
 

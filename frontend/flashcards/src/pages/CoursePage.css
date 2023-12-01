@@ -243,3 +243,41 @@
 .download-JSON:hover {
   color: #0056b3;
 }
+
+.public-button{
+  padding: 1rem;
+  margin-bottom: 10px;
+  border-radius: 1rem;
+  font-weight: 700;
+  color: white;
+  background-color: green;
+  border-width: 1px;
+  border-color: green;
+  transition-duration: 300ms;
+  margin-right: 20px;
+  margin-top: 20px;
+  width: 20vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.private-button{
+  padding: 1rem;
+  margin-bottom: 10px;
+  border-radius: 1rem;
+  font-weight: 700;
+  color: white;
+  background-color: red;
+  border-width: 1px;
+  border-color: red;
+  transition-duration: 300ms;
+  margin-right: 20px;
+  margin-top: 20px;
+  width: 20vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  cursor: pointer;
+}

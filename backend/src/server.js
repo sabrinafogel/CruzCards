@@ -5,13 +5,14 @@ const { neon } = require("@neondatabase/serverless");
 const sql = neon(
   "postgresql://admin:cD9gTOm0oSGZ@ep-round-star-10362038.us-west-2.aws.neon.tech/cards-db?sslmode=require"
 );
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
 app.post("/newcourse", async (req, res) => {
-  const { name, description, tags, email, editors } = req.body;
+  const { name, description, tags, email, editors, privacy } = req.body;
   if (!editors.includes(email)) {
     editors.push(email);
   }
@@ -29,8 +30,8 @@ app.post("/newcourse", async (req, res) => {
   try {
     console.log("/newcourse post");
     await sql(
-      "INSERT INTO courses(name, description, tags, email, chapters, editors) VALUES($1, $2, $3, $4, $5, $6)",
-      [name, description, tags, email, chapters, editors]
+      "INSERT INTO courses(name, description, tags, email, chapters, editors, privacy) VALUES($1, $2, $3, $4, $5, $6, $7)",
+      [name, description, tags, email, chapters, editors, privacy]
     );
     return res.status(200).send({ message: "Course added successfully." });
   } catch (error) {
@@ -264,6 +265,22 @@ app.get("/searchchapter", async (req, res) => {
     console.error("Error fetching documents: ", error);
     return res.status(500).send({ error: "Failed to fetch chapter info." });
   }
+});
+
+app.post("/editPrivacy", async(req, res) => {
+  const {id, privacy} = req.body;
+  console.log("/editPrivacy fetch");
+
+  try {
+    await sql("UPDATE courses SET privacy = $1 WHERE id = $2", [
+      privacy,
+      id,
+    ]);
+    return res.status(200).send({ message: "privacy updated successfully" });
+  } catch (err) {
+    console.log("Error writing or reading file:", err);
+  }
+
 });
 
 const port = process.env.PORT || 8080;
