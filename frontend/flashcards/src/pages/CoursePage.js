@@ -34,7 +34,7 @@ function CoursePage() {
 
         const course_editors = [course_info.owner];
 
-        course_info.editors.forEach(editor => {
+        course_info.editors.forEach((editor) => {
           course_editors.push(editor);
         });
 
@@ -43,7 +43,6 @@ function CoursePage() {
         } else {
           setIsEditor(false);
         }
-        
       } catch (error) {
         console.error("Error:", error);
       }
@@ -57,20 +56,24 @@ function CoursePage() {
   const [courseNameInput, setCourseNameInput] = useState(course_info.name);
 
   const [isChangingDesc, setIsChangingDesc] = useState(false);
-  const [courseDescInput, setCourseDescInput] = useState(course_info.description);
+  const [courseDescInput, setCourseDescInput] = useState(
+    course_info.description
+  );
 
   const handleCourseNameChange = (e) => {
     setCourseNameInput(e.target.value);
-  }
+  };
 
   const handleCourseDescChange = (e) => {
     setCourseDescInput(e.target.value);
-  }
+  };
 
   const handleNameChangeSubmit = async (e) => {
     setIsChangingName(false);
     setIsChangingDesc(false);
-
+    if (courseNameInput.length === 0) {
+      return;
+    }
     const response = await fetch("http://localhost:8080/editCourse", {
       method: "POST",
       headers: {
@@ -87,12 +90,12 @@ function CoursePage() {
       throw new Error("Network response was not ok");
     }
 
-    const newCourseInfo = {...course_info};
+    const newCourseInfo = { ...course_info };
     newCourseInfo.name = courseNameInput;
     newCourseInfo.description = courseDescInput;
 
     setCourseInfo(newCourseInfo);
-  }
+  };
 
   return (
     <div>
@@ -114,14 +117,14 @@ function CoursePage() {
         </div>
 
         <div className="heading-wrapper">
-
           {!isChangingName ? (
             <div>
               <h1 className="course-heading">{course_info.name}</h1>
               {isEditor ? (
-              <AiFillEdit 
-                className="course-namedesc-edit-icon" 
-                onClick={(e) => setIsChangingName(true)}/>
+                <AiFillEdit
+                  className="course-namedesc-edit-icon"
+                  onClick={(e) => setIsChangingName(true)}
+                />
               ) : null}
             </div>
           ) : (
@@ -135,7 +138,8 @@ function CoursePage() {
               />
               <FaCheck
                 className="course-namedesc-edit-icon"
-                onClick={handleNameChangeSubmit} />
+                onClick={handleNameChangeSubmit}
+              />
             </div>
           )}
           <div className="input-wrapper">
@@ -145,11 +149,16 @@ function CoursePage() {
 
         {!isChangingDesc ? (
           <div>
-            <p className="description">{course_info.description ? course_info.description : "No Description"}</p>
+            <p className="description">
+              {course_info.description
+                ? course_info.description
+                : "No Description"}
+            </p>
             {isEditor ? (
               <AiFillEdit
                 className="course-namedesc-edit-icon"
-                onClick={(e) => setIsChangingDesc(true)} />
+                onClick={(e) => setIsChangingDesc(true)}
+              />
             ) : null}
           </div>
         ) : (
@@ -163,10 +172,10 @@ function CoursePage() {
             />
             <FaCheck
               className="course-namedesc-edit-icon"
-              onClick={handleNameChangeSubmit} />
+              onClick={handleNameChangeSubmit}
+            />
           </div>
         )}
-        
 
         {isEditor ? (
           <button className="create-set">
