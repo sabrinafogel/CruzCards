@@ -55,9 +55,10 @@ app.get("/mycourses", async (req, res) => {
 });
 
 app.get("/courses", async (req, res) => {
+  const email = req.query.email;
   try {
     console.log("/course fetch");
-    const result = JSON.stringify(await sql("SELECT * FROM courses"));
+    const result = JSON.stringify(await sql("SELECT * FROM courses WHERE privacy = false OR $1 = ANY(editors)", [email]));
 
     return res.status(200).send(result);
   } catch (error) {

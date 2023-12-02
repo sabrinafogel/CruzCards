@@ -163,6 +163,10 @@ function CoursePage() {
       throw new Error("Network response was not ok");
     }
 
+    const newCourseInfo = {...course_info};
+    newCourseInfo.privacy = !toggle;
+    setCourseInfo(newCourseInfo);
+
     setToggle(!toggle);
 
   }
