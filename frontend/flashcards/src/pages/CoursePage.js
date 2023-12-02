@@ -15,6 +15,8 @@ function CoursePage() {
 
   const [isEditor, setIsEditor] = useState(false);
 
+  const [toggle, setToggle] = useState(undefined);
+
   var search = "";
   const [searchChapters, setSearchChapters] = useState([]);
 
@@ -35,6 +37,9 @@ function CoursePage() {
         setCourseInfo(course_info);
         setSearchChapters(course_info.chapters);
         setCourseNameInput(course_info.name);
+        if (course_info.privacy !== 'undefined'){
+          setToggle(course_info.privacy);
+        }
 
         const course_editors = [course_info.owner];
 
@@ -56,6 +61,7 @@ function CoursePage() {
 
   const chapters = course_info.chapters;
 
+  
   // Search feature
   const searchFeature = async (e) => {
     //setSearch(e.target.value);
@@ -138,6 +144,32 @@ function CoursePage() {
 
     setCourseInfo(newCourseInfo);
   };
+
+  const toggleButton = async() => {
+    //setToggle(!toggle);
+
+    const response = await fetch("http://localhost:8080/editPrivacy", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: courseid,
+        privacy: !toggle,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const newCourseInfo = {...course_info};
+    newCourseInfo.privacy = !toggle;
+    setCourseInfo(newCourseInfo);
+
+    setToggle(!toggle);
+
+  }
 
   return (
     <div>
@@ -227,6 +259,18 @@ function CoursePage() {
             Download Course JSON
           </button>
         </div>
+
+        {isEditor ? (
+        <div className="toggle-button">
+          {toggle ? (
+            <button onClick={toggleButton} className="public-button">Make Course Public</button>
+          ) : 
+          (<button onClick={toggleButton} className="private-button">Make Course Private</button>)}
+          
+        </div>
+        ) : null}
+
+        
         {isEditor ? (
           <button className="create-set">
             <div className="new-chapter-text">New Chapter</div>

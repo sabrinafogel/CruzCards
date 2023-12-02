@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 // import { collection, getDocs, onSnapshot } from "firebase/firestore";
 // import { db } from "./firebase_config";
+import { UserAuth } from "./AuthContext";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import "./Courses.css";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
+  const { user } = UserAuth();
 
   var search = "";
   const [searchCourses, setSearchCourses] = useState([]);
@@ -14,13 +16,14 @@ function Courses() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch("http://localhost:8080/courses");
+        const response = await fetch(`http://localhost:8080/courses?email=${encodeURIComponent(
+          user.email
+        )}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const courses = await response.json();
 
-        //console.log(courses);
         setCourses(courses);
         setSearchCourses(courses);
 
@@ -30,7 +33,7 @@ function Courses() {
     };
 
     fetchCourses();
-  }, []);
+  }, [user.email]);
 
   const breakAll = (str) => {
     if (str !== undefined){
