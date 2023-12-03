@@ -60,7 +60,6 @@ function CoursePage() {
   }, [courseid, user]);
 
   const chapters = course_info.chapters;
-
   
   // Search feature
   const searchFeature = async (e) => {
@@ -219,7 +218,7 @@ function CoursePage() {
           <div className="input-wrapper">
             <input
               className="search-input"
-              placeholder="Search by name or tag"
+              placeholder="Search"
               onChange={searchFeature}
             ></input>
           </div>
@@ -292,7 +291,7 @@ function CoursePage() {
                 >
                   <button className={`chapters item-${chapterindex % 4}`}>
                     <h1>
-                      Chapter {chapterindex + 1}: {chapter.name}
+                      Chapter {chapter.chapterindex}: {chapter.name}
                     </h1>
                   </button>
                 </Link>

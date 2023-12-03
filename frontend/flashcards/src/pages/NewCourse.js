@@ -79,7 +79,6 @@ function NewCourse() {
     }
 
     try {
-      console.log(user.email);
       const response = await fetch("http://localhost:8080/newcourse", {
         method: "POST",
         headers: {
