@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { collection, getDocs, onSnapshot } from "firebase/firestore";
-// import { db } from "./firebase_config";
 import { UserAuth } from "./AuthContext";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
@@ -26,7 +24,6 @@ function Courses() {
 
         setCourses(courses);
         setSearchCourses(courses);
-
       } catch (error) {
         console.error("Error:", error);
       }
@@ -36,62 +33,74 @@ function Courses() {
   }, [user.email]);
 
   const breakAll = (str) => {
-    if (str !== undefined){
+    if (str !== undefined) {
       const words = str.split(" ");
 
-    // Check each word
-    for (let i = 0; i < words.length; i++) {
-      if (words[i].length > 12) {
-        return true;
+      // Check each word
+      for (let i = 0; i < words.length; i++) {
+        if (words[i].length > 12) {
+          return true;
+        }
       }
     }
-  }
     return false;
   };
 
-  // Search feature for Courses
-  const searchFeature = async(e) => {
-    search = e.target.value.trim().toLowerCase();
-    if (search === ""){
+  const searchFeature = async (e) => {
+    const search = e.target.value.trim().toLowerCase();
+    if (search === "") {
       setSearchCourses(courses);
       return;
     }
 
     const searchChapters = [];
 
-    try{
-      for (let i = 0; i < courses.length; i++){
-        if (typeof courses[i].name === 'undefined'){
+    try {
+      for (let i = 0; i < courses.length; i++) {
+        if (typeof courses[i].name === "undefined") {
           continue;
         }
-        
-        if ((courses[i].name.toLowerCase()).startsWith(search)){
+
+        if (courses[i].name.toLowerCase().startsWith(search)) {
           searchChapters.push(courses[i]);
         }
-        if (typeof courses[i].tags !== 'undefined'){
-          const course_tags = (courses[i].tags).map(element => {
+        if (typeof courses[i].tags !== "undefined") {
+          const course_tags = courses[i].tags.map((element) => {
             return element.toLowerCase();
           });
 
-          const stat = course_tags.find(entry => entry.startsWith(search));
-          if (stat !== undefined && searchChapters.indexOf(courses[i]) === -1){
+          const stat = course_tags.find((entry) =>
+            entry.startsWith(search)
+          );
+          if (
+            stat !== undefined &&
+            searchChapters.indexOf(courses[i]) === -1
+          ) {
             searchChapters.push(courses[i]);
           }
         }
       }
       setSearchCourses(searchChapters);
-    }
-    catch (error){
+    } catch (error) {
       console.error("Error:", error);
     }
   };
+
+  // Sort courses based on playCount in descending order
+  const sortedCourses = [...searchCourses].sort(
+    (a, b) => b.playCount - a.playCount
+  );
 
   return (
     <div className="Course-wrapper">
       <div className="heading-wrapper">
         <h1 className="course-heading">Courses</h1>
         <div className="input-wrapper">
-          <input className="search-input" placeholder="Search" onChange={searchFeature}></input>
+          <input
+            className="search-input"
+            placeholder="Search"
+            onChange={searchFeature}
+          ></input>
           <Link to="/new-course">
             <button className="create-course">
               <FaPlus />
@@ -100,7 +109,7 @@ function Courses() {
         </div>
       </div>
       <ul className="scrollable-container">
-        {searchCourses.map((item, index) => (
+        {sortedCourses.map((item, index) => (
           <Link key={item.id} to={`/courses/${item.id}`}>
             <li
               key={index}
