@@ -7,7 +7,7 @@ import Courses from "../components/Courses";
 
 /**
  * Home.js
- * Home.js displays the CruzCards website homepage,
+ * Home() displays the CruzCards website homepage,
  * once the user has logged in or signed up to use the site.
  * @returns Homepage
  */
