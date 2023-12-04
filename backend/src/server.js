@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/newcourse", async (req, res) => {
+  const playCount = 0;
   const { name, description, tags, email, editors, privacy } = req.body;
   if (!editors.includes(email)) {
     editors.push(email);
@@ -27,6 +28,24 @@ app.post("/newcourse", async (req, res) => {
       chapterindex: 1,
     },
   ]);
+
+  app.post("/courseplay", async (req, res) => {
+    const { courseid } = req.body;
+  
+    try {
+      const result = await sql("SELECT * FROM courses WHERE id = $1", [courseid]);
+      const playCount = result[0].playcount += 1;
+  
+      await sql("UPDATE courses SET playcount = $1 WHERE id = $2", [
+        playCount,
+        courseid,
+      ]);
+      return res.status(200).send({ message: "playcount incremented correctly." });
+    } catch (error) {
+      console.error("Error adding field: ", error);
+      return res.status(500).send({ error: "Failed to increment playcount." });
+    }
+  });
 
   try {
     console.log("/newcourse post");

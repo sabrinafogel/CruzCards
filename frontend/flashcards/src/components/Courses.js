@@ -86,9 +86,9 @@ function Courses() {
     }
   };
 
-  // Sort courses based on playCount in descending order
+  // Sort courses based on playcount in descending order
   const sortedCourses = [...searchCourses].sort(
-    (a, b) => b.playCount - a.playCount
+    (a, b) => b.playcount - a.playcount
   );
 
   return (
