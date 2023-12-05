@@ -13,8 +13,7 @@ import Courses from "../components/Courses";
  */
 
 function Home() {
-  // Checks that the user is logged in, 
-  // using the UserAuth function in components/AuthContext
+  // Uses the UserAuth function from components/AuthContext to create user
   const { user } = UserAuth();
 
   // Returns a Homepage organized in the following way:
