@@ -23,7 +23,7 @@ Many students, both at the high school and university level, use some form of fl
 CruzCards aims to combat these issues to provide a free, intuitive flashcard service made by and for students, particularly dedicated to UCSC students.
 
 ## How to Run CruzCards
-To run CruzCards, navigate to the `frontend\flashcards` directory and run `npm start`. Additionally, navigate to the `backend` directory and run `node src/serverdummy.js`. This runs CruzCards in the development mode. You can open [http://localhost:3000](http://localhost:3000) to view CruzCards in your browser.\
+To run CruzCards, navigate to the `frontend\flashcards` directory and run `npm start`. Additionally, navigate to the `backend` directory and run `node src/server.js`. This runs CruzCards in the development mode. You can open [http://localhost:3000](http://localhost:3000) to view CruzCards in your browser.\
 In order to run `npm start`, you must have Node.js and npm installed on your computer.
 
 ## How to Use CruzCards
