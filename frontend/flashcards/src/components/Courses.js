@@ -19,7 +19,6 @@ function Courses() {
 
   // Initializes variables used for searching through courses 
   // (searchCourses and setSearchCourses using React's useState hook)
-  var search = "";
   const [searchCourses, setSearchCourses] = useState([]);
 
   useEffect(() => {

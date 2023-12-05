@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { AiFillCaretDown } from "react-icons/ai";
 import { UserAuth } from "./AuthContext";

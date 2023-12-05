@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import { AiFillDelete, AiFillEdit, AiFillPlusCircle } from "react-icons/ai";
 import Navbar from "../components/Navbar";
-import { UserAuth } from "../components/AuthContext";
 import "./NewSet.css";
 
 /**
@@ -20,7 +19,6 @@ function NewSet() {
   const [inputDisabled, setInputDisabled] = useState(false);
   const [noName, setNoName] = useState(false);
   const [cards, setCards] = useState([]);
-  const { user } = UserAuth();
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editSetIndex, setEditSetIndex] = useState();
