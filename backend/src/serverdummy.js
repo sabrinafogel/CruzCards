@@ -45,6 +45,7 @@ app.post("/newcourse", async (req, res) => {
           editors: editors,
           last_modified: currentDate.getDate(),
           chapters: chapters,
+          playCount: 0,
         });
 
         let json = JSON.stringify(arr);
@@ -81,6 +82,34 @@ app.get("/mycourses", async (req, res) => {
   } catch (error) {
     console.error("Error fetching documents: ", error);
     return res.status(500).send({ error: "Failed to fetch courses." });
+  }
+});
+
+app.post("/courseplay", async (req, res) => {
+  const { courseid } = req.body;
+
+  try {
+    const courseIndex = dummydata.findIndex(
+      (course) => course.id === parseInt(courseid)
+    );
+
+    if (courseIndex !== -1) {
+      dummydata[courseIndex].playCount += 1;
+      let json = JSON.stringify(dummydata);
+      fs.writeFileSync("./classes.json", json, "utf8");
+      console.log("File written successfully");
+
+      return res.status(200).send({
+        message: "Course play count incremented successfully.",
+      });
+    } else {
+      return res.status(404).send({ error: "Course not found." });
+    }
+  } catch (error) {
+    console.error("Error updating play count: ", error);
+    return res
+      .status(500)
+      .send({ error: "Failed to update play count for the course." });
   }
 });
 

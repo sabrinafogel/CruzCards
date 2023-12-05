@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/newcourse", async (req, res) => {
+  const playCount = 0;
   const { name, description, tags, email, editors, privacy } = req.body;
   if (!editors.includes(email)) {
     editors.push(email);
@@ -24,8 +25,27 @@ app.post("/newcourse", async (req, res) => {
     {
       name: "Default Chapter",
       sets: [],
+      chapterindex: 1,
     },
   ]);
+
+  app.post("/courseplay", async (req, res) => {
+    const { courseid } = req.body;
+  
+    try {
+      const result = await sql("SELECT * FROM courses WHERE id = $1", [courseid]);
+      const playCount = result[0].playcount += 1;
+  
+      await sql("UPDATE courses SET playcount = $1 WHERE id = $2", [
+        playCount,
+        courseid,
+      ]);
+      return res.status(200).send({ message: "playcount incremented correctly." });
+    } catch (error) {
+      console.error("Error adding field: ", error);
+      return res.status(500).send({ error: "Failed to increment playcount." });
+    }
+  });
 
   try {
     console.log("/newcourse post");
@@ -86,16 +106,17 @@ app.post("/newchapter", async (req, res) => {
     return res.status(400).send({ error: "Please enter a name." });
   }
 
-  const new_chapter = {
-    name: name,
-    description: description,
-    sets: [],
-    tags: tags,
-  };
-
   try {
     const result = await sql("SELECT * FROM courses WHERE id = $1", [courseid]);
     const chapter_field = result[0].chapters;
+
+    const new_chapter = {
+      name: name,
+      description: description,
+      sets: [],
+      tags: tags,
+      chapterindex: chapter_field.length + 1,
+    };
 
     chapter_field.push(new_chapter);
     await sql("UPDATE courses SET chapters = $1 WHERE id = $2", [
@@ -231,23 +252,25 @@ app.post("/editChapter", async (req, res) => {
 });
 
 app.get("/searchchapter", async (req, res) => {
+  const id = req.query.courseid;
+  const search = req.query.search;
+
   try {
-    const ref = db.collection("courses").doc(req.query.courseid);
-    const doc = await ref.get();
-    const chapters = doc.data().chapters;
-
+    const chapters_query = await sql("SELECT chapters FROM courses WHERE id = $1", [id]);
+    const chapters = chapters_query[0].chapters;
     const searchChapters = [];
-
+    
     for (let i = 0; i < chapters.length; i++){
-      if ((chapters[i].name.toLowerCase()).startsWith(req.query.search.toLowerCase())){
+      if (((chapters[i].name).toLowerCase()).startsWith(search.toLowerCase())){
         searchChapters.push(chapters[i]);
       }
+
       if (typeof chapters[i].tags !== 'undefined'){
         const chapter_tags = (chapters[i].tags).map(element => {
           return element.toLowerCase();
         });
 
-        const stat = chapter_tags.find(entry => entry.startsWith(req.query.search.toLowerCase()));
+        const stat = chapter_tags.find(entry => entry.startsWith(search.toLowerCase()));
         if (stat !== undefined && searchChapters.indexOf(chapters[i]) === -1){
           searchChapters.push(chapters[i]);
         }
@@ -256,8 +279,9 @@ app.get("/searchchapter", async (req, res) => {
       else {
         //console.log("tags array does not exist in chapter");
       }
+
+
     }
-    
     console.log("/searchchapter fetch");
     return res
       .status(200)

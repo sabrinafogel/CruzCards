@@ -19,7 +19,6 @@ function PlaySet() {
   const [course_info, setCourseInfo] = useState();
   const [cards, setCards] = useState([]);
   const [playing, setPlaying] = useState(false);
-  const [markedCards, setMarkedCards] = useState([]);
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
@@ -84,6 +83,28 @@ function PlaySet() {
 
   const [showDesc, setShowDesc] = useState(false);
 
+  const handlePlayButtonClick = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/courseplay`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courseid,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      setPlaying(!playing);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   if (!course_info || !set || !cards) {
     return (
       <div>
@@ -97,14 +118,7 @@ function PlaySet() {
   return (
     <div>
       <Navbar />
-      {playing ? (
-        <CardViewer
-          setPlaying={setPlaying}
-          cards={cards}
-          markedCards={markedCards}
-          setMarkedCards={setMarkedCards}
-        />
-      ) : null}
+      {playing ? <CardViewer setPlaying={setPlaying} cards={cards} /> : null}
       <div className="play-heading">
         <button className="back-nav">
           <Link to={`/courses/${courseid}`}>
@@ -152,9 +166,7 @@ function PlaySet() {
       </div>
       <button
         className="play-set-button"
-        onClick={() => {
-          setPlaying(!playing);
-        }}
+        onClick={handlePlayButtonClick}
       >
         <BiPlay />
         Play

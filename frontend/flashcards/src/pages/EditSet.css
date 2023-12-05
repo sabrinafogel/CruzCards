@@ -153,6 +153,7 @@
   color: #007bff;
   text-decoration: underline;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .download-JSON:hover {

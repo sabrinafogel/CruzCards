@@ -7,6 +7,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import { AiFillPlusCircle, AiFillDelete, AiFillEdit } from "react-icons/ai";
+import jsPDF from 'jspdf';
 
 /**
  * EditSet.js
@@ -247,7 +248,7 @@ function EditSet() {
 
   /**
    * EditSet.js
-   * handleJSONDownload() is a method that creates a downloadable file.
+   * handleJSONDownload() is a method that creates a downloadable JSON file.
    * This file contains JSON information representing a set
    * @param {event} e 
    * @returns None
@@ -267,8 +268,76 @@ function EditSet() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-    
+  }
+
+  /**
+   * EditSet.js
+   * handleCSVDownload() is a method that creates a downloadable CSV file.
+   * This file contains CSV information representing a set
+   * @param {event} e 
+   * @returns None
+   */
+  const handleCSVDownload = (e) => {
+    if (set.cards.length === 0) {
+      return;
+    }
+
+    const header = 'front,back';
+    const rows = set.cards.map((row) => {
+      const { front, back } = row;
+      return [front, back].join(',');
+    });
+    const csvDATA = [header, ...rows].join('\n');
+
+    const blob = new Blob([csvDATA], { type: 'text/csv;charset=utf-8' });
+    const link = document.createElement('a');
+    link.download = `${set.name}.csv`;
+    link.href = window.URL.createObjectURL(blob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  /**
+   * EditSet.js
+   * handlePDFDownload() is a method that creates a downloadable PDF file.
+   * This file contains PDF information representing a set
+   * @param {event} e 
+   * @returns None
+   */
+  const handlePDFDownload = (e) => {
+    if (set.cards.length === 0) {
+      return;
+    }
+
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+    });
+    set.cards.forEach((slide, index) => {
+      // Add a new page for each slide
+      if (index !== 0) {
+        pdf.addPage();
+      }
+
+      // Add front text (larger) centered
+      pdf.setFontSize(30);
+      pdf.text(150, 80, slide.front, { align: 'center' });
+
+      // Add back text centered
+      pdf.setFontSize(22);
+      pdf.text(150, 110, slide.back, { align: 'center' });
+    });
+
+    const pdfBlob = pdf.output('blob');
+    const link = document.createElement('a');
+    link.download = `${set.name}.pdf`;
+    link.href = window.URL.createObjectURL(pdfBlob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+
   // Returns the EditSet page
   return (
     <div>
@@ -339,12 +408,22 @@ function EditSet() {
         )}
       </div>
       <div className="set-download-div">
-          <button
-            className="download-JSON"
-            onClick={handleJSONDownload}>
-            Download Set JSON
-          </button>
-        </div>
+        <button
+          className="download-JSON"
+          onClick={handleJSONDownload}>
+          Download Set JSON
+        </button>
+        <button
+          className="download-JSON"
+          onClick={handleCSVDownload}>
+          Download Set CSV
+        </button>
+        <button
+          className="download-JSON"
+          onClick={handlePDFDownload}>
+          Download Set PDF
+        </button>
+      </div>
       {isEditor ? (
         <div className="new-card-wrapper">
           {/* The background for the mock card for the add card button */}
