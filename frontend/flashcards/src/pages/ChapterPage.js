@@ -9,6 +9,12 @@ import { UserAuth } from "../components/AuthContext";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
 import { BiPlay } from "react-icons/bi";
 
+/**
+ * ChapterPage.js
+ * ChapterPage() 
+ * @returns 
+ */
+
 function ChapterPage() {
   // Gets these params from the url
   const { courseid, chapterIndex } = useParams();
