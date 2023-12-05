@@ -11,11 +11,14 @@ import { BiPlay } from "react-icons/bi";
 
 /**
  * ChapterPage.js
- * ChapterPage() 
- * @returns 
+ * ChapterPage() displays the Sets associated with a given Chapter of a Course. 
+ * Additionally, ChapterPage() displays different options if the user 
+ * has editing permissions for the Course (if they do, they can add Sets to the Chapter)
+ * @returns ChapterPage, a webpage that displays the Sets associated with a given Chapter of a Course
  */
 
 function ChapterPage() {
+
   // Gets these params from the url
   const { courseid, chapterIndex } = useParams();
   // Used to keep the course_info and sets for use on the page
@@ -29,20 +32,30 @@ function ChapterPage() {
   // User from authcontext provider this will be used later for restricting non-editors from changing the sets
   const { user } = UserAuth();
 
+  // Initializes isEditor, which contains information about if a user has editing permissions
   const [isEditor, setIsEditor] = useState(false);
 
+  // Initializes variables used for searching through courses 
+  // (searchChapters and setSearchChapters using React's useState hook)
   var search = "";
   const [searchChapters, setSearchChapters] = useState([]);
 
+  // Initializes variables for tracking any changes in Chapter Name
   const [isChangingName, setIsChangingName] = useState(false);
   const [chapNameInput, setChapNameInput] = useState(currentChapter.name);
 
+  // Initializes variables for tracking any changes in Chapter Description
   const [isChangingDesc, setIsChangingDesc] = useState(false);
   const [chapDescInput, setChapDescInput] = useState(course_info.description);
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
-    // Fetches the course info from the backend
+
+    /**
+     * ChapterPage.js
+     * fetchCourseInfo() is an asynchronous function that fetches course information
+     * from the backend based on a given courseID
+     */
     const fetchCourseInfo = async () => {
       try {
         // Encodes the courseid in the url for fetching
@@ -56,21 +69,25 @@ function ChapterPage() {
           throw new Error("Network response was not ok");
         }
 
+        // Parse response as JSON
         const rec_course_info = await response.json();
         const rec_chap = rec_course_info.chapters[chapterIndex];
 
-        // Sets the returned course_info for future use
+        // Sets the returned course_info for future use, based on the parsed response
         setCourseInfo(rec_course_info);
         setCurrentChapter(rec_chap);
         setChapNameInput(rec_chap.name);
         setChapDescInput(rec_chap.description);
 
+        // Set the correct information about those with editing permissions of the course
+        // Including the owner and any editors
         const course_editors = [rec_course_info.owner];
 
         rec_course_info.editors.forEach((editor) => {
           course_editors.push(editor);
         });
 
+        // If the user's email is found within course_editors, give them editor permissions
         if (course_editors.includes(user.email)) {
           setIsEditor(true);
         } else {
@@ -84,21 +101,43 @@ function ChapterPage() {
         console.error("Error:", error);
       }
     };
-    fetchCourseInfo();
-  }, [courseid, chapterIndex, user]);
 
+    // Call fetchCourseInfo()
+    fetchCourseInfo();
+  }, [courseid, chapterIndex, user]); // Dependency array includes the courseid, chapterIndex, and user
+
+  /**
+   * ChapterPage.js
+   * searchFeature() is an asynchronous function that contains the search feature for Chapters
+   * By taking in an event's target value and using that value to filter through Sets/Chapters
+   * @param {event} e 
+   * @returns None
+   */
   const searchFeature = async(e) => {
+
+    // Grab the value from e, perform modifications (trim and make all lowercase), and store in search
     search = e.target.value.trim();
+    
+    // If the search string is empty, set the searched sets to the original list and return
     if (search === ""){
       setSearchChapters(sets);
       return;
     }
+
+    // newSets will store the matching Sets
     var newSets = [];
+
+    // Iterate through sets
     for (let i = 0; i < sets.length; i++){
+
+      // Check to see if the name of the set matches with the search value
+      // If so, add to newSets array
       if ((sets[i].name.toLowerCase()).startsWith(search.toLowerCase())){
         newSets.push(sets[i]);
       }
     }
+
+    // Update with the search results
     setSearchChapters(newSets);
   }
 
@@ -114,7 +153,12 @@ function ChapterPage() {
     );
   }
 
-  // Calls the backend to delete the specified set from the sets array will show error if respose is bad
+  /**
+   * ChapterPage.js
+   * saveDelete() is an asynchronous function that calls the backend to delete
+   * a specified set from the sets array.
+   * @returns None
+   */
   const saveDelete = async () => {
     try {
       const response = await fetch("http://localhost:8080/deleteSet", {
@@ -137,35 +181,76 @@ function ChapterPage() {
     }
   };
 
-  // This will call the backend for a delete function and will save the changes locally to avoid more reads and refreshing for changes
-  // Also hides the delete popup and sets the delete index to undefined to avoid extra deleteing errors
+  /**
+   * ChapterPage.js
+   * deleteSet() is a function that calls the backend for a delete function.
+   *  deleteSet() will then save the changes locally in order to avoid more reads/refresh for changes.
+   *  deleteSet() also hides the delete popup and sets the delete index to undefined.
+   * @returns None
+   */
   const deleteSet = () => {
+
+    // newCards is a new array that gets all sets except the one at deleteindex
     const newCards = sets.filter((set, i) => i !== deleteindex);
-    console.log(sets.filter((set, i) => i !== deleteindex));
+    // console.log(sets.filter((set, i) => i !== deleteindex));
+
+    // We then set the state variable sets to newCards
     setSets(newCards);
+
+    // Calls saveDelete (see above)
     saveDelete();
+
+    // Toggles the showDeleteModal and sets the deleteindex to undefined
     setShowDeleteModal(!showDeleteModal);
     setDeleteindex(undefined);
   };
 
-  // This will take note of what set index the user wants to delete and will show the delete popup
+  /**
+   * ChapterPage.js
+   * showDeletePopup() is a method that completes two functions:
+   * 1. Takes note of the set index the user wishes to delete
+   * 2. Shows the delete popup
+   * @param {*} index, the index of the set the user wants to delete
+   * @returns None
+   */
   const showDeletePopup = (index) => {
+    // Toggles the showDeleteModal and sets the deleteindex to index
     setShowDeleteModal(!showDeleteModal);
     setDeleteindex(index);
   };
 
+  /**
+   * ChapterPage.js
+   * handleChapNameChange() is a method that changes the chapter name to an event target's value
+   * @param {event} e 
+   * @returns None
+   */
   const handleChapNameChange = (e) => {
     setChapNameInput(e.target.value);
   };
 
+  /**
+   * ChapterPage.js
+   * handleDescNameChange() is a method that changes the description to an event target's value
+   * @param {event} e 
+   * @returns None
+   */
   const handleChapDescChange = (e) => {
     setChapDescInput(e.target.value);
   };
 
+  /**
+   * ChapterPage.js
+   * handleNameChangeSubmit() is a function that takes care of the changes to a name and description of a chapter
+   * @returns None
+   */
   const handleNameChangeSubmit = async () => {
+
+    // Set the modes for changing name and description to false
     setIsChangingName(false);
     setIsChangingDesc(false);
-
+    
+    // Send a POST request to the server to update chapter information
     const response = await fetch("http://localhost:8080/editChapter", {
       method: "POST",
       headers: {
@@ -183,13 +268,16 @@ function ChapterPage() {
       throw new Error("Network response was not ok");
     }
 
+    // Get and store the new chapter information (name and description)
     const newChapInfo = { ...currentChapter };
     newChapInfo.name = chapNameInput;
     newChapInfo.description = chapDescInput;
 
+    // Modify the chapter to relflect the new information
     setCurrentChapter(newChapInfo);
   };
 
+  // Return the formatted ChapterPage
   return (
     <div>
       <Navbar />
