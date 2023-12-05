@@ -6,7 +6,14 @@ import Navbar from "../components/Navbar";
 import { UserAuth } from "../components/AuthContext";
 import "./NewSet.css";
 
+/**
+ * NewSet.js
+ * NewSet() displays the webpage for creating a new set
+ * @returns NewSet page
+ */
 function NewSet() {
+
+  // Initialize necessary variables
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [textAreaDisabled, setTextAreaDisabled] = useState(false);
@@ -22,8 +29,19 @@ function NewSet() {
   const { courseid, index } = useParams();
   const navigate = useNavigate();
 
+  /**
+   * NewSet.js
+   * handleInputChange() is a method that changes the set name to an event target's value
+   * @param {event} e 
+   * @returns None
+   */
   const handleInputChange = (event) => {
+
+    // Get the value and store it in newName
     const newName = event.target.value;
+    
+    // Check to make sure newName's length is within the character limit for names
+    // If it is, change the name accordingly. If not, do nothing
     if (newName.length <= 50) {
       setName(newName);
     } else {
@@ -31,8 +49,19 @@ function NewSet() {
     }
   };
 
+  /**
+   * NewSet.js
+   * handleDescriptionChange() is a method that changes the set description to an event target's value
+   * @param {event} e 
+   * @returns None
+   */
   const handleDescriptionChange = (event) => {
+    
+    // Get the value and store it in newDescription
     const newDescription = event.target.value;
+    
+    // Check to make sure newDescription's length is within the character limit for descriptions
+    // If it is, change the description accordingly. If not, do nothing
     if (newDescription.length <= 250) {
       setDescription(newDescription);
     } else {
@@ -40,9 +69,15 @@ function NewSet() {
     }
   };
 
+  /**
+   * NewSet.js
+   * handleSubmit() is an asynchronous function that saves set information
+   * @param {event} e
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // If there is no name, then return true for NoName
     if (name.length <= 0) {
       return setNoName(true);
     }
@@ -65,6 +100,8 @@ function NewSet() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
+      // Return to the chapter page for chapter at index
       navigate(`/courses/${courseid}/chapters/${index}`);
     } catch (error) {
       console.error("Error:", error);
@@ -75,6 +112,8 @@ function NewSet() {
     setShowModal(!showModal);
   };
 
+  // Add a new card with front, back, and id
+  // Append newCard to the set of cards
   const addNewCard = (e) => {
     const newCard = { front: cardFront, back: cardBack, id: Date.now() };
     setCards([newCard, ...cards]);
@@ -83,6 +122,7 @@ function NewSet() {
     setShowModal(false);
   };
 
+  // Show the edit of the card at index with front and back
   const showEditCard = (index) => {
     setEditSetIndex(index);
     setCardFront(cards[index].front);
@@ -90,6 +130,7 @@ function NewSet() {
     setShowEditModal(!showEditModal);
   };
 
+  // Cancel the edit of the card at index
   const cancelEditCard = (index) => {
     setEditSetIndex(undefined);
     setCardFront("");
@@ -97,6 +138,7 @@ function NewSet() {
     setShowEditModal(!showEditModal);
   };
 
+  // Save changes to the cards
   const saveCard = () => {
     const edittedCards = [...cards];
     edittedCards[editSetIndex] = {
@@ -104,7 +146,7 @@ function NewSet() {
       back: cardBack,
       id: Date.now(),
     };
-    console.log(edittedCards);
+    // console.log(edittedCards);
     setCardFront("");
     setCardBack("");
     setEditSetIndex(undefined);
@@ -112,11 +154,13 @@ function NewSet() {
     setShowEditModal(false);
   };
 
+  // Remove a card using a given index by filtering for all cards except the card at index
   const deleteCard = (index) => {
     const newCards = cards.filter((card, i) => i !== index);
     setCards(newCards);
   };
 
+  // Returns a NewSet page
   return (
     <div className="course-page-wrapper">
       <Navbar />
