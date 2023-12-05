@@ -63,15 +63,15 @@ function Courses() {
     if (str !== undefined) {
       const words = str.split(" ");
 
-    // Check each word in words array
-    for (let i = 0; i < words.length; i++) {
-      if (words[i].length > 12) {
-        return true;
-
+      // Check each word in words array
+      for (let i = 0; i < words.length; i++) {
+        if (words[i].length > 12) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  };
+  }
 
   /**
    * Courses.js
