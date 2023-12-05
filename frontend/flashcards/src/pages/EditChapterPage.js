@@ -4,24 +4,49 @@ import Navbar from "../components/Navbar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 
+/**
+ * EditChapterPage.js
+ * EditChapterPage() displays the fields necessary to edit a given Chapter of a Course
+ * Additionally, EditChapterPage() will display everything necessary to save any edits the user makes
+ * @returns EditChapterPage, a webpage that displays the fields needed to edit a chapter's fields
+ */
 function EditChapterPage() {
+
+  // Gets these params from the url
   const { courseid, chapterindex } = useParams();
+
+  // Initialize necessary variables, including character limits for Chapter names and descriptions
   const [noName, setNoName] = useState(false);
   const navigate = useNavigate();
   const nameCharlimit = 50;
   const descCharlimit = 250;
 
+  // Initialize input values using React's useState hook
   const [inputvalues, setInputValues] = useState({
     name: "",
     description: "",
   });
 
+  /**
+   * EditChapterPage.js
+   * handleInputChange() is a method that changes the chapter name and/or description to an event target's value
+   * @param {event} e 
+   * @returns None
+   */
   const handleInputChange = (e) => {
+
+    // Get the value from e's target
     const value = e.target.value;
+
+    // Checks the type and length of the value's name
     const overNameLimit =
       e.target.name === "name" && value.length <= nameCharlimit;
+
+    // Checks the type and length of the value's description
     const overDescLimit =
-      e.target.name === "description" && value.length <= descCharlimit;
+      e.target.description === "description" && value.length <= descCharlimit;
+    
+    // Set values according to the changed values if the values pass the above tests
     if (overNameLimit || overDescLimit) {
       setInputValues({
         ...inputvalues,
@@ -30,9 +55,17 @@ function EditChapterPage() {
     }
   };
 
+  // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
+    
+    /**
+     * EditChapterPage.js
+     * fetchCourseInfo() is an asynchronous function that fetches course information
+     * from the backend based on a given courseID
+     */
     const fetchCourseInfo = async () => {
       try {
+        // Encodes the courseid in the url for fetching
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
             courseid
@@ -43,7 +76,10 @@ function EditChapterPage() {
           throw new Error("Network response was not ok");
         }
 
+        // Parse response as JSON
         const course_info = await response.json();
+
+        // Set the values of name and description based on the parsed JSON response
         setInputValues({
           name: course_info.chapters[chapterindex].name,
           description: course_info.chapters[chapterindex].description || "",
@@ -52,12 +88,20 @@ function EditChapterPage() {
         console.error("Error:", error);
       }
     };
-    fetchCourseInfo();
-  }, [courseid, chapterindex]);
 
+    // Call fetchCourseInfo()
+    fetchCourseInfo();
+  }, [courseid, chapterindex]); // Dependency array includes the courseid and chapterIndex
+
+  /**
+   * EditChapterPage.js
+   * saveChapter() is an asynchronous function that saves chapter information
+   * @param {event} e
+   */
   const saveChapter = async (e) => {
     e.preventDefault();
 
+    // If there is no name, then return true for NoName
     if (inputvalues.name.length <= 0) {
       return setNoName(true);
     }
@@ -79,12 +123,15 @@ function EditChapterPage() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
+      // Return to the course page for courseid
       navigate(`/courses/${courseid}`);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  // Return the formatted EditChapterPage
   return (
     <div>
       <Navbar />

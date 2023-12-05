@@ -5,21 +5,43 @@ import { UserAuth } from "../components/AuthContext";
 import { Link } from "react-router-dom";
 import "./Profile.css";
 
+/**
+ * Profile.js
+ * Profile() displays the user's profile page, with modifiable username
+ * @returns Profile page
+ */
 function Profile() {
+
+  // Initialize necessary variables
   const { user, updateUserprofile } = UserAuth();
   const [isDisabled, setIsDisabled] = useState(true);
   const inputRef = useRef();
 
   const [inputvalue, setinputvalue] = useState(user.displayName);
 
+  /**
+   * Profile.js
+   * handleInputChange() is a method that changes the input value to an event target's value
+   * @param {event} e 
+   * @returns None
+   */
   const handleInputChange = (e) => {
     const value = e.target.value;
-    console.log(value);
-    setinputvalue(e.target.value);
+    // console.log(value);
+    setinputvalue(value);
   };
 
+  /**
+   * Profile.js
+   * handleSubmit() is a method that handles updates to the user's profile based on an input value
+   * @param {event} e 
+   * @returns None
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // If there is no input value, return.
+    // Otherwise, update user profile accordingly
     if (inputvalue === "") {
       return;
     } else {
@@ -38,6 +60,7 @@ function Profile() {
     setinputvalue(user.displayName);
   }, [user]);
 
+  // Returns Profile page
   return (
     <div className="page-wrapper">
       <div className="profile">

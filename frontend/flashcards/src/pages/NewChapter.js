@@ -6,26 +6,50 @@ import { BsFillExclamationSquareFill } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa";
 import "./NewChapter.css";
 
+/**
+ * NewChapter.js
+ * NewChapter() displays the webpage for creating a new chapter
+ * @returns NewChapter page
+ */
 function NewChapter() {
+
+  // Gets these params from the url
   const { courseid } = useParams();
+
+  // Initialize necessary variables, including character limits for Chapter names and descriptions
   const [noName, setNoName] = useState(false);
   const [tags, setTags] = useState([]);
   const nameCharlimit = 50;
   const descCharlimit = 250;
   const navigate = useNavigate();
 
+  // Initialize input values using React's useState hook
   const [inputvalues, setInputValues] = useState({
     name: "",
     description: "",
     tags: [],
   });
 
+  /**
+   * NewChapter.js
+   * handleInputChange() is a method that changes the chapter name and/or description to an event target's value
+   * @param {event} e 
+   * @returns None
+   */
   const handleInputChange = (e) => {
+    
+    // Get the value from e's target
     const value = e.target.value;
+
+    // Checks the type and length of the value's name
     const overNameLimit =
       e.target.name === "name" && value.length <= nameCharlimit;
+    
+    // Checks the type and length of the value's description
     const overDescLimit =
       e.target.name === "description" && value.length <= descCharlimit;
+    
+    // Set values according to the changed values if the values pass the above tests
     if (overNameLimit || overDescLimit) {
       setInputValues({
         ...inputvalues,
@@ -34,27 +58,45 @@ function NewChapter() {
     }
   };
 
+  /**
+   * NewChapter.js
+   * handleTagsChange() is a method that changes the chapter tags to an event target's value
+   * @param {event} e 
+   * @returns None
+   */
   const handleTagsChange = (e) => {
     if (e.key !== "Enter"){
       return;
     }
+
+    // Get the value from e's target
     const new_tag = e.target.value;
     if (!new_tag.trim()){
       return;
     }
+
+    // Add new_tag to setTags
     setTags([...tags, new_tag]);
 
+    // Reset e's target value
     e.target.value="";
 
   };
 
+  // Remove a tag using a given index by filtering for all tags except the tag at index
   const removeTag = (index) => {
     setTags(tags.filter((el, i) => i !== index));
   };
 
+  /**
+   * NewChapter.js
+   * handleSubmit() is an asynchronous function that saves chapter information
+   * @param {event} e
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // If there is no name, then return true for NoName
     if (inputvalues.name.length <= 0) {
       return setNoName(true);
     }
@@ -77,12 +119,14 @@ function NewChapter() {
         throw new Error("Network response was not ok");
       }
 
+      // Return to the course page for courseid
       navigate(`/courses/${courseid}`);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  // Returns a NewChapter page
   return (
     <div>
       <Navbar />

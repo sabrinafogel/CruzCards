@@ -8,12 +8,29 @@ import AccountDropDown from "./AccountDropDown";
 import "./Navbar.css";
 import Sidebar from "./Sidebar";
 
+/**
+ * Navbar.js
+ * Navbar() displays the navbar
+ * @returns Navbar
+ */
 const Navbar = () => {
+  
+  // Uses the UserAuth function from components/AuthContext to create user
   const { user } = UserAuth();
 
+  // Creates two state variables using the useState hook:
+  // 1.1 menuStat, which represents the state of the menu 
+  // 1.2 menuStat can be changed with setMenuStat (default: false)
+  // 2.1 dropDownVisible, which represents if the dropdown is visible
+  // 2.2 dropDownVisible can be changed with setdropDownVisible (default: false)
   const [menuStat, setMenuStat] = useState(false);
   const [dropDownVisible, setdropDownVisible] = useState(false);
 
+  /**
+   * toggleMenu and handleDropdown do similar things: they change
+   * their respective variables to the opposite boolean (true to false, etc.)
+   * for menuStat and dropDownVisible
+   */
   const toggleMenu = () => {
     setMenuStat(!menuStat);
     //console.log(!menuStat);
@@ -23,6 +40,7 @@ const Navbar = () => {
     setdropDownVisible(!dropDownVisible);
   };
 
+  // Return a Navbar, top CruzCards logo, and user drop down
   return (
     <div>
       <div className="Sidebarcontainer">

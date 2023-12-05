@@ -6,14 +6,29 @@ import { UserAuth } from "./AuthContext";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 
+/**
+ * MyCourses.js
+ * MyCourses() displays the set of courses attributed to a specific user
+ * @returns MyCourses, a displayable list of courses
+ */
+
 function MyCourses() {
+
+  // Initializes courses and setCourses using React's useState hook
+  // Uses the UserAuth function from components/AuthContext to create user
   const [courses, setCourses] = useState([]);
   const { user } = UserAuth();
 
+  // Initializes variables used for searching through courses 
+  // (searchCourses and setSearchCourses using React's useState hook)
   var search = "";
   const [searchCourses, setSearchCourses] = useState([]);
 
+
   useEffect(() => {
+
+    // fetchCourses makes a fetch request to the URL below (including the user's email)
+    // If the network response is not ok, an error is thrown
     const fetchCourses = async () => {
       try {
         const response = await fetch(
@@ -24,8 +39,11 @@ function MyCourses() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+
+        // Parse response as JSON
         const courses = await response.json();
 
+        // Update both course lists  with the parsed response
         setCourses(courses);
         setSearchCourses(courses);
         
@@ -34,14 +52,21 @@ function MyCourses() {
       }
     };
 
+    // Call fetchCourses
     fetchCourses();
     
-  }, [user.email]);
+  }, [user.email]); // Dependency array includes the user's email
 
+  /**
+   * MyCourses.js
+   * breakAll() takes in a string str and checks for any words that are greater than length 12
+   * @param {string} str 
+   * @returns true, if str contains at least one word with length > 12. false, if not.
+   */
   const breakAll = (str) => {
     const words = str.split(" ");
 
-    // Check each word
+    // Check each word in words array
     for (let i = 0; i < words.length; i++) {
       if (words[i].length > 12) {
         return true;
@@ -51,21 +76,39 @@ function MyCourses() {
     return false;
   };
 
-  // Search feature for MyCourses
+  /**
+   * MyCourses.js
+   * searchFeature() contains the code for the search feature for MyCourses
+   * By taking in an event's target value and using that value to filter through courses
+   * @param {event} e 
+   * @returns None
+   */
   const searchFeature = async(e) => {
+
+    // Grab the value from e, perform modifications (trim and make all lowercase), and store in search
     search = e.target.value.trim().toLowerCase();
+
+    // If the search string is empty, set the searched courses to the original list and return
     if (search === ""){
       setSearchCourses(courses);
       return;
     }
 
+    // searchChapters will store the matching chapters
     const searchChapters = [];
 
     try{
+      // Iterate through courses
       for (let i = 0; i < courses.length; i++){
+
+        // Check to see if the name of the ith index of courses starts with the search value
+        // If so, add to searchChapters array
         if ((courses[i].name.toLowerCase()).startsWith(search)){
           searchChapters.push(courses[i]);
         }
+
+        // If the course has tags, convert the course tags to lowercase
+        // and see if any match the search value. If so, add to searchChapters
         if (typeof courses[i].tags !== 'undefined'){
           const course_tags = (courses[i].tags).map(element => {
             return element.toLowerCase();
@@ -77,6 +120,8 @@ function MyCourses() {
           }
         }
       }
+
+      // Update with the search results
       setSearchCourses(searchChapters);
     }
     catch (error){
@@ -84,6 +129,7 @@ function MyCourses() {
     }
   };
 
+  // Return an organized list of MyCourses inside a scrollable container
   return (
     <div className="Course-wrapper">
       <div className="heading-wrapper">
