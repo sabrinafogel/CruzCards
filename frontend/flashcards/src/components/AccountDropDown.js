@@ -36,9 +36,8 @@ function AccountDropDown() {
         </Link>
       ) : (
         <div>
-          
           <Link to="/profile"><li className="List Item">Profile</li></Link>
-          <button className="List Item"onClick={handleSignOut}>Sign Out</button>
+          <Link to="/"><button className="List Item" onClick={handleSignOut}>Sign Out</button></Link>
         </div>
       )}
     </ul>
