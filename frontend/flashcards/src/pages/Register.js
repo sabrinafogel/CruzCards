@@ -3,7 +3,14 @@ import { UserAuth } from "../components/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
+/**
+ * Register.js
+ * SignIn() displays the webpage for registering as a new user
+ * @returns Register User page
+ */
 const SignIn = () => {
+
+  // Initialize necessary variables
   const { user, emailSignUp } = UserAuth();
   const navigate = useNavigate();
   const [inputvalues, setinputvalues] = useState({
@@ -12,31 +19,48 @@ const SignIn = () => {
     input3: "",
   });
 
+  /**
+   * Register.js
+   * handleInputChange() is a method that changes the input values to an event target's value
+   * @param {event} e 
+   * @returns None
+   */
   const handleInputChange = (e) => {
     const value = e.target.value;
-    console.log(value);
+    // console.log(value);
     setinputvalues({
       ...inputvalues,
       [e.target.name]: value,
     });
   };
 
+  /**
+   * Register.js
+   * handleSubmit() is an asynchronous function that saves user information
+   * @param {event} e
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // If the password is too short, alert the user and return
     if (inputvalues.input3.length < 6) {
       alert("Password must be at least 6 characters long");
       return;
     }
+
+    // Send input values into emailSignUp
     emailSignUp(inputvalues.input1, inputvalues.input2, inputvalues.input3);
-    console.log(inputvalues);
+    // console.log(inputvalues);
   };
 
   useEffect(() => {
     if (user != null) {
+      // Navigate to the homepage
       navigate("/");
     }
   }, [user, navigate]);
 
+  // Return the Register page
   return (
     <div className="page-wrapper">
       <div className="Register-in-container">
