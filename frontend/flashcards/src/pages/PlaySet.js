@@ -6,7 +6,14 @@ import { BiPlay } from "react-icons/bi";
 import CardViewer from "../components/CardViewer";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
+/**
+ * PlaySet.js
+ * PlaySet() displays the game page for playing sets
+ * @returns PlaySet page
+ */
 function PlaySet() {
+
+  // Initialize necessary variables
   const { courseid, chapterindex, setindex } = useParams();
   const [set, setSet] = useState([]);
   const [course_info, setCourseInfo] = useState();
@@ -14,9 +21,17 @@ function PlaySet() {
   const [playing, setPlaying] = useState(false);
   const [markedCards, setMarkedCards] = useState([]);
 
+  // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
+
+    /**
+     * PlaySet.js
+     * fetchCourseInfo() is an asynchronous function that fetches course information
+     * from the backend based on a given courseID
+     */
     const fetchCourseInfo = async () => {
       try {
+        // Encodes the courseid in the url for fetching
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
             courseid
@@ -27,7 +42,11 @@ function PlaySet() {
           throw new Error("Network response was not ok");
         }
 
+        // Parse response as JSON
         const course_info = await response.json();
+
+        // Sets the course_info for future use based on the parsed response
+        // Sets the values of sets and cards as well
         setCourseInfo(course_info);
         setSet(course_info?.chapters?.[chapterindex]?.sets?.[setindex]);
         setCards(course_info?.chapters?.[chapterindex]?.sets?.[setindex].cards);
@@ -35,16 +54,31 @@ function PlaySet() {
         console.error("Error:", error);
       }
     };
-    fetchCourseInfo();
-  }, [courseid, chapterindex, setindex]);
 
+    // Call fetchCourseInfo()
+    fetchCourseInfo();
+  }, [courseid, chapterindex, setindex]); // Dependency array includes the courseid, chapterindex, and setindex
+
+  // Initialize isflipped, which tracks the flipping of cards in sets
   const [isflipped, setIsFlipped] = useState(
     new Array(cards.length).fill(false)
   );
 
+  /**
+   * PlaySet.js
+   * handleFlip() is a method that changes the "flip" of cards within sets
+   * This is how the game aspect is created
+   * @param {*} index 
+   */
   const handleFlip = (index) => {
+
+    // Create a new array, newIsFlipped, with the same elements as isflipped
     const newIsFlipped = [...isflipped];
+
+    // Toggle the flip state of the item at index
     newIsFlipped[index] = !newIsFlipped[index];
+
+    // Update the state with the new, modified array
     setIsFlipped(newIsFlipped);
   };
 
@@ -59,6 +93,7 @@ function PlaySet() {
     );
   }
 
+  // Returns a PlaySet page
   return (
     <div>
       <Navbar />
