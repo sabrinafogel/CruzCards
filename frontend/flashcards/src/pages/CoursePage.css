@@ -244,6 +244,21 @@
   color: #0056b3;
 }
 
+.course-delete {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.delete-Course {
+  color: #ff2a00;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.delete-Course:hover {
+  color: #b11f02;
+}
+
 .public-button{
   padding: 1rem;
   margin-bottom: 10px;

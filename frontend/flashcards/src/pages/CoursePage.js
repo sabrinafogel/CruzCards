@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./CoursePage.css";
 import Navbar from "../components/Navbar";
 import { UserAuth } from "../components/AuthContext";
-import { useParams, Link } from "react-router-dom";
-import { FaPlus, FaAngleLeft } from "react-icons/fa6";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { FaPlus, FaAngleLeft, FaTrash } from "react-icons/fa6";
 import { AiFillEdit } from "react-icons/ai";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
 
@@ -24,6 +24,8 @@ function CoursePage() {
   // Used to keep the course_info and sets for use on the page
   const [course_info, setCourseInfo] = useState([]);
 
+  const [courses, setCourses] = useState([]);
+
   // Initializes isEditor, which contains information about if a user has editing permissions
   const [isEditor, setIsEditor] = useState(false);
 
@@ -34,6 +36,8 @@ function CoursePage() {
   // (searchChapters and setSearchChapters using React's useState hook)
   var search = "";
   const [searchChapters, setSearchChapters] = useState([]);
+
+  const navigate = useNavigate();
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
@@ -184,6 +188,20 @@ function CoursePage() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  // Remove a tag using a given index by filtering for all tags except the tag at index
+  /**
+   * CoursePage.js
+   * handleCourseDelete() is a menthod that handles the deletion of courses.
+   * @param {*} index
+   */
+  const handleCourseDelete = (index) => {
+    //e.preventDefault();
+    //setCourses
+
+    setCourses(courses.filter((i) => i !== index));
+    navigate("/");
   };
 
   /**
@@ -352,6 +370,12 @@ function CoursePage() {
           <button className="download-JSON" onClick={handleJSONDownload}>
             Download Course JSON
           </button>
+        </div>
+
+        <div className="course-delete">
+          <button className="delete-Course" onClick={handleCourseDelete}>
+            Delete This Course
+          </button>  
         </div>
 
         {isEditor ? (
