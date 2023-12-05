@@ -32,8 +32,8 @@ app.post("/newcourse", async (req, res) => {
   try {
     console.log("/newcourse post");
     await sql(
-      "INSERT INTO courses(name, description, tags, email, chapters, editors, privacy) VALUES($1, $2, $3, $4, $5, $6, $7)",
-      [name, description, tags, email, chapters, editors, privacy]
+      "INSERT INTO courses(name, description, tags, email, chapters, editors, playcount, privacy) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+      [name, description, tags, email, chapters, editors, playCount, privacy]
     );
     return res.status(200).send({ message: "Course added successfully." });
   } catch (error) {
@@ -47,13 +47,15 @@ app.post("/courseplay", async (req, res) => {
 
   try {
     const result = await sql("SELECT * FROM courses WHERE id = $1", [courseid]);
-    const playCount = result[0].playcount += 1;
+    const playCount = (result[0].playcount += 1);
 
     await sql("UPDATE courses SET playcount = $1 WHERE id = $2", [
       playCount,
       courseid,
     ]);
-    return res.status(200).send({ message: "playcount incremented correctly." });
+    return res
+      .status(200)
+      .send({ message: "playcount incremented correctly." });
   } catch (error) {
     console.error("Error adding field: ", error);
     return res.status(500).send({ error: "Failed to increment playcount." });
@@ -78,7 +80,12 @@ app.get("/courses", async (req, res) => {
   const email = req.query.email;
   try {
     console.log("/course fetch");
-    const result = JSON.stringify(await sql("SELECT * FROM courses WHERE privacy = false OR $1 = ANY(editors)", [email]));
+    const result = JSON.stringify(
+      await sql(
+        "SELECT * FROM courses WHERE privacy = false OR $1 = ANY(editors)",
+        [email]
+      )
+    );
 
     return res.status(200).send(result);
   } catch (error) {
@@ -100,7 +107,7 @@ app.get("/courseinfo", async (req, res) => {
 });
 
 app.post("/newchapter", async (req, res) => {
-  const { courseid, name, description, tags} = req.body;
+  const { courseid, name, description, tags } = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
@@ -256,56 +263,51 @@ app.get("/searchchapter", async (req, res) => {
   const search = req.query.search;
 
   try {
-    const chapters_query = await sql("SELECT chapters FROM courses WHERE id = $1", [id]);
+    const chapters_query = await sql(
+      "SELECT chapters FROM courses WHERE id = $1",
+      [id]
+    );
     const chapters = chapters_query[0].chapters;
     const searchChapters = [];
-    
-    for (let i = 0; i < chapters.length; i++){
-      if (((chapters[i].name).toLowerCase()).startsWith(search.toLowerCase())){
+
+    for (let i = 0; i < chapters.length; i++) {
+      if (chapters[i].name.toLowerCase().startsWith(search.toLowerCase())) {
         searchChapters.push(chapters[i]);
       }
 
-      if (typeof chapters[i].tags !== 'undefined'){
-        const chapter_tags = (chapters[i].tags).map(element => {
+      if (typeof chapters[i].tags !== "undefined") {
+        const chapter_tags = chapters[i].tags.map((element) => {
           return element.toLowerCase();
         });
 
-        const stat = chapter_tags.find(entry => entry.startsWith(search.toLowerCase()));
-        if (stat !== undefined && searchChapters.indexOf(chapters[i]) === -1){
+        const stat = chapter_tags.find((entry) =>
+          entry.startsWith(search.toLowerCase())
+        );
+        if (stat !== undefined && searchChapters.indexOf(chapters[i]) === -1) {
           searchChapters.push(chapters[i]);
         }
-
-      }
-      else {
+      } else {
         //console.log("tags array does not exist in chapter");
       }
-
-
     }
     console.log("/searchchapter fetch");
-    return res
-      .status(200)
-      .send({ chapters: searchChapters });
+    return res.status(200).send({ chapters: searchChapters });
   } catch (error) {
     console.error("Error fetching documents: ", error);
     return res.status(500).send({ error: "Failed to fetch chapter info." });
   }
 });
 
-app.post("/editPrivacy", async(req, res) => {
-  const {id, privacy} = req.body;
+app.post("/editPrivacy", async (req, res) => {
+  const { id, privacy } = req.body;
   console.log("/editPrivacy fetch");
 
   try {
-    await sql("UPDATE courses SET privacy = $1 WHERE id = $2", [
-      privacy,
-      id,
-    ]);
+    await sql("UPDATE courses SET privacy = $1 WHERE id = $2", [privacy, id]);
     return res.status(200).send({ message: "privacy updated successfully" });
   } catch (err) {
     console.log("Error writing or reading file:", err);
   }
-
 });
 
 const port = process.env.PORT || 8080;
