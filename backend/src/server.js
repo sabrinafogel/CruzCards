@@ -29,24 +29,6 @@ app.post("/newcourse", async (req, res) => {
     },
   ]);
 
-  app.post("/courseplay", async (req, res) => {
-    const { courseid } = req.body;
-  
-    try {
-      const result = await sql("SELECT * FROM courses WHERE id = $1", [courseid]);
-      const playCount = result[0].playcount += 1;
-  
-      await sql("UPDATE courses SET playcount = $1 WHERE id = $2", [
-        playCount,
-        courseid,
-      ]);
-      return res.status(200).send({ message: "playcount incremented correctly." });
-    } catch (error) {
-      console.error("Error adding field: ", error);
-      return res.status(500).send({ error: "Failed to increment playcount." });
-    }
-  });
-
   try {
     console.log("/newcourse post");
     await sql(
@@ -57,6 +39,24 @@ app.post("/newcourse", async (req, res) => {
   } catch (error) {
     console.error("Error adding document: ", error);
     return res.status(500).send({ error: "Failed to add course." });
+  }
+});
+
+app.post("/courseplay", async (req, res) => {
+  const { courseid } = req.body;
+
+  try {
+    const result = await sql("SELECT * FROM courses WHERE id = $1", [courseid]);
+    const playCount = result[0].playcount += 1;
+
+    await sql("UPDATE courses SET playcount = $1 WHERE id = $2", [
+      playCount,
+      courseid,
+    ]);
+    return res.status(200).send({ message: "playcount incremented correctly." });
+  } catch (error) {
+    console.error("Error adding field: ", error);
+    return res.status(500).send({ error: "Failed to increment playcount." });
   }
 });
 
