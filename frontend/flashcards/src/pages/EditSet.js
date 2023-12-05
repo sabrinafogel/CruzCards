@@ -8,25 +8,38 @@ import { FaAngleRight } from "react-icons/fa";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import { AiFillPlusCircle, AiFillDelete, AiFillEdit } from "react-icons/ai";
 
+/**
+ * EditSet.js
+ * EditSet() displays the fields necessary to edit a given set of a Chapter of a Course
+ * Additionally, EditSet() will display everything necessary to save any edits the user makes
+ * @returns EditSet, a webpage that displays the fields needed to edit a set
+ */
 function EditSet() {
+
   // For general use in fetching the course
   const { courseid, index, setindex } = useParams();
   const [set, setSet] = useState();
   const [cards, setCards] = useState([]);
+
   // For setting the name input to disabled or not
   const [inputDisabled, setInputDisabled] = useState(false);
+
   // Initial value for the name box
   const [inputvalue, setinputvalue] = useState("");
+
   // The popup for adding/editing the card
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editSetIndex, setEditSetIndex] = useState();
   const [cardFront, setCardFront] = useState("");
   const [cardBack, setCardBack] = useState("");
+
   // Initial value for the description
   const [description, setDescription] = useState("");
+
   // Bool if the user tries to save with no name
   const [noName, setNoName] = useState(false);
+
   // This allows the use of the navigate function to move the user back to the sets page after saving
   const navigate = useNavigate();
 
@@ -45,37 +58,57 @@ function EditSet() {
 
   const [descriptionDisabled, setDescriptionDisabled] = useState(false);
 
-  // Will handle the value the input shows for the description
+  /**
+   * EditSet.js
+   * handleDescriptionChange() is a method that changes the set's description to an event target's value
+   * @param {event} e
+   */
   const handleDescriptionChange = (e) => {
+
+    // If the value is under the description character limit, change the description
+    // Otherwise, don't do anything
     if (e.target.value.length <= 250) {
       setDescription(e.target.value);
     } else {
       setDescriptionDisabled(descriptionDisabled);
     }
   };
-  // Handles the name input change sets the value to what the user types
+
+  /**
+   * EditSet.js
+   * handleInputChange() is a method that changes the set's name to an event target's value
+   * @param {event} e
+   */
   const handleInputChange = (e) => {
+
+    // If the value is under the name character limit, change the bane
+    // Otherwise, don't do anything
     if (e.target.value.length <= 50) {
       setinputvalue(e.target.value);
     } else {
       setInputDisabled(!inputDisabled);
     }
   };
+
   // Handles setting the set name on startup
   useEffect(() => {
     if (set) {
       setinputvalue(set?.name);
     }
   }, [set]);
+
   // Handles setting the cards on startup
   useEffect(() => {
     setCards(set?.cards || []);
   }, [set]);
+
   // This is the var that determines if the new card popup will be shown to the user
   const showaddNewCard = () => {
     setShowModal(!showModal);
   };
-  // This will add a new card to the cards arr and will reset the values of inputs for front and back
+
+  // This will add a new card to the cards arr
+  // This will also reset the values of inputs for front and back
   const addNewCard = (e) => {
     const newCard = { front: cardFront, back: cardBack, id: Date.now() };
     setCards([newCard, ...cards]);
@@ -134,17 +167,22 @@ function EditSet() {
           throw new Error("Network response was not ok");
         }
 
+        // Parse response as JSON
         const course_info = await response.json();
-        //setCourseInfo(course_info);
+
+        // Set the course info (including chapters and sets) based on the parsed JSON response
         setCourseInfo(course_info);
         setSet(course_info?.chapters?.[index]?.sets?.[setindex]);
 
+        // Set the correct information about those with editing permissions of the course
+        // Including the owner and any editors
         const course_editors = [course_info.owner];
 
         course_info.editors.forEach((editor) => {
           course_editors.push(editor);
         });
 
+        // If the user's email is found within course_editors, give them editor permissions
         if (course_editors.includes(user.email)) {
           setIsEditor(true);
         } else {
@@ -154,10 +192,12 @@ function EditSet() {
         console.error("Error:", error);
       }
     };
-    fetchCourseInfo();
-  }, [courseid, index, setindex, user]);
 
-  // This saves the set by calling the backedn and passing the in the req.body
+    // Call fetchCourseInfo()
+    fetchCourseInfo();
+  }, [courseid, index, setindex, user]); // Dependency array includes the courseid, index, setindex, and user
+
+  // This saves the set by calling the backend and passing the in the req.body
   const saveSet = async (e) => {
     e.preventDefault();
 
@@ -205,17 +245,31 @@ function EditSet() {
   const chapters = course_info.chapters;
   const currentChapter = chapters[index];
 
+  /**
+   * EditSet.js
+   * handleJSONDownload() is a method that creates a downloadable file.
+   * This file contains JSON information representing a set
+   * @param {event} e 
+   * @returns None
+   */
   const handleJSONDownload = (e) => {
+
+    // Convert the set object into a JSON string, then into a Blob
     const setJSONData = JSON.stringify(set);
-    const blob = new Blob([setJSONData], { type: 'application/json' });
-    const link = document.createElement('a');
+    const blob = new Blob([setJSONData], { type: "application/json" });
+    
+    // Create a link element for download
+    const link = document.createElement("a");
     link.download = `${set.name}.json`;
     link.href = window.URL.createObjectURL(blob);
+    
+    // Add the link to the CoursePage
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }
-
+  };
+    
+  // Returns the EditSet page
   return (
     <div>
       {/* Puts the navbar on the top of the screen */}
