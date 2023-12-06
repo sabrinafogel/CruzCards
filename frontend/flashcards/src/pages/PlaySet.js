@@ -122,7 +122,7 @@ function PlaySet() {
       {playing ? <CardViewer setPlaying={setPlaying} cards={cards} /> : null}
       <div className="play-heading">
         <button className="back-nav">
-          <Link to={`/courses/${courseID}`}>
+          <Link to={`/courses/${courseID}/chapters/${chapterIndex}`}>
             <FaAngleLeft />
           </Link>
         </button>
