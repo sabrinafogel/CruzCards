@@ -24,8 +24,6 @@ function CoursePage() {
   // Used to keep the course_info and sets for use on the page
   const [course_info, setCourseInfo] = useState([]);
 
-  const [courses, setCourses] = useState([]);
-
   // Initializes isEditor, which contains information about if a user has editing permissions
   const [isEditor, setIsEditor] = useState(false);
 
@@ -190,18 +188,34 @@ function CoursePage() {
     document.body.removeChild(link);
   };
 
-  // Remove a tag using a given index by filtering for all tags except the tag at index
   /**
    * CoursePage.js
    * handleCourseDelete() is a menthod that handles the deletion of courses.
-   * @param {*} index
    */
-  const handleCourseDelete = (index) => {
-    //e.preventDefault();
-    //setCourses
+  const handleCourseDelete = async() => {
 
-    setCourses(courses.filter((i) => i !== index));
-    navigate("/");
+    try {
+      // Encodes the courseid in the url for fetching
+      const response = await fetch("http://localhost:8080/deletecourse", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: courseid,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      // Deletion was successful, redirects user to home page
+      navigate("/");
+
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   /**
