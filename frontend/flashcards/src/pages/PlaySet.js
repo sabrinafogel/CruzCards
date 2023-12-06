@@ -85,6 +85,10 @@ function PlaySet() {
   const [showDesc, setShowDesc] = useState(false);
 
   const handlePlayButtonClick = async () => {
+    if (cards.length === 0) {
+      return;
+    }
+
     try {
       const response = await fetch(`http://localhost:8080/courseplay`, {
         method: "POST",
