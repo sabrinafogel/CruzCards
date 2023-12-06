@@ -36,3 +36,6 @@ CruzCards uses three different general structures to organize flashcard data. \
 **Courses** correspond to the real courses that a user is taking. A user can have any number of courses, and they are the highest level of organization within the CruzCards website. Courses can be given tags, to help with labeling and recognizing within the CruzCards database system.\
 **Chapters** correspond to the chapters/sections within any given course. A user can create any number of chapters in a given course, or they can choose to have just one "chapter" that contains all of the course's information. Chapters are associated with coureses and, upon creation, are auto-populated with the correct course tag. Chapters can also be given tags, to help with labeling and recognizing within the CruzCards database system.\
 **Sets** are the actual flashcard sets that a user can create. A user can create any number of sets within a given chapter. Sets can be made up of any number of flashcards, each with a front and a back.
+
+## Scrum Documents
+https://drive.google.com/drive/folders/1FAJe83GM1FTf3Ky96upeRWSxDjAcVICm?usp=sharing
