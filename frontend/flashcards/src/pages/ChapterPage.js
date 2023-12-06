@@ -191,6 +191,7 @@ function ChapterPage() {
 
     // We then set the state variable sets to newCards
     setSets(newCards);
+    setSearchChapters(newCards);
 
     // Calls saveDelete (see above)
     saveDelete();

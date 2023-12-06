@@ -43,15 +43,15 @@ app.post("/newcourse", async (req, res) => {
 });
 
 app.post("/courseplay", async (req, res) => {
-  const { courseid } = req.body;
+  const { courseid: courseId } = req.body;
 
   try {
-    const result = await sql("SELECT * FROM courses WHERE id = $1", [courseid]);
+    const result = await sql("SELECT * FROM courses WHERE id = $1", [courseId]);
     const playCount = (result[0].playcount += 1);
 
     await sql("UPDATE courses SET playcount = $1 WHERE id = $2", [
       playCount,
-      courseid,
+      courseId,
     ]);
     return res
       .status(200)
@@ -107,28 +107,28 @@ app.get("/courseinfo", async (req, res) => {
 });
 
 app.post("/newchapter", async (req, res) => {
-  const { courseid, name, description, tags } = req.body;
+  const { courseid: courseId, name, description, tags } = req.body;
 
   if (!name) {
     return res.status(400).send({ error: "Please enter a name." });
   }
 
   try {
-    const result = await sql("SELECT * FROM courses WHERE id = $1", [courseid]);
-    const chapter_field = result[0].chapters;
+    const result = await sql("SELECT * FROM courses WHERE id = $1", [courseId]);
+    const chapterField = result[0].chapters;
 
-    const new_chapter = {
+    const newChapter = {
       name: name,
       description: description,
       sets: [],
       tags: tags,
-      chapterindex: chapter_field.length + 1,
+      chapterindex: chapterField.length + 1,
     };
 
-    chapter_field.push(new_chapter);
+    chapterField.push(newChapter);
     await sql("UPDATE courses SET chapters = $1 WHERE id = $2", [
-      JSON.stringify(chapter_field),
-      courseid,
+      JSON.stringify(chapterField),
+      courseId,
     ]);
     return res.status(200).send({ message: "Chapter added successfully." });
   } catch (error) {
@@ -146,11 +146,11 @@ app.post("/newSet", async (req, res) => {
   }
   try {
     const result = await sql("SELECT * FROM courses WHERE id = $1", [id]);
-    const chapter_field = result[0].chapters;
-    const sets = chapter_field[index].sets;
+    const chapterField = result[0].chapters;
+    const sets = chapterField[index].sets;
     sets.push(newSet);
     await sql("UPDATE courses set chapters = $1 WHERE id = $2", [
-      JSON.stringify(chapter_field),
+      JSON.stringify(chapterField),
       id,
     ]);
     return res.status(200).send({ message: "Course updated successfully." });
@@ -171,10 +171,10 @@ app.post("/editSet", async (req, res) => {
 
   try {
     const result = await sql("SELECT * FROM courses WHERE id = $1", [id]);
-    const chapter_field = result[0].chapters;
-    chapter_field[index].sets[setindex] = newSet;
+    const chapterField = result[0].chapters;
+    chapterField[index].sets[setindex] = newSet;
     await sql("UPDATE courses set chapters = $1 WHERE id = $2", [
-      JSON.stringify(chapter_field),
+      JSON.stringify(chapterField),
       id,
     ]);
     return res.status(200).send({ message: "Course updated successfully." });
@@ -213,7 +213,7 @@ app.post("/deleteSet", async (req, res) => {
 });
 
 app.post("/editCourse", async (req, res) => {
-  const { id, name, description, course_tags } = req.body;
+  const { id, name, description, course_tags: courseTags } = req.body;
   console.log("/editCourse fetch");
 
   try {
@@ -263,11 +263,11 @@ app.get("/searchchapter", async (req, res) => {
   const search = req.query.search;
 
   try {
-    const chapters_query = await sql(
+    const chaptersQuery = await sql(
       "SELECT chapters FROM courses WHERE id = $1",
       [id]
     );
-    const chapters = chapters_query[0].chapters;
+    const chapters = chaptersQuery[0].chapters;
     const searchChapters = [];
 
     for (let i = 0; i < chapters.length; i++) {
@@ -276,11 +276,11 @@ app.get("/searchchapter", async (req, res) => {
       }
 
       if (typeof chapters[i].tags !== "undefined") {
-        const chapter_tags = chapters[i].tags.map((element) => {
+        const chapterTags = chapters[i].tags.map((element) => {
           return element.toLowerCase();
         });
 
-        const stat = chapter_tags.find((entry) =>
+        const stat = chapterTags.find((entry) =>
           entry.startsWith(search.toLowerCase())
         );
         if (stat !== undefined && searchChapters.indexOf(chapters[i]) === -1) {
