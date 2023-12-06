@@ -11,7 +11,6 @@ import "./NewSet.css";
  * @returns NewSet page
  */
 function NewSet() {
-
   // Initialize necessary variables
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -24,20 +23,19 @@ function NewSet() {
   const [editSetIndex, setEditSetIndex] = useState();
   const [cardFront, setCardFront] = useState("");
   const [cardBack, setCardBack] = useState("");
-  const { courseid, index } = useParams();
+  const { courseid: courseId, index } = useParams();
   const navigate = useNavigate();
 
   /**
    * NewSet.js
    * handleInputChange() is a method that changes the set name to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleInputChange = (event) => {
-
     // Get the value and store it in newName
     const newName = event.target.value;
-    
+
     // Check to make sure newName's length is within the character limit for names
     // If it is, change the name accordingly. If not, do nothing
     if (newName.length <= 50) {
@@ -50,14 +48,13 @@ function NewSet() {
   /**
    * NewSet.js
    * handleDescriptionChange() is a method that changes the set description to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleDescriptionChange = (event) => {
-    
     // Get the value and store it in newDescription
     const newDescription = event.target.value;
-    
+
     // Check to make sure newDescription's length is within the character limit for descriptions
     // If it is, change the description accordingly. If not, do nothing
     if (newDescription.length <= 250) {
@@ -87,7 +84,7 @@ function NewSet() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: courseid,
+          id: courseId,
           index: index,
           name: name,
           description: description,
@@ -100,7 +97,7 @@ function NewSet() {
       }
 
       // Return to the chapter page for chapter at index
-      navigate(`/courses/${courseid}/chapters/${index}`);
+      navigate(`/courses/${courseId}/chapters/${index}`);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -298,7 +295,7 @@ function NewSet() {
           <button className="course-save" onClick={handleSubmit}>
             Save
           </button>
-          <Link to={`/courses/${courseid}/chapters/${index}`}>
+          <Link to={`/courses/${courseId}/chapters/${index}`}>
             <button className="course-cancel">Cancel</button>
           </Link>
         </div>

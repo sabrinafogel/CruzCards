@@ -11,9 +11,8 @@ import "./Profile.css";
  * @returns Profile page
  */
 function Profile() {
-
   // Initialize necessary variables
-  const { user, updateUserprofile } = UserAuth();
+  const { user, updateUserProfile } = UserAuth();
   const [isDisabled, setIsDisabled] = useState(true);
   const inputRef = useRef();
 
@@ -22,7 +21,7 @@ function Profile() {
   /**
    * Profile.js
    * handleInputChange() is a method that changes the input value to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleInputChange = (e) => {
@@ -34,7 +33,7 @@ function Profile() {
   /**
    * Profile.js
    * handleSubmit() is a method that handles updates to the user's profile based on an input value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleSubmit = (e) => {
@@ -45,7 +44,7 @@ function Profile() {
     if (inputvalue === "") {
       return;
     } else {
-      updateUserprofile(inputvalue);
+      updateUserProfile(inputvalue);
       setIsDisabled(!isDisabled);
     }
   };

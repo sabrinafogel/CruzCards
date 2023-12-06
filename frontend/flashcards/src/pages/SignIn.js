@@ -10,12 +10,11 @@ import "./SignIn.css";
  * @returns Sign In User page
  */
 const SignIn = () => {
-
   // Initialize necessary variables
   const { user, googleSignIn, emailSignIn } = UserAuth();
   const navigate = useNavigate();
 
-  const [inputvalues, setinputvalues] = useState({
+  const [inputValues, setinputvalues] = useState({
     input1: "",
     input2: "",
   });
@@ -23,26 +22,26 @@ const SignIn = () => {
   /**
    * SignIn.js
    * handleInputChange() is a method that changes the input values to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleInputChange = (e) => {
     const value = e.target.value;
     //console.log(value);
     setinputvalues({
-      ...inputvalues,
+      ...inputValues,
       [e.target.name]: value,
     });
   };
 
   /**
    * SignIn.js
-   * handleSubmit() is an asynchronous function that enters user information 
+   * handleSubmit() is an asynchronous function that enters user information
    * @param {event} e
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    emailSignIn(inputvalues.input1, inputvalues.input2);
+    emailSignIn(inputValues.input1, inputValues.input2);
     // console.log(inputvalues);
   };
 
@@ -77,7 +76,7 @@ const SignIn = () => {
             name="input1"
             className="signin-input"
             placeholder="Email"
-            value={inputvalues.input1}
+            value={inputValues.input1}
             onChange={handleInputChange}
             required
           ></input>
@@ -87,7 +86,7 @@ const SignIn = () => {
             name="input2"
             className="signin-input"
             placeholder="Password"
-            value={inputvalues.input2}
+            value={inputValues.input2}
             onChange={handleInputChange}
             required
           ></input>
@@ -96,10 +95,10 @@ const SignIn = () => {
             type="submit"
             value="Log In"
             onClick={handleSubmit}
-            inputvalues={inputvalues}
+            inputvalues={inputValues}
           />
           <Link className="link" to="/register-account">
-              Register an account here!
+            Register an account here!
           </Link>
           <GoogleButton className="Google" onClick={handleGoogleSignIn} />
         </div>

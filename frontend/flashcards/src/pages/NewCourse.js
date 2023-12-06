@@ -14,7 +14,6 @@ import { FaTimes } from "react-icons/fa";
  * @returns NewCourse page
  */
 function NewCourse() {
-
   // Initialize necessary variables
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -29,11 +28,10 @@ function NewCourse() {
   /**
    * NewCourse.js
    * handleInputChange() is a method that changes the course name to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleInputChange = (event) => {
-
     // Get the value and store it in newName
     const newName = event.target.value;
 
@@ -49,14 +47,13 @@ function NewCourse() {
   /**
    * NewCourse.js
    * handleDescriptionChange() is a method that changes the course description to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleDescriptionChange = (event) => {
-
     // Get the value and store it in newDescription
     const newDescription = event.target.value;
-    
+
     // Check to make sure newDescription's length is within the character limit for descriptions
     // If it is, change the description accordingly. If not, do nothing
     if (newDescription.length <= 250) {
@@ -69,7 +66,7 @@ function NewCourse() {
   /**
    * NewCourse.js
    * handleTagsChange() is a method that changes the course tags to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleTagsChange = (e) => {
@@ -78,22 +75,22 @@ function NewCourse() {
     }
 
     // Get the tag from e's target
-    const new_tag = e.target.value;
+    const newTag = e.target.value;
 
     // Check to make sure there is actual content within new_tag
-    if (!new_tag.trim()) {
+    if (!newTag.trim()) {
       return;
     }
 
     // Append new_tag to setTags and reset e's target value
-    setTags([...tags, new_tag]);
+    setTags([...tags, newTag]);
     e.target.value = "";
   };
 
   /**
    * NewCourse.js
    * handleEditorsChange() is a method that changes the course editors to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleEditorsChange = (e) => {
@@ -102,15 +99,15 @@ function NewCourse() {
     }
 
     // Get the value from e's target
-    const new_editor = e.target.value;
+    const newEditor = e.target.value;
 
     // Check to make sure there is content within new_editor
-    if (!new_editor.trim()) {
+    if (!newEditor.trim()) {
       return;
     }
 
     // Append new_editor to setEditors and reset e's target value
-    setEditors([...editors, new_editor]);
+    setEditors([...editors, newEditor]);
     e.target.value = "";
   };
 

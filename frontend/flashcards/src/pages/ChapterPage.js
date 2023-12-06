@@ -11,22 +11,21 @@ import { BiPlay } from "react-icons/bi";
 
 /**
  * ChapterPage.js
- * ChapterPage() displays the Sets associated with a given Chapter of a Course. 
- * Additionally, ChapterPage() displays different options if the user 
+ * ChapterPage() displays the Sets associated with a given Chapter of a Course.
+ * Additionally, ChapterPage() displays different options if the user
  * has editing permissions for the Course (if they do, they can add Sets to the Chapter)
  * @returns ChapterPage, a webpage that displays the Sets associated with a given Chapter of a Course
  */
 
 function ChapterPage() {
-
   // Gets these params from the url
-  const { courseid, chapterIndex } = useParams();
+  const { courseid: courseId, chapterIndex } = useParams();
   // Used to keep the course_info and sets for use on the page
-  const [course_info, setCourseInfo] = useState({});
+  const [courseInfo, setCourseInfo] = useState({});
   const [currentChapter, setCurrentChapter] = useState({});
   const [sets, setSets] = useState([]);
   // Keeps the index for what the user wants to delete since the delete popup is located outside of the mapping
-  const [deleteindex, setDeleteindex] = useState();
+  const [deleteIndex, setDeleteindex] = useState();
   // A boolean value for if the delete popup is shown or not to the user, default is false
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   // User from authcontext provider this will be used later for restricting non-editors from changing the sets
@@ -35,7 +34,7 @@ function ChapterPage() {
   // Initializes isEditor, which contains information about if a user has editing permissions
   const [isEditor, setIsEditor] = useState(false);
 
-  // Initializes variables used for searching through courses 
+  // Initializes variables used for searching through courses
   // (searchChapters and setSearchChapters using React's useState hook)
   var search = "";
   const [searchChapters, setSearchChapters] = useState([]);
@@ -46,11 +45,10 @@ function ChapterPage() {
 
   // Initializes variables for tracking any changes in Chapter Description
   const [isChangingDesc, setIsChangingDesc] = useState(false);
-  const [chapDescInput, setChapDescInput] = useState(course_info.description);
+  const [chapDescInput, setChapDescInput] = useState(courseInfo.description);
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
-
     /**
      * ChapterPage.js
      * fetchCourseInfo() is an asynchronous function that fetches course information
@@ -61,7 +59,7 @@ function ChapterPage() {
         // Encodes the courseid in the url for fetching
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
-            courseid
+            courseId
           )}`
         );
 
@@ -70,33 +68,33 @@ function ChapterPage() {
         }
 
         // Parse response as JSON
-        const rec_course_info = await response.json();
-        const rec_chap = rec_course_info.chapters[chapterIndex];
+        const recCourseInfo = await response.json();
+        const recChap = recCourseInfo.chapters[chapterIndex];
 
         // Sets the returned course_info for future use, based on the parsed response
-        setCourseInfo(rec_course_info);
-        setCurrentChapter(rec_chap);
-        setChapNameInput(rec_chap.name);
-        setChapDescInput(rec_chap.description);
+        setCourseInfo(recCourseInfo);
+        setCurrentChapter(recChap);
+        setChapNameInput(recChap.name);
+        setChapDescInput(recChap.description);
 
         // Set the correct information about those with editing permissions of the course
         // Including the owner and any editors
-        const course_editors = [rec_course_info.owner];
+        const courseEditors = [recCourseInfo.owner];
 
-        rec_course_info.editors.forEach((editor) => {
-          course_editors.push(editor);
+        recCourseInfo.editors.forEach((editor) => {
+          courseEditors.push(editor);
         });
 
         // If the user's email is found within course_editors, give them editor permissions
-        if (course_editors.includes(user.email)) {
+        if (courseEditors.includes(user.email)) {
           setIsEditor(true);
         } else {
           setIsEditor(false);
         }
 
         // Will keep a local copy of the sets for removing sets without extra reads and refreshes
-        setSets(rec_course_info.chapters[chapterIndex].sets);
-        setSearchChapters(rec_course_info.chapters[chapterIndex].sets);
+        setSets(recCourseInfo.chapters[chapterIndex].sets);
+        setSearchChapters(recCourseInfo.chapters[chapterIndex].sets);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -104,22 +102,21 @@ function ChapterPage() {
 
     // Call fetchCourseInfo()
     fetchCourseInfo();
-  }, [courseid, chapterIndex, user]); // Dependency array includes the courseid, chapterIndex, and user
+  }, [courseId, chapterIndex, user]); // Dependency array includes the courseid, chapterIndex, and user
 
   /**
    * ChapterPage.js
    * searchFeature() is an asynchronous function that contains the search feature for Chapters
    * By taking in an event's target value and using that value to filter through Sets/Chapters
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
-  const searchFeature = async(e) => {
-
+  const searchFeature = async (e) => {
     // Grab the value from e, perform modifications (trim and make all lowercase), and store in search
     search = e.target.value.trim();
-    
+
     // If the search string is empty, set the searched sets to the original list and return
-    if (search === ""){
+    if (search === "") {
       setSearchChapters(sets);
       return;
     }
@@ -128,21 +125,20 @@ function ChapterPage() {
     var newSets = [];
 
     // Iterate through sets
-    for (let i = 0; i < sets.length; i++){
-
+    for (let i = 0; i < sets.length; i++) {
       // Check to see if the name of the set matches with the search value
       // If so, add to newSets array
-      if ((sets[i].name.toLowerCase()).startsWith(search.toLowerCase())){
+      if (sets[i].name.toLowerCase().startsWith(search.toLowerCase())) {
         newSets.push(sets[i]);
       }
     }
 
     // Update with the search results
     setSearchChapters(newSets);
-  }
+  };
 
   // Returns a loading screen if the fetch hasn't finished yet
-  if (!course_info || !course_info.chapters) {
+  if (!courseInfo || !courseInfo.chapters) {
     return (
       <div>
         <Navbar />
@@ -167,9 +163,9 @@ function ChapterPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: courseid,
+          id: courseId,
           index: chapterIndex,
-          setindex: deleteindex,
+          setindex: deleteIndex,
         }),
       });
 
@@ -189,9 +185,8 @@ function ChapterPage() {
    * @returns None
    */
   const deleteSet = () => {
-
     // newCards is a new array that gets all sets except the one at deleteindex
-    const newCards = sets.filter((set, i) => i !== deleteindex);
+    const newCards = sets.filter((set, i) => i !== deleteIndex);
     // console.log(sets.filter((set, i) => i !== deleteindex));
 
     // We then set the state variable sets to newCards
@@ -222,7 +217,7 @@ function ChapterPage() {
   /**
    * ChapterPage.js
    * handleChapNameChange() is a method that changes the chapter name to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleChapNameChange = (e) => {
@@ -232,7 +227,7 @@ function ChapterPage() {
   /**
    * ChapterPage.js
    * handleDescNameChange() is a method that changes the description to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleChapDescChange = (e) => {
@@ -245,11 +240,10 @@ function ChapterPage() {
    * @returns None
    */
   const handleNameChangeSubmit = async () => {
-
     // Set the modes for changing name and description to false
     setIsChangingName(false);
     setIsChangingDesc(false);
-    
+
     // Send a POST request to the server to update chapter information
     const response = await fetch("http://localhost:8080/editChapter", {
       method: "POST",
@@ -257,7 +251,7 @@ function ChapterPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: courseid,
+        id: courseId,
         index: chapterIndex,
         name: chapNameInput,
         description: chapDescInput,
@@ -305,7 +299,7 @@ function ChapterPage() {
       {/* Wrap for the rest of the page */}
       <div className="ChapterPage">
         <button className="back-nav">
-          <Link to={`/courses/${courseid}`}>
+          <Link to={`/courses/${courseId}`}>
             <FaAngleLeft />
           </Link>
         </button>
@@ -315,8 +309,8 @@ function ChapterPage() {
           </Link>
           <FaAngleRight className="angle-right" />
 
-          <Link className="Link-tree" to={`/courses/${courseid}`}>
-            <p>{course_info.name}</p>
+          <Link className="Link-tree" to={`/courses/${courseId}`}>
+            <p>{courseInfo.name}</p>
           </Link>
 
           <FaAngleRight className="angle-right" />
@@ -361,7 +355,11 @@ function ChapterPage() {
 
           {/* Search to look through your sets (NOT IMPLEMENTED) */}
           <div className="input-wrapper">
-            <input className="search-input" placeholder="Search" onChange={searchFeature}/>
+            <input
+              className="search-input"
+              placeholder="Search"
+              onChange={searchFeature}
+            />
           </div>
         </div>
 
@@ -397,7 +395,7 @@ function ChapterPage() {
 
         {/* New Set button */}
         {isEditor ? (
-          <Link to={`/courses/${courseid}/${chapterIndex}/new-set/`}>
+          <Link to={`/courses/${courseId}/${chapterIndex}/new-set/`}>
             <button className="create-set">
               <div className="new-set-text">New Set</div>
               <div className="new-set-icon">
@@ -416,19 +414,19 @@ function ChapterPage() {
               <Link
                 key={setIndex}
                 className="link-fix"
-                to={`/courses/${courseid}/${chapterIndex}/${setIndex}`}
+                to={`/courses/${courseId}/${chapterIndex}/${setIndex}`}
               >
                 <button className={`sets color-${setIndex % 4}`}>
-                <h1>{set.name}</h1>
-              </button>
+                  <h1>{set.name}</h1>
+                </button>
               </Link>
               <Link
-                to={`/courses/${courseid}/${chapterIndex}/${setIndex}/play-set`}
+                to={`/courses/${courseId}/${chapterIndex}/${setIndex}/play-set`}
               >
                 <button>
                   <BiPlay className="play-button" />
                 </button>
-              </Link>              
+              </Link>
               {/* Delete Button */}
               {isEditor ? (
                 <button

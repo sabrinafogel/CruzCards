@@ -13,20 +13,17 @@ import { FaPlus } from "react-icons/fa6";
  */
 
 function MyCourses() {
-
   // Initializes courses and setCourses using React's useState hook
   // Uses the UserAuth function from components/AuthContext to create user
   const [courses, setCourses] = useState([]);
   const { user } = UserAuth();
 
-  // Initializes variables used for searching through courses 
+  // Initializes variables used for searching through courses
   // (searchCourses and setSearchCourses using React's useState hook)
   var search = "";
   const [searchCourses, setSearchCourses] = useState([]);
 
-
   useEffect(() => {
-
     // fetchCourses makes a fetch request to the URL below (including the user's email)
     // If the network response is not ok, an error is thrown
     const fetchCourses = async () => {
@@ -46,7 +43,6 @@ function MyCourses() {
         // Update both course lists  with the parsed response
         setCourses(courses);
         setSearchCourses(courses);
-        
       } catch (error) {
         console.error("Error:", error);
       }
@@ -54,13 +50,12 @@ function MyCourses() {
 
     // Call fetchCourses
     fetchCourses();
-    
   }, [user.email]); // Dependency array includes the user's email
 
   /**
    * MyCourses.js
    * breakAll() takes in a string str and checks for any words that are greater than length 12
-   * @param {string} str 
+   * @param {string} str
    * @returns true, if str contains at least one word with length > 12. false, if not.
    */
   const breakAll = (str) => {
@@ -80,16 +75,15 @@ function MyCourses() {
    * MyCourses.js
    * searchFeature() contains the code for the search feature for MyCourses
    * By taking in an event's target value and using that value to filter through courses
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
-  const searchFeature = async(e) => {
-
+  const searchFeature = async (e) => {
     // Grab the value from e, perform modifications (trim and make all lowercase), and store in search
     search = e.target.value.trim().toLowerCase();
 
     // If the search string is empty, set the searched courses to the original list and return
-    if (search === ""){
+    if (search === "") {
       setSearchCourses(courses);
       return;
     }
@@ -97,25 +91,24 @@ function MyCourses() {
     // searchChapters will store the matching chapters
     const searchChapters = [];
 
-    try{
+    try {
       // Iterate through courses
-      for (let i = 0; i < courses.length; i++){
-
+      for (let i = 0; i < courses.length; i++) {
         // Check to see if the name of the ith index of courses starts with the search value
         // If so, add to searchChapters array
-        if ((courses[i].name.toLowerCase()).startsWith(search)){
+        if (courses[i].name.toLowerCase().startsWith(search)) {
           searchChapters.push(courses[i]);
         }
 
         // If the course has tags, convert the course tags to lowercase
         // and see if any match the search value. If so, add to searchChapters
-        if (typeof courses[i].tags !== 'undefined'){
-          const course_tags = (courses[i].tags).map(element => {
+        if (typeof courses[i].tags !== "undefined") {
+          const courseTags = courses[i].tags.map((element) => {
             return element.toLowerCase();
           });
 
-          const stat = course_tags.find(entry => entry.startsWith(search));
-          if (stat !== undefined && searchChapters.indexOf(courses[i]) === -1){
+          const stat = courseTags.find((entry) => entry.startsWith(search));
+          if (stat !== undefined && searchChapters.indexOf(courses[i]) === -1) {
             searchChapters.push(courses[i]);
           }
         }
@@ -123,8 +116,7 @@ function MyCourses() {
 
       // Update with the search results
       setSearchCourses(searchChapters);
-    }
-    catch (error){
+    } catch (error) {
       console.error("Error:", error);
     }
   };
@@ -135,7 +127,11 @@ function MyCourses() {
       <div className="heading-wrapper">
         <h1 className="course-heading">My Courses</h1>
         <div className="input-wrapper">
-          <input className="search-input" placeholder="Search" onChange={searchFeature}></input>
+          <input
+            className="search-input"
+            placeholder="Search"
+            onChange={searchFeature}
+          ></input>
           <Link to="/new-course">
             <button className="create-course">
               <FaPlus />

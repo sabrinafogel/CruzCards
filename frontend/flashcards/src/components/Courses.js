@@ -11,25 +11,23 @@ import "./Courses.css";
  */
 
 function Courses() {
-
   // Initializes courses and setCourses using React's useState hook
   // Uses the UserAuth function from components/AuthContext to create user
   const [courses, setCourses] = useState([]);
   const { user } = UserAuth();
 
-  // Initializes variables used for searching through courses 
+  // Initializes variables used for searching through courses
   // (searchCourses and setSearchCourses using React's useState hook)
   const [searchCourses, setSearchCourses] = useState([]);
 
   useEffect(() => {
-
     // fetchCourses makes a fetch request to the URL below (including the user's email)
     // If the network response is not ok, an error is thrown
     const fetchCourses = async () => {
       try {
         const response = await fetch(
           `http://localhost:8080/courses?email=${encodeURIComponent(
-          user.email
+            user.email
           )}`
         );
         if (!response.ok) {
@@ -38,7 +36,7 @@ function Courses() {
 
         // Parse response as JSON
         const courses = await response.json();
-        
+
         // Update both course lists  with the parsed response
         setCourses(courses);
         setSearchCourses(courses);
@@ -49,13 +47,12 @@ function Courses() {
 
     // Call fetchCourses
     fetchCourses();
-
   }, [user.email]); // Dependency array includes the user's email
 
   /**
    * Courses.js
    * breakAll() takes in a string str and checks for any words that are greater than length 12
-   * @param {string} str 
+   * @param {string} str
    * @returns true, if str contains at least one word with length > 12. false, if not.
    */
   const breakAll = (str) => {
@@ -70,21 +67,19 @@ function Courses() {
       }
       return false;
     }
-  }
+  };
 
   /**
    * Courses.js
    * searchFeature() contains the code for the search feature for Courses
    * By taking in an event's target value and using that value to filter through courses
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
-  const searchFeature = async(e) => {
-
+  const searchFeature = async (e) => {
     // Grab the value from e, perform modifications (trim and make all lowercase), and store in search
     const search = e.target.value.trim().toLowerCase();
-    if (search === ""){
-
+    if (search === "") {
       setSearchCourses(courses);
       return;
     }
@@ -92,34 +87,28 @@ function Courses() {
     // searchChapters will store the matching chapters
     const searchChapters = [];
 
-    try{
+    try {
       // Iterate through courses
-      for (let i = 0; i < courses.length; i++){
-        if (typeof courses[i].name === 'undefined'){
+      for (let i = 0; i < courses.length; i++) {
+        if (typeof courses[i].name === "undefined") {
           continue;
         }
-        
+
         // Check to see if the name of the ith index of courses starts with the search value
         // If so, add to searchChapters array
-        if ((courses[i].name.toLowerCase()).startsWith(search)){
+        if (courses[i].name.toLowerCase().startsWith(search)) {
           searchChapters.push(courses[i]);
         }
 
         // If the course has tags, convert the course tags to lowercase
         // and see if any match the search value. If so, add to searchChapters
-        if (typeof courses[i].tags !== 'undefined'){
-          const course_tags = (courses[i].tags).map(element => {
-
+        if (typeof courses[i].tags !== "undefined") {
+          const courseTags = courses[i].tags.map((element) => {
             return element.toLowerCase();
           });
 
-          const stat = course_tags.find((entry) =>
-            entry.startsWith(search)
-          );
-          if (
-            stat !== undefined &&
-            searchChapters.indexOf(courses[i]) === -1
-          ) {
+          const stat = courseTags.find((entry) => entry.startsWith(search));
+          if (stat !== undefined && searchChapters.indexOf(courses[i]) === -1) {
             searchChapters.push(courses[i]);
           }
         }
@@ -132,7 +121,7 @@ function Courses() {
     }
   };
 
-// Sort courses based on playcount in descending order
+  // Sort courses based on playcount in descending order
   const sortedCourses = [...searchCourses].sort(
     (a, b) => b.playcount - a.playcount
   );

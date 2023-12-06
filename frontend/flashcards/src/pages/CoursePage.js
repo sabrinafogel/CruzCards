@@ -10,19 +10,18 @@ import { FaAngleRight, FaCheck } from "react-icons/fa";
 /**
  * CoursePage.js
  * CoursePage() displays the Chapters associated with a given Course.
- * Additionally, ChapterPage() displays different options if the user 
+ * Additionally, ChapterPage() displays different options if the user
  * has editing permissions for the Course (if they do, they can add Chapters to the Course)
  * @returns CoursePage, a webpage that displays the Chapters associated with a given Course
  */
 function CoursePage() {
-  
   // User from authcontext provider this will be used later for restricting non-editors from changing the sets
   const { user } = UserAuth();
 
   // Gets these params from the url
-  const { courseid } = useParams();
+  const { courseid: courseId } = useParams();
   // Used to keep the course_info and sets for use on the page
-  const [course_info, setCourseInfo] = useState([]);
+  const [courseInfo, setCourseInfo] = useState([]);
 
   // Initializes isEditor, which contains information about if a user has editing permissions
   const [isEditor, setIsEditor] = useState(false);
@@ -30,14 +29,13 @@ function CoursePage() {
   // Initializes toggle
   const [toggle, setToggle] = useState(undefined);
 
-  // Initializes variables used for searching through courses 
+  // Initializes variables used for searching through courses
   // (searchChapters and setSearchChapters using React's useState hook)
   var search = "";
   const [searchChapters, setSearchChapters] = useState([]);
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
-
     /**
      * CoursePage.js
      * fetchCourseInfo() is an asynchronous function that fetches course information
@@ -48,7 +46,7 @@ function CoursePage() {
         // Encodes the courseid in the url for fetching
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
-            courseid
+            courseId
           )}`
         );
 
@@ -57,27 +55,27 @@ function CoursePage() {
         }
 
         // Parse response as JSON
-        const course_info = await response.json();
+        const courseInfo = await response.json();
 
         // Sets the course_info for future use, based on the parsed JSON response
-        setCourseInfo(course_info);
-        setSearchChapters(course_info.chapters);
-        setCourseNameInput(course_info.name);
+        setCourseInfo(courseInfo);
+        setSearchChapters(courseInfo.chapters);
+        setCourseNameInput(courseInfo.name);
 
-        if (course_info.privacy !== 'undefined'){
-          setToggle(course_info.privacy);
+        if (courseInfo.privacy !== "undefined") {
+          setToggle(courseInfo.privacy);
         }
 
         // Set the correct information about those with editing permissions of the course
         // Including the owner and any editors
-        const course_editors = [course_info.owner];
+        const courseEditors = [courseInfo.owner];
 
-        course_info.editors.forEach((editor) => {
-          course_editors.push(editor);
+        courseInfo.editors.forEach((editor) => {
+          courseEditors.push(editor);
         });
 
         // If the user's email is found within course_editors, give them editor permissions
-        if (course_editors.includes(user.email)) {
+        if (courseEditors.includes(user.email)) {
           setIsEditor(true);
         } else {
           setIsEditor(false);
@@ -89,22 +87,21 @@ function CoursePage() {
 
     // Call fetchCourseInfo()
     fetchCourseInfo();
-  }, [courseid, user]); // Dependency array includes the courseid and user
+  }, [courseId, user]); // Dependency array includes the courseid and user
 
-  const chapters = course_info.chapters;
-  
+  const chapters = courseInfo.chapters;
+
   /**
    * CoursePage.js
    * searchFeature() is an asynchronous function that contains the search feature for Courses
    * By taking in an event's target value and using that value to filter through Courses
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const searchFeature = async (e) => {
-
     // Grab the value from e, perform modifications (trim), and store in search
     search = e.target.value.trim();
-    
+
     // If the search string is empty, set the searched chapters to the original list and return
     if (search === "") {
       setSearchChapters(chapters);
@@ -115,7 +112,7 @@ function CoursePage() {
       const response = await fetch(
         `http://localhost:8080/searchchapter?search=${encodeURIComponent(
           search
-        )}&courseid=${encodeURIComponent(courseid)}`
+        )}&courseid=${encodeURIComponent(courseId)}`
       );
 
       if (!response.ok) {
@@ -134,18 +131,18 @@ function CoursePage() {
 
   // Initializes variables for tracking any changes in Course Name
   const [isChangingName, setIsChangingName] = useState(false);
-  const [courseNameInput, setCourseNameInput] = useState(course_info.name);
+  const [courseNameInput, setCourseNameInput] = useState(courseInfo.name);
 
   // Initializes variables for tracking any changes in Course Description
   const [isChangingDesc, setIsChangingDesc] = useState(false);
   const [courseDescInput, setCourseDescInput] = useState(
-    course_info.description
+    courseInfo.description
   );
 
   /**
    * CoursePage.js
    * handleCourseNameChange() is a method that changes the course's name to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleCourseNameChange = (e) => {
@@ -155,7 +152,7 @@ function CoursePage() {
   /**
    * CoursePage.js
    * handleCourseDescChange() is a method that changes the course's description to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleCourseDescChange = (e) => {
@@ -166,20 +163,19 @@ function CoursePage() {
    * CoursePage.js
    * handleJSONDownload() is a method that creates a downloadable file.
    * This file contains JSON information representing a course
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleJSONDownload = (e) => {
-
     // Convert the course_info object into a JSON string, then into a Blob
-    const courseJSONData = JSON.stringify(course_info);
+    const courseJSONData = JSON.stringify(courseInfo);
     const blob = new Blob([courseJSONData], { type: "application/json" });
-    
+
     // Create a link element for download
     const link = document.createElement("a");
-    link.download = `${course_info.name}.json`;
+    link.download = `${courseInfo.name}.json`;
     link.href = window.URL.createObjectURL(blob);
-    
+
     // Add the link to the CoursePage
     document.body.appendChild(link);
     link.click();
@@ -192,7 +188,6 @@ function CoursePage() {
    * @returns None
    */
   const handleNameChangeSubmit = async (e) => {
-
     // Set the modes for changing name and description to false
     setIsChangingName(false);
     setIsChangingDesc(false);
@@ -209,7 +204,7 @@ function CoursePage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: courseid,
+        id: courseId,
         name: courseNameInput,
         description: courseDescInput,
       }),
@@ -220,7 +215,7 @@ function CoursePage() {
     }
 
     // Get and store the new course information (name and description)
-    const newCourseInfo = { ...course_info };
+    const newCourseInfo = { ...courseInfo };
     newCourseInfo.name = courseNameInput;
     newCourseInfo.description = courseDescInput;
 
@@ -233,7 +228,7 @@ function CoursePage() {
    * toggleButton() is a function that handles toggling the privacy state of a course
    * @returns None
    */
-  const toggleButton = async() => {
+  const toggleButton = async () => {
     //setToggle(!toggle);
 
     const response = await fetch("http://localhost:8080/editPrivacy", {
@@ -242,7 +237,7 @@ function CoursePage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: courseid,
+        id: courseId,
         privacy: !toggle,
       }),
     });
@@ -252,7 +247,7 @@ function CoursePage() {
     }
 
     // Create a variable newCourseInfo that stores the course_info
-    const newCourseInfo = {...course_info};
+    const newCourseInfo = { ...courseInfo };
 
     // Change newCourseInfo's privacy setting
     newCourseInfo.privacy = !toggle;
@@ -261,8 +256,7 @@ function CoursePage() {
     setCourseInfo(newCourseInfo);
 
     setToggle(!toggle);
-
-  }
+  };
 
   // Return the formatted CoursePage
   return (
@@ -280,14 +274,14 @@ function CoursePage() {
           </Link>
           <FaAngleRight className="angle-right" />
           <div className="Link-current">
-            <p className="Link-current">{course_info.name}</p>
+            <p className="Link-current">{courseInfo.name}</p>
           </div>
         </div>
 
         <div className="heading-wrapper">
           {!isChangingName ? (
             <div>
-              <h1 className="course-heading">{course_info.name}</h1>
+              <h1 className="course-heading">{courseInfo.name}</h1>
               {isEditor ? (
                 <AiFillEdit
                   className="course-namedesc-edit-icon"
@@ -322,8 +316,8 @@ function CoursePage() {
         {!isChangingDesc ? (
           <div>
             <p className="description">
-              {course_info.description
-                ? course_info.description
+              {courseInfo.description
+                ? courseInfo.description
                 : "No Description"}
             </p>
             {isEditor ? (
@@ -355,21 +349,24 @@ function CoursePage() {
         </div>
 
         {isEditor ? (
-        <div className="toggle-button">
-          {toggle ? (
-            <button onClick={toggleButton} className="public-button">Make Course Public</button>
-          ) : 
-          (<button onClick={toggleButton} className="private-button">Make Course Private</button>)}
-          
-        </div>
+          <div className="toggle-button">
+            {toggle ? (
+              <button onClick={toggleButton} className="public-button">
+                Make Course Public
+              </button>
+            ) : (
+              <button onClick={toggleButton} className="private-button">
+                Make Course Private
+              </button>
+            )}
+          </div>
         ) : null}
 
-        
         {isEditor ? (
           <button className="create-set">
             <div className="new-chapter-text">New Chapter</div>
             <div className="new-chapter-icon">
-              <Link to={`/new-chapter/${courseid}`}>
+              <Link to={`/new-chapter/${courseId}`}>
                 <FaPlus />
               </Link>
             </div>
@@ -382,7 +379,7 @@ function CoursePage() {
               <div className="chapter-container">
                 <Link
                   className="chapter-button"
-                  to={`/courses/${courseid}/chapters/${chapterindex}`}
+                  to={`/courses/${courseId}/chapters/${chapterindex}`}
                 >
                   <button className={`chapters item-${chapterindex % 4}`}>
                     <h1>

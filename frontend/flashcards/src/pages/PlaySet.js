@@ -12,17 +12,19 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
  * @returns PlaySet page
  */
 function PlaySet() {
-
   // Initialize necessary variables
-  const { courseid, chapterindex, setindex } = useParams();
+  const {
+    courseid: courseID,
+    chapterindex: chapterIndex,
+    setindex: setIndex,
+  } = useParams();
   const [set, setSet] = useState([]);
-  const [course_info, setCourseInfo] = useState();
+  const [courseInfo, setCourseInfo] = useState();
   const [cards, setCards] = useState([]);
   const [playing, setPlaying] = useState(false);
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
-
     /**
      * PlaySet.js
      * fetchCourseInfo() is an asynchronous function that fetches course information
@@ -33,7 +35,7 @@ function PlaySet() {
         // Encodes the courseid in the url for fetching
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
-            courseid
+            courseID
           )}`
         );
 
@@ -42,13 +44,13 @@ function PlaySet() {
         }
 
         // Parse response as JSON
-        const course_info = await response.json();
+        const courseInfo = await response.json();
 
         // Sets the course_info for future use based on the parsed response
         // Sets the values of sets and cards as well
-        setCourseInfo(course_info);
-        setSet(course_info?.chapters?.[chapterindex]?.sets?.[setindex]);
-        setCards(course_info?.chapters?.[chapterindex]?.sets?.[setindex].cards);
+        setCourseInfo(courseInfo);
+        setSet(courseInfo?.chapters?.[chapterIndex]?.sets?.[setIndex]);
+        setCards(courseInfo?.chapters?.[chapterIndex]?.sets?.[setIndex].cards);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -56,10 +58,10 @@ function PlaySet() {
 
     // Call fetchCourseInfo()
     fetchCourseInfo();
-  }, [courseid, chapterindex, setindex]); // Dependency array includes the courseid, chapterindex, and setindex
+  }, [courseID, chapterIndex, setIndex]); // Dependency array includes the courseid, chapterindex, and setindex
 
   // Initialize isflipped, which tracks the flipping of cards in sets
-  const [isflipped, setIsFlipped] = useState(
+  const [isFlipped, setIsFlipped] = useState(
     new Array(cards.length).fill(false)
   );
 
@@ -67,12 +69,11 @@ function PlaySet() {
    * PlaySet.js
    * handleFlip() is a method that changes the "flip" of cards within sets
    * This is how the game aspect is created
-   * @param {*} index 
+   * @param {*} index
    */
   const handleFlip = (index) => {
-
     // Create a new array, newIsFlipped, with the same elements as isflipped
-    const newIsFlipped = [...isflipped];
+    const newIsFlipped = [...isFlipped];
 
     // Toggle the flip state of the item at index
     newIsFlipped[index] = !newIsFlipped[index];
@@ -91,7 +92,7 @@ function PlaySet() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          courseid,
+          courseid: courseID,
         }),
       });
 
@@ -105,7 +106,7 @@ function PlaySet() {
     }
   };
 
-  if (!course_info || !set || !cards) {
+  if (!courseInfo || !set || !cards) {
     return (
       <div>
         <Navbar />
@@ -121,7 +122,7 @@ function PlaySet() {
       {playing ? <CardViewer setPlaying={setPlaying} cards={cards} /> : null}
       <div className="play-heading">
         <button className="back-nav">
-          <Link to={`/courses/${courseid}`}>
+          <Link to={`/courses/${courseID}`}>
             <FaAngleLeft />
           </Link>
         </button>
@@ -131,17 +132,17 @@ function PlaySet() {
           </Link>
           <FaAngleRight className="angle-right" />
 
-          <Link className="Link-tree" to={`/courses/${courseid}`}>
-            <p>{course_info.name}</p>
+          <Link className="Link-tree" to={`/courses/${courseID}`}>
+            <p>{courseInfo.name}</p>
           </Link>
 
           <FaAngleRight className="angle-right" />
 
           <Link
             className="Link-tree"
-            to={`/courses/${courseid}/chapters/${chapterindex}`}
+            to={`/courses/${courseID}/chapters/${chapterIndex}`}
           >
-            {course_info?.chapters?.[chapterindex].name}
+            {courseInfo?.chapters?.[chapterIndex].name}
           </Link>
           <FaAngleRight className="angle-right" />
 
@@ -164,10 +165,7 @@ function PlaySet() {
           ) : null}
         </>
       </div>
-      <button
-        className="play-set-button"
-        onClick={handlePlayButtonClick}
-      >
+      <button className="play-set-button" onClick={handlePlayButtonClick}>
         <BiPlay />
         Play
       </button>
@@ -179,7 +177,7 @@ function PlaySet() {
               key={index}
               onClick={() => handleFlip(index)}
             >
-              <div className={`card-play ${isflipped[index] ? "flipped" : ""}`}>
+              <div className={`card-play ${isFlipped[index] ? "flipped" : ""}`}>
                 <div className={`card-play-front color-${index % 4}`}>
                   <p>{card.front}</p>
                 </div>

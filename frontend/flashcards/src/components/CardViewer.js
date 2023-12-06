@@ -5,7 +5,7 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { TfiReload } from "react-icons/tfi";
 
 function CardViewer({ setPlaying, cards }) {
-  const [isflipped, setIsFlipped] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
   const [shuffledCards, setShuffledCards] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [highIndexNum, setHighIndexNum] = useState(0);
@@ -43,57 +43,57 @@ function CardViewer({ setPlaying, cards }) {
     setCurrIndex(0);
   };
 
-  const [currindex, setCurrIndex] = useState(0);
+  const [currIndex, setCurrIndex] = useState(0);
 
   const nextCard = () => {
     if (
-      currindex !== shuffledCards.length - 1 &&
-      shuffledCards[currindex].marked === true
+      currIndex !== shuffledCards.length - 1 &&
+      shuffledCards[currIndex].marked === true
     ) {
-      if (isflipped !== false) {
+      if (isFlipped !== false) {
         setIsFlipped(false);
         setTimeout(() => {
-          setHighIndexNum(currindex + 1);
-          setCurrIndex(currindex + 1);
+          setHighIndexNum(currIndex + 1);
+          setCurrIndex(currIndex + 1);
         }, 1000);
       } else {
-        setHighIndexNum(currindex + 1);
-        setCurrIndex(currindex + 1);
+        setHighIndexNum(currIndex + 1);
+        setCurrIndex(currIndex + 1);
       }
     }
   };
 
   const prevCard = () => {
-    if (currindex !== 0) {
-      if (isflipped !== false) {
+    if (currIndex !== 0) {
+      if (isFlipped !== false) {
         setIsFlipped(false);
         setTimeout(() => {
-          setCurrIndex(currindex - 1);
+          setCurrIndex(currIndex - 1);
         }, 1000);
       } else {
-        setCurrIndex(currindex - 1);
+        setCurrIndex(currIndex - 1);
       }
     }
   };
 
   const handleMark = () => {
     let newShuffledCards = [...shuffledCards];
-    let duplicatedCard = { ...newShuffledCards[currindex] };
+    let duplicatedCard = { ...newShuffledCards[currIndex] };
     duplicatedCard.marked = false;
     newShuffledCards.push(duplicatedCard);
-    newShuffledCards[currindex].marked = true;
+    newShuffledCards[currIndex].marked = true;
     setShuffledCards(newShuffledCards);
-    setHighIndexNum(currindex + 1);
+    setHighIndexNum(currIndex + 1);
     setIsFlipped(false);
     setTimeout(() => {
-      setHighIndexNum(currindex + 1);
-      setCurrIndex(currindex + 1);
+      setHighIndexNum(currIndex + 1);
+      setCurrIndex(currIndex + 1);
     }, 1000);
   };
 
   const handleRight = () => {
     let newShuffledCards = [...shuffledCards];
-    newShuffledCards[currindex].marked = true;
+    newShuffledCards[currIndex].marked = true;
     setShuffledCards(newShuffledCards);
     nextCard();
   };
@@ -114,27 +114,27 @@ function CardViewer({ setPlaying, cards }) {
         </button>
         <div className="card-buttons">
           <button
-            className={`card-prev-button ${currindex === 0 ? "first" : ""}`}
+            className={`card-prev-button ${currIndex === 0 ? "first" : ""}`}
             onClick={() => prevCard()}
           >
             <FaArrowLeftLong />
           </button>
           <div
             className="card-viewing-container"
-            onClick={() => setIsFlipped(!isflipped)}
+            onClick={() => setIsFlipped(!isFlipped)}
           >
-            {console.log(currindex)}
+            {console.log(currIndex)}
             {console.log(shuffledCards)}
 
-            <div className={`card-viewing ${isflipped ? "flipped" : ""}`}>
+            <div className={`card-viewing ${isFlipped ? "flipped" : ""}`}>
               <div className={`card-viewing-front`}>
-                {shuffledCards[currindex] ? (
-                  <p>{shuffledCards[currindex].front}</p>
+                {shuffledCards[currIndex] ? (
+                  <p>{shuffledCards[currIndex].front}</p>
                 ) : null}
               </div>
               <div className={`card-viewing-back`}>
-                {shuffledCards[currindex] ? (
-                  <p>{shuffledCards[currindex].back}</p>
+                {shuffledCards[currIndex] ? (
+                  <p>{shuffledCards[currIndex].back}</p>
                 ) : null}
               </div>
             </div>
@@ -142,8 +142,8 @@ function CardViewer({ setPlaying, cards }) {
 
           <button
             className={`card-next-button ${
-              currindex === shuffledCards.length - 1 ? "last" : ""
-            } ${currindex === highIndexNum ? "not_answered" : ""}`}
+              currIndex === shuffledCards.length - 1 ? "last" : ""
+            } ${currIndex === highIndexNum ? "not_answered" : ""}`}
             onClick={() => nextCard()}
           >
             <FaArrowRightLong />
@@ -151,7 +151,7 @@ function CardViewer({ setPlaying, cards }) {
         </div>
 
         <div className="card-nav-buttons">
-          {shuffledCards[currindex].marked === false ? (
+          {shuffledCards[currIndex].marked === false ? (
             <>
               <button className="mark-card-right" onClick={() => handleRight()}>
                 Right

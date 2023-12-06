@@ -11,9 +11,8 @@ import { BsFillExclamationSquareFill } from "react-icons/bs";
  * @returns EditChapterPage, a webpage that displays the fields needed to edit a chapter's fields
  */
 function EditChapterPage() {
-
   // Gets these params from the url
-  const { courseid, chapterindex } = useParams();
+  const { courseid: courseId, chapterindex: chapterIndex } = useParams();
 
   // Initialize necessary variables, including character limits for Chapter names and descriptions
   const [noName, setNoName] = useState(false);
@@ -22,7 +21,7 @@ function EditChapterPage() {
   const descCharlimit = 250;
 
   // Initialize input values using React's useState hook
-  const [inputvalues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState({
     name: "",
     description: "",
   });
@@ -30,11 +29,10 @@ function EditChapterPage() {
   /**
    * EditChapterPage.js
    * handleInputChange() is a method that changes the chapter name and/or description to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleInputChange = (e) => {
-
     // Get the value from e's target
     const value = e.target.value;
 
@@ -45,11 +43,11 @@ function EditChapterPage() {
     // Checks the type and length of the value's description
     const overDescLimit =
       e.target.description === "description" && value.length <= descCharlimit;
-    
+
     // Set values according to the changed values if the values pass the above tests
     if (overNameLimit || overDescLimit) {
       setInputValues({
-        ...inputvalues,
+        ...inputValues,
         [e.target.name]: value,
       });
     }
@@ -57,7 +55,6 @@ function EditChapterPage() {
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
-    
     /**
      * EditChapterPage.js
      * fetchCourseInfo() is an asynchronous function that fetches course information
@@ -68,7 +65,7 @@ function EditChapterPage() {
         // Encodes the courseid in the url for fetching
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
-            courseid
+            courseId
           )}`
         );
 
@@ -77,12 +74,12 @@ function EditChapterPage() {
         }
 
         // Parse response as JSON
-        const course_info = await response.json();
+        const courseInfo = await response.json();
 
         // Set the values of name and description based on the parsed JSON response
         setInputValues({
-          name: course_info.chapters[chapterindex].name,
-          description: course_info.chapters[chapterindex].description || "",
+          name: courseInfo.chapters[chapterIndex].name,
+          description: courseInfo.chapters[chapterIndex].description || "",
         });
       } catch (error) {
         console.error("Error:", error);
@@ -91,7 +88,7 @@ function EditChapterPage() {
 
     // Call fetchCourseInfo()
     fetchCourseInfo();
-  }, [courseid, chapterindex]); // Dependency array includes the courseid and chapterIndex
+  }, [courseId, chapterIndex]); // Dependency array includes the courseid and chapterIndex
 
   /**
    * EditChapterPage.js
@@ -102,7 +99,7 @@ function EditChapterPage() {
     e.preventDefault();
 
     // If there is no name, then return true for NoName
-    if (inputvalues.name.length <= 0) {
+    if (inputValues.name.length <= 0) {
       return setNoName(true);
     }
 
@@ -113,10 +110,10 @@ function EditChapterPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: courseid,
-          index: chapterindex,
-          name: inputvalues.name,
-          description: inputvalues.description,
+          id: courseId,
+          index: chapterIndex,
+          name: inputValues.name,
+          description: inputValues.description,
         }),
       });
 
@@ -125,7 +122,7 @@ function EditChapterPage() {
       }
 
       // Return to the course page for courseid
-      navigate(`/courses/${courseid}`);
+      navigate(`/courses/${courseId}`);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -144,12 +141,12 @@ function EditChapterPage() {
               name="name"
               className="chapter-name-input"
               placeholder="Enter chapter name..."
-              value={inputvalues.name}
+              value={inputValues.name}
               onChange={handleInputChange}
               required
             />
           </div>
-          <p>{inputvalues.name.length}/50</p>
+          <p>{inputValues.name.length}/50</p>
           {noName ? (
             <div className="noName-error">
               <BsFillExclamationSquareFill />
@@ -161,16 +158,16 @@ function EditChapterPage() {
             name="description"
             className="chapter-description"
             placeholder="Enter chapter description..."
-            value={inputvalues.description}
+            value={inputValues.description}
             onChange={handleInputChange}
           ></textarea>
-          <p>{inputvalues.description.length}/250</p>
+          <p>{inputValues.description.length}/250</p>
 
           <div className="button-wrap">
             <button className="course-save" onClick={saveChapter}>
               Save
             </button>
-            <Link to={`/courses/${courseid}`}>
+            <Link to={`/courses/${courseId}`}>
               <button className="course-cancel">Cancel</button>
             </Link>
           </div>

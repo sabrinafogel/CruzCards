@@ -7,7 +7,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa";
 import { BsFillExclamationSquareFill } from "react-icons/bs";
 import { AiFillPlusCircle, AiFillDelete, AiFillEdit } from "react-icons/ai";
-import jsPDF from 'jspdf';
+import jsPDF from "jspdf";
 
 /**
  * EditSet.js
@@ -16,9 +16,8 @@ import jsPDF from 'jspdf';
  * @returns EditSet, a webpage that displays the fields needed to edit a set
  */
 function EditSet() {
-
   // For general use in fetching the course
-  const { courseid, index, setindex } = useParams();
+  const { courseid: courseId, index, setindex: setIndex } = useParams();
   const [set, setSet] = useState();
   const [cards, setCards] = useState([]);
 
@@ -26,7 +25,7 @@ function EditSet() {
   const [inputDisabled, setInputDisabled] = useState(false);
 
   // Initial value for the name box
-  const [inputvalue, setinputvalue] = useState("");
+  const [inputValue, setinputvalue] = useState("");
 
   // The popup for adding/editing the card
   const [showModal, setShowModal] = useState(false);
@@ -44,7 +43,7 @@ function EditSet() {
   // This allows the use of the navigate function to move the user back to the sets page after saving
   const navigate = useNavigate();
 
-  const [course_info, setCourseInfo] = useState({});
+  const [courseInfo, setCourseInfo] = useState({});
 
   const { user } = UserAuth();
 
@@ -65,7 +64,6 @@ function EditSet() {
    * @param {event} e
    */
   const handleDescriptionChange = (e) => {
-
     // If the value is under the description character limit, change the description
     // Otherwise, don't do anything
     if (e.target.value.length <= 250) {
@@ -81,7 +79,6 @@ function EditSet() {
    * @param {event} e
    */
   const handleInputChange = (e) => {
-
     // If the value is under the name character limit, change the bane
     // Otherwise, don't do anything
     if (e.target.value.length <= 50) {
@@ -160,7 +157,7 @@ function EditSet() {
       try {
         const response = await fetch(
           `http://localhost:8080/courseinfo?courseid=${encodeURIComponent(
-            courseid
+            courseId
           )}`
         );
 
@@ -169,22 +166,22 @@ function EditSet() {
         }
 
         // Parse response as JSON
-        const course_info = await response.json();
+        const courseInfo = await response.json();
 
         // Set the course info (including chapters and sets) based on the parsed JSON response
-        setCourseInfo(course_info);
-        setSet(course_info?.chapters?.[index]?.sets?.[setindex]);
+        setCourseInfo(courseInfo);
+        setSet(courseInfo?.chapters?.[index]?.sets?.[setIndex]);
 
         // Set the correct information about those with editing permissions of the course
         // Including the owner and any editors
-        const course_editors = [course_info.owner];
+        const courseEditors = [courseInfo.owner];
 
-        course_info.editors.forEach((editor) => {
-          course_editors.push(editor);
+        courseInfo.editors.forEach((editor) => {
+          courseEditors.push(editor);
         });
 
         // If the user's email is found within course_editors, give them editor permissions
-        if (course_editors.includes(user.email)) {
+        if (courseEditors.includes(user.email)) {
           setIsEditor(true);
         } else {
           setIsEditor(false);
@@ -196,13 +193,13 @@ function EditSet() {
 
     // Call fetchCourseInfo()
     fetchCourseInfo();
-  }, [courseid, index, setindex, user]); // Dependency array includes the courseid, index, setindex, and user
+  }, [courseId, index, setIndex, user]); // Dependency array includes the courseid, index, setindex, and user
 
   // This saves the set by calling the backend and passing the in the req.body
   const saveSet = async (e) => {
     e.preventDefault();
 
-    if (inputvalue.length <= 0) {
+    if (inputValue.length <= 0) {
       return setNoName(true);
     }
 
@@ -213,10 +210,10 @@ function EditSet() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: courseid,
+          id: courseId,
           index: index,
-          setindex: setindex,
-          name: inputvalue,
+          setindex: setIndex,
+          name: inputValue,
           description: description,
           cards: cards,
         }),
@@ -225,14 +222,14 @@ function EditSet() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      navigate(`/courses/${courseid}/chapters/${index}`);
+      navigate(`/courses/${courseId}/chapters/${index}`);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   // Returns a loading screen if the fetch hasn't finished yet
-  if (!course_info || !course_info.chapters) {
+  if (!courseInfo || !courseInfo.chapters) {
     return (
       <div>
         <Navbar />
@@ -243,38 +240,37 @@ function EditSet() {
     );
   }
 
-  const chapters = course_info.chapters;
+  const chapters = courseInfo.chapters;
   const currentChapter = chapters[index];
 
   /**
    * EditSet.js
    * handleJSONDownload() is a method that creates a downloadable JSON file.
    * This file contains JSON information representing a set
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleJSONDownload = (e) => {
-
     // Convert the set object into a JSON string, then into a Blob
     const setJSONData = JSON.stringify(set);
     const blob = new Blob([setJSONData], { type: "application/json" });
-    
+
     // Create a link element for download
     const link = document.createElement("a");
     link.download = `${set.name}.json`;
     link.href = window.URL.createObjectURL(blob);
-    
+
     // Add the link to the CoursePage
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }
+  };
 
   /**
    * EditSet.js
    * handleCSVDownload() is a method that creates a downloadable CSV file.
    * This file contains CSV information representing a set
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleCSVDownload = (e) => {
@@ -282,27 +278,27 @@ function EditSet() {
       return;
     }
 
-    const header = 'front,back';
+    const header = "front,back";
     const rows = set.cards.map((row) => {
       const { front, back } = row;
-      return [front, back].join(',');
+      return [front, back].join(",");
     });
-    const csvDATA = [header, ...rows].join('\n');
+    const csvDATA = [header, ...rows].join("\n");
 
-    const blob = new Blob([csvDATA], { type: 'text/csv;charset=utf-8' });
-    const link = document.createElement('a');
+    const blob = new Blob([csvDATA], { type: "text/csv;charset=utf-8" });
+    const link = document.createElement("a");
     link.download = `${set.name}.csv`;
     link.href = window.URL.createObjectURL(blob);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }
+  };
 
   /**
    * EditSet.js
    * handlePDFDownload() is a method that creates a downloadable PDF file.
    * This file contains PDF information representing a set
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handlePDFDownload = (e) => {
@@ -311,7 +307,7 @@ function EditSet() {
     }
 
     const pdf = new jsPDF({
-      orientation: 'landscape',
+      orientation: "landscape",
     });
     set.cards.forEach((slide, index) => {
       // Add a new page for each slide
@@ -321,22 +317,21 @@ function EditSet() {
 
       // Add front text (larger) centered
       pdf.setFontSize(30);
-      pdf.text(150, 80, slide.front, { align: 'center' });
+      pdf.text(150, 80, slide.front, { align: "center" });
 
       // Add back text centered
       pdf.setFontSize(22);
-      pdf.text(150, 110, slide.back, { align: 'center' });
+      pdf.text(150, 110, slide.back, { align: "center" });
     });
 
-    const pdfBlob = pdf.output('blob');
-    const link = document.createElement('a');
+    const pdfBlob = pdf.output("blob");
+    const link = document.createElement("a");
     link.download = `${set.name}.pdf`;
     link.href = window.URL.createObjectURL(pdfBlob);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }
-
+  };
 
   // Returns the EditSet page
   return (
@@ -349,7 +344,7 @@ function EditSet() {
           <div>
             <div className="set-input-containers">
               <button className="back-nav">
-                <Link to={`/courses/${courseid}/chapters/${index}`}>
+                <Link to={`/courses/${courseId}/chapters/${index}`}>
                   <FaAngleLeft />
                 </Link>
               </button>
@@ -359,15 +354,15 @@ function EditSet() {
                 </Link>
                 <FaAngleRight className="angle-right" />
 
-                <Link className="Link-tree" to={`/courses/${courseid}`}>
-                  <p>{course_info.name}</p>
+                <Link className="Link-tree" to={`/courses/${courseId}`}>
+                  <p>{courseInfo.name}</p>
                 </Link>
 
                 <FaAngleRight className="angle-right" />
 
                 <Link
                   className="Link-tree"
-                  to={`/courses/${courseid}/chapters/${index}`}
+                  to={`/courses/${courseId}/chapters/${index}`}
                 >
                   <p>{currentChapter.name}</p>
                 </Link>
@@ -380,12 +375,12 @@ function EditSet() {
               <input
                 className="course-name-input"
                 placeholder="Enter name..."
-                value={inputvalue}
+                value={inputValue}
                 onChange={handleInputChange}
                 required
                 disabled={!isEditor}
               />
-              <p className="char-count">{inputvalue && inputvalue.length}/50</p>
+              <p className="char-count">{inputValue && inputValue.length}/50</p>
               {noName ? (
                 <div className="noName-error">
                   <BsFillExclamationSquareFill />
@@ -408,19 +403,13 @@ function EditSet() {
         )}
       </div>
       <div className="set-download-div">
-        <button
-          className="download-JSON"
-          onClick={handleJSONDownload}>
+        <button className="download-JSON" onClick={handleJSONDownload}>
           Download Set JSON
         </button>
-        <button
-          className="download-JSON"
-          onClick={handleCSVDownload}>
+        <button className="download-JSON" onClick={handleCSVDownload}>
           Download Set CSV
         </button>
-        <button
-          className="download-JSON"
-          onClick={handlePDFDownload}>
+        <button className="download-JSON" onClick={handlePDFDownload}>
           Download Set PDF
         </button>
       </div>
@@ -556,7 +545,7 @@ function EditSet() {
           <button className="course-save" onClick={saveSet}>
             Save
           </button>
-          <Link to={`/courses/${courseid}/chapters/${index}`}>
+          <Link to={`/courses/${courseId}/chapters/${index}`}>
             <button className="course-cancel">Cancel</button>
           </Link>
         </div>

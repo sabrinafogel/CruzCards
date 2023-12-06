@@ -12,9 +12,8 @@ import "./NewChapter.css";
  * @returns NewChapter page
  */
 function NewChapter() {
-
   // Gets these params from the url
-  const { courseid } = useParams();
+  const { courseid: courseId } = useParams();
 
   // Initialize necessary variables, including character limits for Chapter names and descriptions
   const [noName, setNoName] = useState(false);
@@ -24,7 +23,7 @@ function NewChapter() {
   const navigate = useNavigate();
 
   // Initialize input values using React's useState hook
-  const [inputvalues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState({
     name: "",
     description: "",
     tags: [],
@@ -33,26 +32,25 @@ function NewChapter() {
   /**
    * NewChapter.js
    * handleInputChange() is a method that changes the chapter name and/or description to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleInputChange = (e) => {
-    
     // Get the value from e's target
     const value = e.target.value;
 
     // Checks the type and length of the value's name
     const overNameLimit =
       e.target.name === "name" && value.length <= nameCharlimit;
-    
+
     // Checks the type and length of the value's description
     const overDescLimit =
       e.target.name === "description" && value.length <= descCharlimit;
-    
+
     // Set values according to the changed values if the values pass the above tests
     if (overNameLimit || overDescLimit) {
       setInputValues({
-        ...inputvalues,
+        ...inputValues,
         [e.target.name]: value,
       });
     }
@@ -61,26 +59,25 @@ function NewChapter() {
   /**
    * NewChapter.js
    * handleTagsChange() is a method that changes the chapter tags to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleTagsChange = (e) => {
-    if (e.key !== "Enter"){
+    if (e.key !== "Enter") {
       return;
     }
 
     // Get the value from e's target
-    const new_tag = e.target.value;
-    if (!new_tag.trim()){
+    const newTag = e.target.value;
+    if (!newTag.trim()) {
       return;
     }
 
     // Add new_tag to setTags
-    setTags([...tags, new_tag]);
+    setTags([...tags, newTag]);
 
     // Reset e's target value
-    e.target.value="";
-
+    e.target.value = "";
   };
 
   // Remove a tag using a given index by filtering for all tags except the tag at index
@@ -97,7 +94,7 @@ function NewChapter() {
     e.preventDefault();
 
     // If there is no name, then return true for NoName
-    if (inputvalues.name.length <= 0) {
+    if (inputValues.name.length <= 0) {
       return setNoName(true);
     }
 
@@ -108,9 +105,9 @@ function NewChapter() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          courseid: courseid,
-          name: inputvalues.name,
-          description: inputvalues.description,
+          courseid: courseId,
+          name: inputValues.name,
+          description: inputValues.description,
           tags: tags,
         }),
       });
@@ -120,7 +117,7 @@ function NewChapter() {
       }
 
       // Return to the course page for courseid
-      navigate(`/courses/${courseid}`);
+      navigate(`/courses/${courseId}`);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -138,12 +135,12 @@ function NewChapter() {
             className="chapter-name-input"
             name="name"
             placeholder="Enter chapter name..."
-            value={inputvalues.name}
+            value={inputValues.name}
             onChange={handleInputChange}
             required
           />
         </div>
-        <p>{inputvalues.name.length}/50</p>
+        <p>{inputValues.name.length}/50</p>
 
         {noName ? (
           <div className="noName-error">
@@ -156,11 +153,11 @@ function NewChapter() {
           className="chapter-description"
           name="description"
           placeholder="Enter chapter description..."
-          value={inputvalues.description}
+          value={inputValues.description}
           onChange={handleInputChange}
         ></textarea>
 
-        <p>{inputvalues.description.length}/250</p>
+        <p>{inputValues.description.length}/250</p>
 
         <div className="chapter-tag-name-input">
           {tags.map((tag, index) => (
@@ -182,7 +179,7 @@ function NewChapter() {
           <button className="course-save" onClick={handleSubmit}>
             Save
           </button>
-          <Link to={`/courses/${courseid}`}>
+          <Link to={`/courses/${courseId}`}>
             <button className="course-cancel">Cancel</button>
           </Link>
         </div>

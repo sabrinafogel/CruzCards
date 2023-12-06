@@ -22,9 +22,9 @@ export const AuthContextProvider = ({ children }) => {
     signInWithRedirect(auth, provider);
   };
 
-  const updateUserprofile = (displayname) => {
+  const updateUserProfile = (displayName) => {
     updateProfile(auth.currentUser, {
-      displayName: displayname,
+      displayName: displayName,
     })
       .then(() => {
         console.log("profile updated", auth.currentUser);
@@ -34,7 +34,7 @@ export const AuthContextProvider = ({ children }) => {
       });
   };
 
-  const emailSignUp = (displayname, email, password) => {
+  const emailSignUp = (displayName, email, password) => {
     console.log(email, password);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -42,7 +42,7 @@ export const AuthContextProvider = ({ children }) => {
 
         setUser(userCredential.user);
         updateProfile(auth.currentUser, {
-          displayName: displayname,
+          displayName: displayName,
         })
           .then(() => {
             console.log("profile updated", auth.currentUser);
@@ -85,7 +85,14 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, googleSignIn, emailSignUp, emailSignIn, logOut, updateUserprofile }}
+      value={{
+        user,
+        googleSignIn,
+        emailSignUp,
+        emailSignIn,
+        logOut,
+        updateUserProfile,
+      }}
     >
       {children}
     </AuthContext.Provider>

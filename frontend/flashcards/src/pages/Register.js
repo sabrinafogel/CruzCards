@@ -9,11 +9,10 @@ import "./Register.css";
  * @returns Register User page
  */
 const SignIn = () => {
-
   // Initialize necessary variables
   const { user, emailSignUp } = UserAuth();
   const navigate = useNavigate();
-  const [inputvalues, setinputvalues] = useState({
+  const [inputValues, setinputvalues] = useState({
     input1: "",
     input2: "",
     input3: "",
@@ -22,14 +21,14 @@ const SignIn = () => {
   /**
    * Register.js
    * handleInputChange() is a method that changes the input values to an event target's value
-   * @param {event} e 
+   * @param {event} e
    * @returns None
    */
   const handleInputChange = (e) => {
     const value = e.target.value;
     // console.log(value);
     setinputvalues({
-      ...inputvalues,
+      ...inputValues,
       [e.target.name]: value,
     });
   };
@@ -43,13 +42,13 @@ const SignIn = () => {
     e.preventDefault();
 
     // If the password is too short, alert the user and return
-    if (inputvalues.input3.length < 6) {
+    if (inputValues.input3.length < 6) {
       alert("Password must be at least 6 characters long");
       return;
     }
 
     // Send input values into emailSignUp
-    emailSignUp(inputvalues.input1, inputvalues.input2, inputvalues.input3);
+    emailSignUp(inputValues.input1, inputValues.input2, inputValues.input3);
     // console.log(inputvalues);
   };
 
@@ -72,7 +71,7 @@ const SignIn = () => {
             name="input1"
             className="input"
             placeholder="Full Name"
-            value={inputvalues.input1}
+            value={inputValues.input1}
             onChange={handleInputChange}
             required
           ></input>
@@ -82,7 +81,7 @@ const SignIn = () => {
             name="input2"
             className="input"
             placeholder="Email"
-            value={inputvalues.input2}
+            value={inputValues.input2}
             onChange={handleInputChange}
             required
           ></input>
@@ -92,7 +91,7 @@ const SignIn = () => {
             name="input3"
             className="input"
             placeholder="Password"
-            value={inputvalues.input3}
+            value={inputValues.input3}
             onChange={handleInputChange}
             required
             minLength={6}
@@ -102,7 +101,7 @@ const SignIn = () => {
             type="submit"
             value="Submit"
             onClick={handleSubmit}
-            inputvalues={inputvalues}
+            inputvalues={inputValues}
           />
         </form>
       </div>
