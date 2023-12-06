@@ -13,6 +13,7 @@ import { BsFillExclamationSquareFill } from "react-icons/bs";
 function EditChapterPage() {
   // Gets these params from the url
   const { courseid: courseId, chapterindex: chapterIndex } = useParams();
+  const [chapindex, setChapterIndex] = useState(1); 
 
   // Initialize necessary variables, including character limits for Chapter names and descriptions
   const [noName, setNoName] = useState(false);
@@ -75,6 +76,8 @@ function EditChapterPage() {
 
         // Parse response as JSON
         const courseInfo = await response.json();
+        
+        setChapterIndex(courseInfo.chapters[chapterIndex].chapterindex);
 
         // Set the values of name and description based on the parsed JSON response
         setInputValues({
@@ -114,6 +117,7 @@ function EditChapterPage() {
           index: chapterIndex,
           name: inputValues.name,
           description: inputValues.description,
+          chapterindex: chapindex,
         }),
       });
 

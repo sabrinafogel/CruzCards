@@ -229,7 +229,7 @@ app.post("/editCourse", async (req, res) => {
 });
 
 app.post("/editChapter", async (req, res) => {
-  const { id, index, name, description } = req.body;
+  const { id, index, name, description, chapterindex } = req.body;
   console.log("/editChapter fetch");
 
   if (!id) {
@@ -243,6 +243,7 @@ app.post("/editChapter", async (req, res) => {
       name: name,
       description: description,
       sets: result[0].chapters[index].sets,
+      chapterindex: chapterindex,
     };
     result[0].chapters[index] = newChapter;
 

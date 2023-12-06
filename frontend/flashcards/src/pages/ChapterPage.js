@@ -47,6 +47,8 @@ function ChapterPage() {
   const [isChangingDesc, setIsChangingDesc] = useState(false);
   const [chapDescInput, setChapDescInput] = useState(courseInfo.description);
 
+  const [chapindex, setChapterIndex] = useState(1); 
+
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
     /**
@@ -76,6 +78,7 @@ function ChapterPage() {
         setCurrentChapter(recChap);
         setChapNameInput(recChap.name);
         setChapDescInput(recChap.description);
+        setChapterIndex(recChap.chapterindex);
 
         // Set the correct information about those with editing permissions of the course
         // Including the owner and any editors
@@ -256,6 +259,7 @@ function ChapterPage() {
         index: chapterIndex,
         name: chapNameInput,
         description: chapDescInput,
+        chapterindex: chapindex,
       }),
     });
 
