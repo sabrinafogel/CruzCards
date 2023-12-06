@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./CoursePage.css";
 import Navbar from "../components/Navbar";
 import { UserAuth } from "../components/AuthContext";
-import { useParams, Link } from "react-router-dom";
-import { FaPlus, FaAngleLeft } from "react-icons/fa6";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { FaPlus, FaAngleLeft, FaTrash } from "react-icons/fa6";
 import { AiFillEdit } from "react-icons/ai";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
 
@@ -33,6 +33,8 @@ function CoursePage() {
   // (searchChapters and setSearchChapters using React's useState hook)
   var search = "";
   const [searchChapters, setSearchChapters] = useState([]);
+
+  const navigate = useNavigate();
 
   // Will fetch course from db and will fetch again if courseid changes
   useEffect(() => {
@@ -180,6 +182,36 @@ function CoursePage() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  /**
+   * CoursePage.js
+   * handleCourseDelete() is a menthod that handles the deletion of courses.
+   */
+  const handleCourseDelete = async() => {
+
+    try {
+      // Encodes the courseid in the url for fetching
+      const response = await fetch("http://localhost:8080/deletecourse", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: courseid,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      // Deletion was successful, redirects user to home page
+      navigate("/");
+
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   /**
@@ -346,6 +378,12 @@ function CoursePage() {
           <button className="download-JSON" onClick={handleJSONDownload}>
             Download Course JSON
           </button>
+        </div>
+
+        <div className="course-delete">
+          <button className="delete-Course" onClick={handleCourseDelete}>
+            Delete This Course
+          </button>  
         </div>
 
         {isEditor ? (

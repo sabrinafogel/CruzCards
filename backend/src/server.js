@@ -311,5 +311,24 @@ app.post("/editPrivacy", async (req, res) => {
   }
 });
 
+// Deletes course
+app.post("/deletecourse", async (req, res) => {
+  const { id } = req.body;
+  console.log("/deletecourse fetch");
+
+  try {
+    // Deletes course from db using id
+    const result = await sql("DELETE FROM courses WHERE id = $1", [id]);
+
+    // Sends success message
+    return res.status(200).send({ message: "Course updated successfully." });
+  } catch (error) {
+    // Display error in console
+    console.error("Error updating document: ", error);
+    // Return error status
+    return res.status(500).send({ error: "Failed to update course." });
+  }
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
