@@ -380,12 +380,14 @@ function CoursePage() {
           </button>
         </div>
 
-        <div className="course-delete">
-          <button className="delete-Course" onClick={handleCourseDelete}>
-            Delete This Course
-          </button>  
-        </div>
-
+        {isEditor ? (
+          <div className="course-delete">
+            <button className="delete-Course" onClick={handleCourseDelete}>
+              Delete This Course
+            </button>  
+          </div>
+        ) : null}
+        
         {isEditor ? (
           <div className="toggle-button">
             {toggle ? (
